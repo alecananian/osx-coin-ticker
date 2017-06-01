@@ -7,47 +7,63 @@
 //
 
 import Foundation
+import Cocoa
 
 enum ExchangeSite: String {
-    case none = "None"
+    case bitstamp = "Bitstamp"
+    //case btce = "BTC-E" // https://btc-e.com/api/3/docs#ticker
+    //case btcChina = "BTCChina" // https://www.btcchina.com/apidocs/
+    //case campBX = "Camp BX" // http://CampBX.com/api/xticker.php
     case gdax = "GDAX"
+    //case kraken = "Kraken" // https://www.kraken.com/help/api
     
-    static let allValues = [gdax]
-}
-
-enum Currency: String {
-    case usd = "USD"
-    case eur = "EUR"
-    
-    static var allValues: [Currency] = [.usd, .eur]
-}
-
-enum CryptoCurrency: String {
-    case bitcoin = "BTC"
-    case ethereum = "ETH"
-    case litecoin = "LTC"
-    
-    static var allValues: [CryptoCurrency] = [.bitcoin, .ethereum, .litecoin]
+    static let allValues = [bitstamp, gdax]
 }
 
 protocol ExchangeDelegate {
-    func priceDidChange(price: Double)
+    func exchange(_ exchange: Exchange, didUpdatePrice price: Double)
 }
 
 class Exchange {
     
-    internal var site = ExchangeSite.none
+    internal var site: ExchangeSite
     internal var delegate: ExchangeDelegate
-    internal var availableCryptoCurrencies = CryptoCurrency.allValues
+    internal var currencyMatrix: [CryptoCurrency: [PhysicalCurrency]] = [.bitcoin: [.usd]]
     
-    static func fromSite(_ site: ExchangeSite, delegate: ExchangeDelegate) -> Exchange {
-        switch site {
-        default:
-            return GDAXExchange(site: site, delegate: delegate)
+    var currentCryptoCurrency = CryptoCurrency.bitcoin {
+        didSet {
+            if availablePhysicalCurrencies.contains(TickerConfig.defaultPhysicalCurrency) {
+                currentPhysicalCurrency = TickerConfig.defaultPhysicalCurrency
+            } else {
+                currentPhysicalCurrency = availablePhysicalCurrencies.first!
+            }
+            
+            TickerConfig.defaultCryptoCurrency = currentCryptoCurrency
         }
     }
     
-    required init(site: ExchangeSite, delegate: ExchangeDelegate) {
+    var currentPhysicalCurrency = PhysicalCurrency.usd {
+        didSet {
+            TickerConfig.defaultPhysicalCurrency = currentPhysicalCurrency
+        }
+    }
+    
+    var availableCryptoCurrencies: [CryptoCurrency] {
+        return Array(currencyMatrix.keys)
+    }
+    
+    var availablePhysicalCurrencies: [PhysicalCurrency] {
+        return currencyMatrix[currentCryptoCurrency]!
+    }
+    
+    static func build(withSite site: ExchangeSite, delegate: ExchangeDelegate) -> Exchange {
+        switch site {
+        case .bitstamp: return BitstampExchange(delegate: delegate)
+        case .gdax: return GDAXExchange(delegate: delegate)
+        }
+    }
+    
+    init(site: ExchangeSite, delegate: ExchangeDelegate) {
         self.site = site
         self.delegate = delegate
     }

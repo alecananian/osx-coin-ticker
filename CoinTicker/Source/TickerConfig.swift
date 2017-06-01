@@ -10,22 +10,51 @@ import Foundation
 
 class TickerConfig {
     
-    static var currentExchange: Exchange? {
-        didSet {
-            oldValue?.stop()
-            currentExchange?.start()
+    private struct Keys {
+        static let UserDefaultsExchangeSite = "userDefaults.exchangeSite"
+        static let UserDefaultsPhysicalCurrency = "userDefaults.physicalCurrency"
+        static let UserDefaultsCryptoCurrency = "userDefaults.cryptoCurrency"
+    }
+    
+    static var defaultExchangeSite: ExchangeSite {
+        get {
+            if let rawValue = UserDefaults.standard.value(forKey: Keys.UserDefaultsExchangeSite) as? String, let exchangeSite = ExchangeSite(rawValue: rawValue) {
+                return exchangeSite
+            }
+            
+            return .gdax
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: Keys.UserDefaultsExchangeSite)
         }
     }
     
-    static var currentCurrency = Currency.usd {
-        didSet {
-            currentExchange?.reset()
+    static var defaultPhysicalCurrency: PhysicalCurrency {
+        get {
+            if let rawValue = UserDefaults.standard.value(forKey: Keys.UserDefaultsPhysicalCurrency) as? String, let physicalCurrency = PhysicalCurrency(rawValue: rawValue) {
+                return physicalCurrency
+            }
+            
+            return .usd
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: Keys.UserDefaultsPhysicalCurrency)
         }
     }
     
-    static var currentCryptoCurrency = CryptoCurrency.bitcoin {
-        didSet {
-            currentExchange?.reset()
+    static var defaultCryptoCurrency: CryptoCurrency {
+        get {
+            if let rawValue = UserDefaults.standard.value(forKey: Keys.UserDefaultsCryptoCurrency) as? String, let cryptoCurrency = CryptoCurrency(rawValue: rawValue) {
+                return cryptoCurrency
+            }
+            
+            return .bitcoin
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: Keys.UserDefaultsCryptoCurrency)
         }
     }
 

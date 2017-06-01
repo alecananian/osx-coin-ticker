@@ -11,9 +11,10 @@
             <objects>
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="CoinTicker" customModuleProvider="target">
                     <connections>
-                        <outlet property="cryptoCurrencyMenu" destination="jln-Fx-gzD" id="m9N-xH-nXv"/>
-                        <outlet property="exchangeMenu" destination="fga-XW-why" id="pT8-iy-N44"/>
-                        <outlet property="statusBarMenu" destination="vYf-vh-d69" id="fe9-T0-xX8"/>
+                        <outlet property="cryptoCurrencySubMenu" destination="jln-Fx-gzD" id="cIg-hQ-jMF"/>
+                        <outlet property="exchangesSubMenu" destination="fga-XW-why" id="FIj-pA-oaV"/>
+                        <outlet property="mainMenu" destination="vYf-vh-d69" id="rvF-sV-ypa"/>
+                        <outlet property="physicalCurrencySubMenu" destination="EDM-a5-v0m" id="MuA-em-igB"/>
                     </connections>
                 </customObject>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -26,6 +27,10 @@
                         <menuItem title="Crypto Currency" id="ZpQ-lS-u7e">
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <menu key="submenu" title="Crypto Currency" id="jln-Fx-gzD"/>
+                        </menuItem>
+                        <menuItem title="Physical Currency" id="6yI-pB-Xjz">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <menu key="submenu" title="Physical Currency" id="EDM-a5-v0m"/>
                         </menuItem>
                         <menuItem isSeparatorItem="YES" id="kz9-oF-43U"/>
                         <menuItem title="Quit" keyEquivalent="q" id="aEa-aJ-8Ch">
