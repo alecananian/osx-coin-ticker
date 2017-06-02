@@ -13,7 +13,6 @@ enum ExchangeSite: String {
     case bitstamp = "Bitstamp"
     //case btce = "BTC-E" // https://btc-e.com/api/3/docs#ticker
     //case btcChina = "BTCChina" // https://www.btcchina.com/apidocs/
-    //case campBX = "Camp BX" // http://CampBX.com/api/xticker.php
     case gdax = "GDAX"
     //case kraken = "Kraken" // https://www.kraken.com/help/api
     
@@ -24,36 +23,36 @@ protocol ExchangeDelegate {
     func exchange(_ exchange: Exchange, didUpdatePrice price: Double)
 }
 
+typealias CurrencyMatrix = [Currency: [Currency]]
+
 class Exchange {
     
     internal var site: ExchangeSite
     internal var delegate: ExchangeDelegate
-    internal var currencyMatrix: [CryptoCurrency: [PhysicalCurrency]] = [.bitcoin: [.usd]]
+    internal var currencyMatrix: CurrencyMatrix
     
-    var currentCryptoCurrency = CryptoCurrency.bitcoin {
+    var baseCurrency = Currency.bitcoin {
         didSet {
-            if availablePhysicalCurrencies.contains(TickerConfig.defaultPhysicalCurrency) {
-                currentPhysicalCurrency = TickerConfig.defaultPhysicalCurrency
-            } else {
-                currentPhysicalCurrency = availablePhysicalCurrencies.first!
+            if let availableDisplayCurrencies = currencyMatrix[baseCurrency] {
+                if availableDisplayCurrencies.contains(TickerConfig.defaultDisplayCurrency) {
+                    displayCurrency = TickerConfig.defaultDisplayCurrency
+                } else {
+                    displayCurrency = availableDisplayCurrencies.first!
+                }
             }
             
-            TickerConfig.defaultCryptoCurrency = currentCryptoCurrency
+            TickerConfig.defaultBaseCurrency = baseCurrency
         }
     }
     
-    var currentPhysicalCurrency = PhysicalCurrency.usd {
+    var displayCurrency = Currency.usd {
         didSet {
-            TickerConfig.defaultPhysicalCurrency = currentPhysicalCurrency
+            TickerConfig.defaultDisplayCurrency = displayCurrency
         }
     }
     
-    var availableCryptoCurrencies: [CryptoCurrency] {
-        return Array(currencyMatrix.keys)
-    }
-    
-    var availablePhysicalCurrencies: [PhysicalCurrency] {
-        return currencyMatrix[currentCryptoCurrency]!
+    var availableBaseCurrencies: [Currency] {
+        return Array(currencyMatrix.keys).sorted(by: { $0.rawValue < $1.rawValue })
     }
     
     static func build(withSite site: ExchangeSite, delegate: ExchangeDelegate) -> Exchange {
@@ -63,9 +62,18 @@ class Exchange {
         }
     }
     
-    init(site: ExchangeSite, delegate: ExchangeDelegate) {
+    init(site: ExchangeSite, delegate: ExchangeDelegate, currencyMatrix: CurrencyMatrix) {
         self.site = site
         self.delegate = delegate
+        self.currencyMatrix = currencyMatrix
+        
+        defer {
+            if availableBaseCurrencies.contains(TickerConfig.defaultBaseCurrency) {
+                baseCurrency = TickerConfig.defaultBaseCurrency
+            } else {
+                baseCurrency = availableBaseCurrencies.first!
+            }
+        }
     }
     
     func start() {

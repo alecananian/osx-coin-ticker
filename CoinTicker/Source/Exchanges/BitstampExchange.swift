@@ -20,22 +20,14 @@ class BitstampExchange: Exchange {
     private var socket = WebSocket(url: Constants.WebSocketURL)
     
     init(delegate: ExchangeDelegate) {
-        super.init(site: .bitstamp, delegate: delegate)
-        
-        currencyMatrix = [
+        super.init(site: .bitstamp, delegate: delegate, currencyMatrix: [
             .bitcoin: [.usd, .eur],
             .ripple: [.usd, .eur]
-        ]
-        
-        if availableCryptoCurrencies.contains(TickerConfig.defaultCryptoCurrency) {
-            currentCryptoCurrency = TickerConfig.defaultCryptoCurrency
-        } else {
-            currentCryptoCurrency = availableCryptoCurrencies.first!
-        }
+        ])
     }
     
     override func start() {
-        let productId = "\(currentCryptoCurrency.code)\(currentPhysicalCurrency.rawValue)".lowercased()
+        let productId = "\(baseCurrency.code)\(displayCurrency.rawValue)".lowercased()
         
         Alamofire.request(Constants.TickerAPIPath.replacingOccurrences(of: "%{productId}", with: productId)).responseJSON { [unowned self] response in
             if let tickerData = response.result.value as? [String: Any], let priceString = tickerData["last"] as? String, let price = Double(priceString) {

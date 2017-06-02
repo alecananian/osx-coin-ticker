@@ -12,8 +12,8 @@ class TickerConfig {
     
     private struct Keys {
         static let UserDefaultsExchangeSite = "userDefaults.exchangeSite"
-        static let UserDefaultsPhysicalCurrency = "userDefaults.physicalCurrency"
-        static let UserDefaultsCryptoCurrency = "userDefaults.cryptoCurrency"
+        static let UserDefaultsBaseCurrency = "userDefaults.baseCurrency"
+        static let UserDefaultsDisplayCurrency = "userDefaults.displayCurrency"
     }
     
     static var defaultExchangeSite: ExchangeSite {
@@ -30,31 +30,31 @@ class TickerConfig {
         }
     }
     
-    static var defaultPhysicalCurrency: PhysicalCurrency {
+    static var defaultBaseCurrency: Currency {
         get {
-            if let rawValue = UserDefaults.standard.value(forKey: Keys.UserDefaultsPhysicalCurrency) as? String, let physicalCurrency = PhysicalCurrency(rawValue: rawValue) {
-                return physicalCurrency
-            }
-            
-            return .usd
-        }
-        
-        set {
-            UserDefaults.standard.set(newValue.rawValue, forKey: Keys.UserDefaultsPhysicalCurrency)
-        }
-    }
-    
-    static var defaultCryptoCurrency: CryptoCurrency {
-        get {
-            if let rawValue = UserDefaults.standard.value(forKey: Keys.UserDefaultsCryptoCurrency) as? String, let cryptoCurrency = CryptoCurrency(rawValue: rawValue) {
-                return cryptoCurrency
+            if let rawValue = UserDefaults.standard.value(forKey: Keys.UserDefaultsBaseCurrency) as? String, let currency = Currency(rawValue: rawValue) {
+                return currency
             }
             
             return .bitcoin
         }
         
         set {
-            UserDefaults.standard.set(newValue.rawValue, forKey: Keys.UserDefaultsCryptoCurrency)
+            UserDefaults.standard.set(newValue.rawValue, forKey: Keys.UserDefaultsBaseCurrency)
+        }
+    }
+    
+    static var defaultDisplayCurrency: Currency {
+        get {
+            if let rawValue = UserDefaults.standard.value(forKey: Keys.UserDefaultsDisplayCurrency) as? String, let currency = Currency(rawValue: rawValue) {
+                return currency
+            }
+            
+            return .usd
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue.rawValue, forKey: Keys.UserDefaultsDisplayCurrency)
         }
     }
 

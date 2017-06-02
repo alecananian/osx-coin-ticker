@@ -1,5 +1,5 @@
 //
-//  Currencies.swift
+//  Currency.swift
 //  CoinTicker
 //
 //  Created by Alec Ananian on 5/31/17.
@@ -8,7 +8,8 @@
 
 import Cocoa
 
-enum PhysicalCurrency: String {
+enum Currency: String {
+    // Physical
     case cad = "CAD"
     case cny = "CNY"
     case eur = "EUR"
@@ -16,9 +17,8 @@ enum PhysicalCurrency: String {
     case jpg = "JPY"
     case rur = "RUR"
     case usd = "USD"
-}
-
-enum CryptoCurrency: String {
+    
+    // Crypto
     case augur = "Augur (REP)"
     case bitcoin = "Bitcoin (BTC)"
     case dashcoin = "Dashcoin (DSH)"

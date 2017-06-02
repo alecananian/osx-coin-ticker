@@ -12,23 +12,35 @@ import Cocoa
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet private var mainMenu: NSMenu!
-    @IBOutlet fileprivate var exchangesSubMenu: NSMenu!
-    @IBOutlet fileprivate var cryptoCurrencySubMenu: NSMenu!
-    @IBOutlet fileprivate var physicalCurrencySubMenu: NSMenu!
+    @IBOutlet private var exchangeMenuItem: NSMenuItem!
+    @IBOutlet private var currencyStartSeparator: NSMenuItem!
+    private var currencyMenuItems = [NSMenuItem]()
+    @IBOutlet private var quitMenuItem: NSMenuItem!
     
     fileprivate let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
-    fileprivate var currentExchange: Exchange! {
+    private var currentExchange: Exchange! {
         didSet {
-            cryptoCurrencySubMenu.removeAllItems()
+            currencyMenuItems.forEach({ mainMenu.removeItem($0) })
+            currencyMenuItems.removeAll()
             
-            for cryptoCurrency in currentExchange.availableCryptoCurrencies {
-                cryptoCurrencySubMenu.addItem(withTitle: cryptoCurrency.rawValue, action: #selector(onSelectCryptoCurrency(sender:)), keyEquivalent: "")
+            var itemIndex = mainMenu.index(of: currencyStartSeparator) + 1
+            for baseCurrency in currentExchange.availableBaseCurrencies {
+                let subMenu = NSMenu()
+                currentExchange.currencyMatrix[baseCurrency]?.forEach({
+                    let item = NSMenuItem(title: $0.rawValue, action: #selector(onSelectDisplayCurrency(sender:)), keyEquivalent: "")
+                    subMenu.addItem(item)
+                })
+                
+                let item = NSMenuItem(title: baseCurrency.rawValue, action: #selector(onSelectBaseCurrency(sender:)), keyEquivalent: "")
+                item.submenu = subMenu
+                mainMenu.insertItem(item, at: itemIndex)
+                currencyMenuItems.append(item)
+                
+                itemIndex += 1
             }
             
-            updateCurrencyMenu()
             updateMenuStates()
             currentExchange.start()
-            
             TickerConfig.defaultExchangeSite = currentExchange.site
         }
     }
@@ -37,9 +49,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Set the main menu
         statusItem.menu = mainMenu
         
+        // Update translations
+        exchangeMenuItem.title = NSLocalizedString("menu.exchange.title", comment: "Exchange")
+        quitMenuItem.title = NSLocalizedString("menu.quit.title", comment: "Quit")
+        
         // Set up exchange sub-menu
         for exchangeSite in ExchangeSite.allValues {
-            exchangesSubMenu.addItem(withTitle: exchangeSite.rawValue, action: #selector(onSelectExchangeSite(sender:)), keyEquivalent: "")
+            exchangeMenuItem.submenu?.addItem(withTitle: exchangeSite.rawValue, action: #selector(onSelectExchangeSite(sender:)), keyEquivalent: "")
         }
         
         // Load defaults
@@ -50,28 +66,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         currentExchange.stop()
     }
     
-    private func updateCurrencyMenu() {
-        physicalCurrencySubMenu.removeAllItems()
-        
-        for physicalCurrency in currentExchange.availablePhysicalCurrencies {
-            physicalCurrencySubMenu.addItem(withTitle: physicalCurrency.rawValue, action: #selector(onSelectPhysicalCurrency(sender:)), keyEquivalent: "")
-        }
-    }
-    
     private func updateMenuStates() {
-        for menuItem in exchangesSubMenu.items {
-            menuItem.state = (menuItem.title == currentExchange.site.rawValue ? NSOnState : NSOffState)
-        }
+        exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.title == currentExchange.site.rawValue ? NSOnState : NSOffState) })
+        currencyMenuItems.forEach({
+            let isSelected = ($0.title == currentExchange.baseCurrency.rawValue)
+            $0.state = (isSelected ? NSOnState : NSOffState)
+            if let subMenu = $0.submenu {
+                subMenu.items.forEach({ $0.state = (isSelected && $0.title == currentExchange.displayCurrency.rawValue ? NSOnState : NSOffState) })
+            }
+        })
         
-        for menuItem in cryptoCurrencySubMenu.items {
-            menuItem.state = (menuItem.title == currentExchange.currentCryptoCurrency.rawValue ? NSOnState : NSOffState)
-        }
-        
-        for menuItem in physicalCurrencySubMenu.items {
-            menuItem.state = (menuItem.title == currentExchange.currentPhysicalCurrency.rawValue ? NSOnState : NSOffState)
-        }
-        
-        if let iconImage = currentExchange.currentCryptoCurrency.iconImage {
+        if let iconImage = currentExchange.baseCurrency.iconImage {
             iconImage.isTemplate = true
             statusItem.image = iconImage
         }
@@ -86,18 +91,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
-    @objc fileprivate func onSelectCryptoCurrency(sender: AnyObject) {
-        if let code = (sender as? NSMenuItem)?.title, let cryptoCurrency = CryptoCurrency(rawValue: code) {
-            currentExchange.currentCryptoCurrency = cryptoCurrency
+    @objc private func onSelectBaseCurrency(sender: AnyObject) {
+        if let menuItem = sender as? NSMenuItem, let baseCurrency = Currency(rawValue: menuItem.title) {
+            currentExchange.baseCurrency = baseCurrency
             currentExchange.reset()
-            updateCurrencyMenu()
             updateMenuStates()
         }
     }
     
-    @objc fileprivate func onSelectPhysicalCurrency(sender: AnyObject) {
-        if let code = (sender as? NSMenuItem)?.title, let physicalCurrency = PhysicalCurrency(rawValue: code) {
-            currentExchange.currentPhysicalCurrency = physicalCurrency
+    @objc private func onSelectDisplayCurrency(sender: AnyObject) {
+        if let menuItem = sender as? NSMenuItem, let parentMenuItem = menuItem.parent, let displayCurrency = Currency(rawValue: menuItem.title), let baseCurrency = Currency(rawValue: parentMenuItem.title) {
+            currentExchange.baseCurrency = baseCurrency
+            currentExchange.displayCurrency = displayCurrency
             currentExchange.reset()
             updateMenuStates()
         }
@@ -114,7 +119,7 @@ extension AppDelegate: ExchangeDelegate {
     func exchange(_ exchange: Exchange, didUpdatePrice price: Double) {
         let currencyFormatter = NumberFormatter()
         currencyFormatter.numberStyle = .currency
-        currencyFormatter.currencyCode = exchange.currentPhysicalCurrency.rawValue
+        currencyFormatter.currencyCode = exchange.displayCurrency.rawValue
         statusItem.title = currencyFormatter.string(for: price)
     }
     

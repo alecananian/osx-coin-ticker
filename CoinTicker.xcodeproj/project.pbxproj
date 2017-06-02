@@ -12,7 +12,8 @@
 		703581D41EDE57F8003FDF3E /* TickerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D31EDE57F8003FDF3E /* TickerConfig.swift */; };
 		703581D61EDE580B003FDF3E /* Exchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D51EDE580B003FDF3E /* Exchange.swift */; };
 		703581D81EDFC2EC003FDF3E /* BitstampExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D71EDFC2EC003FDF3E /* BitstampExchange.swift */; };
-		703581DA1EDFD1A7003FDF3E /* Currencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D91EDFD1A7003FDF3E /* Currencies.swift */; };
+		703581DA1EDFD1A7003FDF3E /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D91EDFD1A7003FDF3E /* Currency.swift */; };
+		703581E01EDFDBD7003FDF3E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 703581DE1EDFDBD7003FDF3E /* Localizable.strings */; };
 		705F48541EDE3A29009A629D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705F48531EDE3A29009A629D /* AppDelegate.swift */; };
 		705F48561EDE3A29009A629D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705F48551EDE3A29009A629D /* ViewController.swift */; };
 		705F48581EDE3A29009A629D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 705F48571EDE3A29009A629D /* Assets.xcassets */; };
@@ -20,11 +21,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		70111A441EE13DD4006B480F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70111A451EE13E6D006B480F /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		703533711EDFDC1700CACC78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		703581D11EDE5477003FDF3E /* GDAXExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDAXExchange.swift; sourceTree = "<group>"; };
 		703581D31EDE57F8003FDF3E /* TickerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickerConfig.swift; sourceTree = "<group>"; };
 		703581D51EDE580B003FDF3E /* Exchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Exchange.swift; sourceTree = "<group>"; };
 		703581D71EDFC2EC003FDF3E /* BitstampExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BitstampExchange.swift; sourceTree = "<group>"; };
-		703581D91EDFD1A7003FDF3E /* Currencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currencies.swift; sourceTree = "<group>"; };
+		703581D91EDFD1A7003FDF3E /* Currency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		703581DF1EDFDBD7003FDF3E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		705F48501EDE3A29009A629D /* CoinTicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoinTicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		705F48531EDE3A29009A629D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		705F48551EDE3A29009A629D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -93,6 +98,7 @@
 				705F48571EDE3A29009A629D /* Assets.xcassets */,
 				705F48591EDE3A29009A629D /* Main.storyboard */,
 				705F485C1EDE3A29009A629D /* Info.plist */,
+				703581DE1EDFDBD7003FDF3E /* Localizable.strings */,
 			);
 			path = CoinTicker;
 			sourceTree = "<group>";
@@ -100,7 +106,7 @@
 		705F48621EDE3EC2009A629D /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				703581D91EDFD1A7003FDF3E /* Currencies.swift */,
+				703581D91EDFD1A7003FDF3E /* Currency.swift */,
 				703581D51EDE580B003FDF3E /* Exchange.swift */,
 				703581D31EDE57F8003FDF3E /* TickerConfig.swift */,
 				703581D01EDE5469003FDF3E /* Exchanges */,
@@ -163,6 +169,9 @@
 			knownRegions = (
 				en,
 				Base,
+				es,
+				ru,
+				uk,
 			);
 			mainGroup = 705F48471EDE3A29009A629D;
 			productRefGroup = 705F48511EDE3A29009A629D /* Products */;
@@ -180,6 +189,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				705F48581EDE3A29009A629D /* Assets.xcassets in Resources */,
+				703581E01EDFDBD7003FDF3E /* Localizable.strings in Resources */,
 				705F485B1EDE3A29009A629D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,7 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				703581D21EDE5477003FDF3E /* GDAXExchange.swift in Sources */,
-				703581DA1EDFD1A7003FDF3E /* Currencies.swift in Sources */,
+				703581DA1EDFD1A7003FDF3E /* Currency.swift in Sources */,
 				703581D41EDE57F8003FDF3E /* TickerConfig.swift in Sources */,
 				705F48561EDE3A29009A629D /* ViewController.swift in Sources */,
 				705F48541EDE3A29009A629D /* AppDelegate.swift in Sources */,
@@ -252,6 +262,17 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		703581DE1EDFDBD7003FDF3E /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				703581DF1EDFDBD7003FDF3E /* es */,
+				703533711EDFDC1700CACC78 /* Base */,
+				70111A441EE13DD4006B480F /* ru */,
+				70111A451EE13E6D006B480F /* uk */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		705F48591EDE3A29009A629D /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -267,6 +288,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -317,6 +339,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";

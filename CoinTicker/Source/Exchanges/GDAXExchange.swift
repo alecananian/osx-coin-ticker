@@ -20,23 +20,15 @@ class GDAXExchange: Exchange {
     private var socket = WebSocket(url: Constants.WebSocketURL)
     
     init(delegate: ExchangeDelegate) {
-        super.init(site: .gdax, delegate: delegate)
-        
-        currencyMatrix = [
+        super.init(site: .gdax, delegate: delegate, currencyMatrix: [
             .bitcoin: [.usd, .eur, .gbp],
             .ethereum: [.usd, .eur],
             .litecoin: [.usd, .eur]
-        ]
-        
-        if availableCryptoCurrencies.contains(TickerConfig.defaultCryptoCurrency) {
-            currentCryptoCurrency = TickerConfig.defaultCryptoCurrency
-        } else {
-            currentCryptoCurrency = availableCryptoCurrencies.first!
-        }
+        ])
     }
     
     override func start() {
-        let productId = "\(currentCryptoCurrency.code)-\(currentPhysicalCurrency.rawValue)"
+        let productId = "\(baseCurrency.code)-\(displayCurrency.rawValue)"
         
         Alamofire.request(Constants.TickerAPIPath.replacingOccurrences(of: "%{productId}", with: productId)).responseJSON { [unowned self] response in
             if let tickerData = response.result.value as? [String: Any], let priceString = tickerData["price"] as? String, let price = Double(priceString) {
