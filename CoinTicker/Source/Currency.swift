@@ -46,6 +46,14 @@ enum Currency: String {
         return self.rawValue
     }
     
+    var displayName: String {
+        if self.rawValue.contains("(") {
+            return self.rawValue
+        }
+        
+        return code
+    }
+    
     var iconImage: NSImage? {
         switch self {
         case .bitcoin: return NSImage(named: "BTC")

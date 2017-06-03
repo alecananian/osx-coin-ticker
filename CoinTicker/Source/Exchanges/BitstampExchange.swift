@@ -22,14 +22,17 @@ class BitstampExchange: Exchange {
     init(delegate: ExchangeDelegate) {
         super.init(site: .bitstamp, delegate: delegate, currencyMatrix: [
             .bitcoin: [.usd, .eur],
-            .ripple: [.usd, .eur]
+            .ripple: [.usd, .eur, .bitcoin]
         ])
+        
+        socket.callbackQueue = DispatchQueue(label: "com.alecananian.cointicker.bitstamp-socket", qos: .utility, attributes: [.concurrent])
     }
     
     override func start() {
-        let productId = "\(baseCurrency.code)\(displayCurrency.rawValue)".lowercased()
+        let productId = "\(baseCurrency.code)\(displayCurrency.code)".lowercased()
         
-        Alamofire.request(Constants.TickerAPIPath.replacingOccurrences(of: "%{productId}", with: productId)).responseJSON { [unowned self] response in
+        let queue = DispatchQueue(label: "com.alecananian.cointicker.bitstamp-http", qos: .utility, attributes: [.concurrent])
+        Alamofire.request(Constants.TickerAPIPath.replacingOccurrences(of: "%{productId}", with: productId)).response(queue: queue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
             if let tickerData = response.result.value as? [String: Any], let priceString = tickerData["last"] as? String, let price = Double(priceString) {
                 self.delegate.exchange(self, didUpdatePrice: price)
             }

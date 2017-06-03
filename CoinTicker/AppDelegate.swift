@@ -27,11 +27,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             for baseCurrency in currentExchange.availableBaseCurrencies {
                 let subMenu = NSMenu()
                 currentExchange.currencyMatrix[baseCurrency]?.forEach({
-                    let item = NSMenuItem(title: $0.rawValue, action: #selector(onSelectDisplayCurrency(sender:)), keyEquivalent: "")
+                    let item = NSMenuItem(title: $0.displayName, action: #selector(onSelectDisplayCurrency(sender:)), keyEquivalent: "")
                     subMenu.addItem(item)
                 })
                 
-                let item = NSMenuItem(title: baseCurrency.rawValue, action: #selector(onSelectBaseCurrency(sender:)), keyEquivalent: "")
+                let item = NSMenuItem(title: baseCurrency.displayName, action: #selector(onSelectBaseCurrency(sender:)), keyEquivalent: "")
                 item.submenu = subMenu
                 mainMenu.insertItem(item, at: itemIndex)
                 currencyMenuItems.append(item)
@@ -55,7 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Set up exchange sub-menu
         for exchangeSite in ExchangeSite.allValues {
-            exchangeMenuItem.submenu?.addItem(withTitle: exchangeSite.rawValue, action: #selector(onSelectExchangeSite(sender:)), keyEquivalent: "")
+            exchangeMenuItem.submenu?.addItem(withTitle: exchangeSite.displayName, action: #selector(onSelectExchangeSite(sender:)), keyEquivalent: "")
         }
         
         // Load defaults
@@ -67,12 +67,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func updateMenuStates() {
-        exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.title == currentExchange.site.rawValue ? NSOnState : NSOffState) })
+        exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.title == currentExchange.site.displayName ? NSOnState : NSOffState) })
         currencyMenuItems.forEach({
-            let isSelected = ($0.title == currentExchange.baseCurrency.rawValue)
+            let isSelected = ($0.title == currentExchange.baseCurrency.displayName)
             $0.state = (isSelected ? NSOnState : NSOffState)
             if let subMenu = $0.submenu {
-                subMenu.items.forEach({ $0.state = (isSelected && $0.title == currentExchange.displayCurrency.rawValue ? NSOnState : NSOffState) })
+                subMenu.items.forEach({ $0.state = (isSelected && $0.title == currentExchange.displayCurrency.displayName ? NSOnState : NSOffState) })
             }
         })
         
@@ -119,8 +119,10 @@ extension AppDelegate: ExchangeDelegate {
     func exchange(_ exchange: Exchange, didUpdatePrice price: Double) {
         let currencyFormatter = NumberFormatter()
         currencyFormatter.numberStyle = .currency
-        currencyFormatter.currencyCode = exchange.displayCurrency.rawValue
-        statusItem.title = currencyFormatter.string(for: price)
+        currencyFormatter.currencyCode = exchange.displayCurrency.code
+        DispatchQueue.main.async {
+            self.statusItem.title = currencyFormatter.string(for: price)
+        }
     }
     
 }

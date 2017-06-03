@@ -1,3 +1,5 @@
+platform :osx, '10.10'
+
 target 'CoinTicker' do
   use_frameworks!
   pod 'Alamofire', '~> 4.0'

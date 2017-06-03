@@ -17,6 +17,10 @@ enum ExchangeSite: String {
     //case kraken = "Kraken" // https://www.kraken.com/help/api
     
     static let allValues = [bitstamp, gdax]
+    
+    var displayName: String {
+        return self.rawValue
+    }
 }
 
 protocol ExchangeDelegate {
@@ -52,7 +56,7 @@ class Exchange {
     }
     
     var availableBaseCurrencies: [Currency] {
-        return Array(currencyMatrix.keys).sorted(by: { $0.rawValue < $1.rawValue })
+        return Array(currencyMatrix.keys).sorted(by: { $0.displayName < $1.displayName })
     }
     
     static func build(withSite site: ExchangeSite, delegate: ExchangeDelegate) -> Exchange {
