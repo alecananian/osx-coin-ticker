@@ -1,2 +1,30 @@
 "menu.exchange.title" = "Біржа";
 "menu.quit.title" = "Вийти";
+
+"currency.usd.title" = "USD (Долар США)";
+"currency.eur.title" = "EUR (Євро)";
+"currency.gbp.title" = "GBP (Британський фунт)";
+"currency.cad.title" = "CAD (Канадський долар)";
+"currency.cny.title" = "CNY (Китайський юань)";
+"currency.jpy.title" = "JPY (Японська єна)";
+"currency.rur.title" = "RUR (Російський рубль)";
+"currency.rub.title" = "RUB (Російський рубль)";
+
+"currency.btc.title" = "BTC (Біткойн)";
+"currency.eth.title" = "ETH (Ethereum)";
+"currency.ltc.title" = "LTC (Litecoin)";
+"currency.rep.title" = "REP (Augur)";
+"currency.dsh.title" = "DSH (Dashcoin)";
+"currency.xdg.title" = "XDG (Dogecoin)";
+"currency.etc.title" = "ETC (Ethereum Classic)";
+"currency.gno.title" = "GNO (Gnosis)";
+"currency.icn.title" = "ICN (Iconomi)";
+"currency.mln.title" = "MLN (Melon)";
+"currency.xmr.title" = "XMR (Monero)";
+"currency.nmc.title" = "NMC (Namecoin)";
+"currency.nvc.title" = "NVC (Novacoin)";
+"currency.ppc.title" = "PPC (Peercoin)";
+"currency.xrp.title" = "XRP (Ripple)";
+"currency.xlm.title" = "XLM (Stellar Lumens)";
+"currency.usdt.title" = "USDT (Tether)";
+"currency.zec.title" = "ZEC (Zcash)";

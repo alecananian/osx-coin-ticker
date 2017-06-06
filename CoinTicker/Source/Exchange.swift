@@ -60,11 +60,13 @@ class Exchange {
     
     var baseCurrency = Currency.btc {
         didSet {
-            if let availableDisplayCurrencies = currencyMatrix?[baseCurrency] {
-                if availableDisplayCurrencies.contains(TickerConfig.defaultQuoteCurrency) {
+            if let availableQuoteCurrencies = currencyMatrix?[baseCurrency] {
+                if availableQuoteCurrencies.contains(TickerConfig.defaultQuoteCurrency) {
                     quoteCurrency = TickerConfig.defaultQuoteCurrency
+                } else if let localeCurrency = Currency.build(fromLocale: Locale.current), availableQuoteCurrencies.contains(localeCurrency) {
+                    quoteCurrency = localeCurrency
                 } else {
-                    quoteCurrency = availableDisplayCurrencies.first!
+                    quoteCurrency = availableQuoteCurrencies.first!
                 }
             }
             

@@ -110,7 +110,7 @@ extension AppDelegate: ExchangeDelegate {
         var itemIndex = mainMenu.index(of: currencyStartSeparator) + 1
         for baseCurrency in exchange.availableBaseCurrencies {
             let subMenu = NSMenu()
-            currencyMatrix[baseCurrency]?.forEach({
+            currencyMatrix[baseCurrency]?.sorted(by: { $0.displayName < $1.displayName }).forEach({
                 let item = NSMenuItem(title: $0.displayName, action: #selector(onSelectQuoteCurrency(sender:)), keyEquivalent: "")
                 item.tag = $0.index
                 subMenu.addItem(item)
@@ -132,6 +132,7 @@ extension AppDelegate: ExchangeDelegate {
         let currencyFormatter = NumberFormatter()
         currencyFormatter.numberStyle = .currency
         currencyFormatter.currencyCode = exchange.quoteCurrency.code
+        currencyFormatter.currencySymbol = exchange.quoteCurrency.symbol
         currencyFormatter.maximumFractionDigits = (price < 0.01 ? 4 : 2)
         DispatchQueue.main.async {
             self.statusItem.title = currencyFormatter.string(for: price)

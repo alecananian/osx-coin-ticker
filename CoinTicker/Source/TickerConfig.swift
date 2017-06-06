@@ -53,6 +53,10 @@ class TickerConfig {
                 return currency
             }
             
+            if let currency = Currency.build(fromLocale: Locale.current) {
+                return currency
+            }
+            
             return .usd
         }
         
