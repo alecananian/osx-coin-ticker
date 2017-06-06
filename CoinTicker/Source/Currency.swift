@@ -8,59 +8,89 @@
 
 import Cocoa
 
-enum Currency: String {
+enum Currency: Int {
     // Physical
-    case cad = "CAD"
-    case cny = "CNY"
-    case eur = "EUR"
-    case gbp = "GBP"
-    case jpg = "JPY"
-    case rur = "RUR"
-    case usd = "USD"
+    case cad = 10
+    case cny = 20
+    case eur = 30
+    case gbp = 40
+    case jpy = 50
+    case rur = 60
+    case usd = 70
     
     // Crypto
-    case augur = "Augur (REP)"
-    case bitcoin = "Bitcoin (BTC)"
-    case dashcoin = "Dashcoin (DSH)"
-    case dogecoin = "Dogecoin (XDG)"
-    case ethereum = "Ethereum (ETH)"
-    case ethereumClassic = "Ethereum Classic (ETC)"
-    case gnosis = "Gnosis (GNO)"
-    case iconomi = "Iconomi (ICN)"
-    case litecoin = "Litecoin (LTC)"
-    case melon = "Melon (MLN)"
-    case monero = "Monero (XMR)"
-    case namecoin = "Namecoin (NMC)"
-    case novacoin = "Novacoin (NVC)"
-    case peercoin = "Peercoin (PPC)"
-    case ripple = "Ripple (XRP)"
-    case stellarLumens = "Stellar Lumens (XLM)"
-    case tether = "Tether (USDT)"
-    case zcash = "Zcash (ZEC)"
+    case btc = 100
+    case dsh = 110
+    case etc = 120
+    case eth = 130
+    case gno = 140
+    case icn = 150
+    case ltc = 160
+    case mln = 170
+    case nmc = 180
+    case nvc = 190
+    case ppc = 200
+    case rep = 210
+    case usdt = 220
+    case xdg = 230
+    case xlm = 240
+    case xmr = 250
+    case xrp = 260
+    case zec = 270
+    
+    static let AllPhysical = [cad, cny, eur, gbp, jpy, rur, usd]
+    static let AllCrypto = [btc, eth, ltc, dsh, etc, gno, icn,
+                            mln, nmc, nvc, ppc, rep, usdt, xdg,
+                            xlm, xmr, xrp, zec]
+    static let AllValues = AllCrypto + AllPhysical
     
     var code: String {
-        if let range = self.rawValue.range(of: "\\(\\w+\\)", options: .regularExpression) {
-            return self.rawValue.substring(with: range).replacingOccurrences(of: "(", with: "").replacingOccurrences(of: ")", with: "")
-        }
-        
+        return String(describing: self).uppercased()
+    }
+    
+    var index: Int {
         return self.rawValue
     }
     
     var displayName: String {
-        if self.rawValue.contains("(") {
-            return self.rawValue
+        switch self {
+        case .rep: return "Augur (REP)"
+        case .btc: return "Bitcoin (BTC)"
+        case .dsh: return "Dashcoin (DSH)"
+        case .xdg: return "Dogecoin (XDG)"
+        case .eth: return "Ethereum (ETH)"
+        case .etc: return "Ethereum Classic (ETC)"
+        case .gno: return "Gnosis (GNO)"
+        case .icn: return "Iconomi (ICN)"
+        case .ltc: return "Litecoin (LTC)"
+        case .mln: return "Melon (MLN)"
+        case .xmr: return "Monero (XMR)"
+        case .nmc: return "Namecoin (NMC)"
+        case .nvc: return "Novacoin (NVC)"
+        case .ppc: return "Peercoin (PPC)"
+        case .xrp: return "Ripple (XRP)"
+        case .xlm: return "Stellar Lumens (XLM)"
+        case .usdt: return "Tether (USDT)"
+        case .zec: return "Zcash (ZEC)"
+        default: return code
         }
-        
-        return code
     }
     
     var iconImage: NSImage? {
-        switch self {
-        case .bitcoin: return NSImage(named: "BTC")
-        case .ethereum: return NSImage(named: "ETH")
-        case .litecoin: return NSImage(named: "LTC")
-        case .ripple: return NSImage(named: "XRP")
-        default: return nil
-        }
+        return NSImage(named: code)
     }
+    
+    var isCrypto: Bool {
+        return (self.rawValue >= 100)
+    }
+    
+    static func build(fromCode code: String) -> Currency? {
+        let normalizedCode = code.lowercased()
+        return AllValues.first(where: { $0.code.lowercased() == normalizedCode })
+    }
+    
+    static func build(fromIndex index: Int) -> Currency? {
+        return Currency(rawValue: index)
+    }
+    
 }

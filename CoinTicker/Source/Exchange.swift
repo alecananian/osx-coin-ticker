@@ -8,22 +8,36 @@
 
 import Foundation
 import Cocoa
+import Alamofire
 
-enum ExchangeSite: String {
-    case bitstamp = "Bitstamp"
-    //case btce = "BTC-E" // https://btc-e.com/api/3/docs#ticker
+enum ExchangeSite: Int {
+    case bitstamp = 210
+    case btce = 220
+    case gdax = 230
     //case btcChina = "BTCChina" // https://www.btcchina.com/apidocs/
-    case gdax = "GDAX"
     //case kraken = "Kraken" // https://www.kraken.com/help/api
     
-    static let allValues = [bitstamp, gdax]
+    static let allValues = [bitstamp, btce, gdax]
+    
+    var index: Int {
+        return self.rawValue
+    }
     
     var displayName: String {
-        return self.rawValue
+        switch self {
+        case .bitstamp: return "Bitstamp"
+        case .btce: return "BTC-E"
+        case .gdax: return "GDAX"
+        }
+    }
+    
+    static func build(fromIndex index: Int) -> ExchangeSite? {
+        return ExchangeSite(rawValue: index)
     }
 }
 
 protocol ExchangeDelegate {
+    func exchange(_ exchange: Exchange, didLoadCurrencyMatrix currencyMatrix: CurrencyMatrix)
     func exchange(_ exchange: Exchange, didUpdatePrice price: Double)
 }
 
@@ -33,45 +47,9 @@ class Exchange {
     
     internal var site: ExchangeSite
     internal var delegate: ExchangeDelegate
-    internal var currencyMatrix: CurrencyMatrix
-    
-    var baseCurrency = Currency.bitcoin {
+    internal var apiRequests = [DataRequest]()
+    internal var currencyMatrix: CurrencyMatrix? {
         didSet {
-            if let availableDisplayCurrencies = currencyMatrix[baseCurrency] {
-                if availableDisplayCurrencies.contains(TickerConfig.defaultDisplayCurrency) {
-                    displayCurrency = TickerConfig.defaultDisplayCurrency
-                } else {
-                    displayCurrency = availableDisplayCurrencies.first!
-                }
-            }
-            
-            TickerConfig.defaultBaseCurrency = baseCurrency
-        }
-    }
-    
-    var displayCurrency = Currency.usd {
-        didSet {
-            TickerConfig.defaultDisplayCurrency = displayCurrency
-        }
-    }
-    
-    var availableBaseCurrencies: [Currency] {
-        return Array(currencyMatrix.keys).sorted(by: { $0.displayName < $1.displayName })
-    }
-    
-    static func build(withSite site: ExchangeSite, delegate: ExchangeDelegate) -> Exchange {
-        switch site {
-        case .bitstamp: return BitstampExchange(delegate: delegate)
-        case .gdax: return GDAXExchange(delegate: delegate)
-        }
-    }
-    
-    init(site: ExchangeSite, delegate: ExchangeDelegate, currencyMatrix: CurrencyMatrix) {
-        self.site = site
-        self.delegate = delegate
-        self.currencyMatrix = currencyMatrix
-        
-        defer {
             if availableBaseCurrencies.contains(TickerConfig.defaultBaseCurrency) {
                 baseCurrency = TickerConfig.defaultBaseCurrency
             } else {
@@ -80,12 +58,53 @@ class Exchange {
         }
     }
     
+    var baseCurrency = Currency.btc {
+        didSet {
+            if let availableDisplayCurrencies = currencyMatrix?[baseCurrency] {
+                if availableDisplayCurrencies.contains(TickerConfig.defaultQuoteCurrency) {
+                    quoteCurrency = TickerConfig.defaultQuoteCurrency
+                } else {
+                    quoteCurrency = availableDisplayCurrencies.first!
+                }
+            }
+            
+            TickerConfig.defaultBaseCurrency = baseCurrency
+        }
+    }
+    
+    var quoteCurrency = Currency.usd {
+        didSet {
+            TickerConfig.defaultQuoteCurrency = quoteCurrency
+        }
+    }
+    
+    var availableBaseCurrencies: [Currency] {
+        if let baseCurrencies = currencyMatrix?.keys {
+            return Array(baseCurrencies).sorted(by: { $0.displayName < $1.displayName })
+        }
+        
+        return [Currency]()
+    }
+    
+    static func build(fromSite site: ExchangeSite, delegate: ExchangeDelegate) -> Exchange {
+        switch site {
+        case .bitstamp: return BitstampExchange(delegate: delegate)
+        case .btce: return BTCEExchange(delegate: delegate)
+        case .gdax: return GDAXExchange(delegate: delegate)
+        }
+    }
+    
+    init(site: ExchangeSite, delegate: ExchangeDelegate) {
+        self.site = site
+        self.delegate = delegate
+    }
+    
     func start() {
         
     }
     
     func stop() {
-        
+        apiRequests.forEach({ $0.cancel() })
     }
     
     func reset() {

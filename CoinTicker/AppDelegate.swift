@@ -11,36 +11,16 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    @IBOutlet private var mainMenu: NSMenu!
-    @IBOutlet private var exchangeMenuItem: NSMenuItem!
-    @IBOutlet private var currencyStartSeparator: NSMenuItem!
-    private var currencyMenuItems = [NSMenuItem]()
+    @IBOutlet fileprivate var mainMenu: NSMenu!
+    @IBOutlet fileprivate var exchangeMenuItem: NSMenuItem!
+    @IBOutlet fileprivate var currencyStartSeparator: NSMenuItem!
+    fileprivate var currencyMenuItems = [NSMenuItem]()
     @IBOutlet private var quitMenuItem: NSMenuItem!
     
     fileprivate let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
+    
     private var currentExchange: Exchange! {
         didSet {
-            currencyMenuItems.forEach({ mainMenu.removeItem($0) })
-            currencyMenuItems.removeAll()
-            
-            var itemIndex = mainMenu.index(of: currencyStartSeparator) + 1
-            for baseCurrency in currentExchange.availableBaseCurrencies {
-                let subMenu = NSMenu()
-                currentExchange.currencyMatrix[baseCurrency]?.forEach({
-                    let item = NSMenuItem(title: $0.displayName, action: #selector(onSelectDisplayCurrency(sender:)), keyEquivalent: "")
-                    subMenu.addItem(item)
-                })
-                
-                let item = NSMenuItem(title: baseCurrency.displayName, action: #selector(onSelectBaseCurrency(sender:)), keyEquivalent: "")
-                item.submenu = subMenu
-                mainMenu.insertItem(item, at: itemIndex)
-                currencyMenuItems.append(item)
-                
-                itemIndex += 1
-            }
-            
-            updateMenuStates()
-            currentExchange.start()
             TickerConfig.defaultExchangeSite = currentExchange.site
         }
     }
@@ -55,56 +35,63 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Set up exchange sub-menu
         for exchangeSite in ExchangeSite.allValues {
-            exchangeMenuItem.submenu?.addItem(withTitle: exchangeSite.displayName, action: #selector(onSelectExchangeSite(sender:)), keyEquivalent: "")
+            let item = NSMenuItem(title: exchangeSite.displayName, action: #selector(onSelectExchangeSite(sender:)), keyEquivalent: "")
+            item.tag = exchangeSite.index
+            exchangeMenuItem.submenu?.addItem(item)
         }
         
         // Load defaults
-        currentExchange = Exchange.build(withSite: TickerConfig.defaultExchangeSite, delegate: self)
+        currentExchange = Exchange.build(fromSite: TickerConfig.defaultExchangeSite, delegate: self)
+        currentExchange.start()
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
         currentExchange.stop()
     }
     
-    private func updateMenuStates() {
-        exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.title == currentExchange.site.displayName ? NSOnState : NSOffState) })
-        currencyMenuItems.forEach({
-            let isSelected = ($0.title == currentExchange.baseCurrency.displayName)
-            $0.state = (isSelected ? NSOnState : NSOffState)
-            if let subMenu = $0.submenu {
-                subMenu.items.forEach({ $0.state = (isSelected && $0.title == currentExchange.displayCurrency.displayName ? NSOnState : NSOffState) })
-            }
-        })
+    fileprivate func updateMenuStates(forExchange exchange: Exchange) {
+        exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == exchange.site.index ? NSOnState : NSOffState) })
         
-        if let iconImage = currentExchange.baseCurrency.iconImage {
+        for menuItem in currencyMenuItems {
+            let isSelected = (menuItem.tag == exchange.baseCurrency.index)
+            menuItem.state = (isSelected ? NSOnState : NSOffState)
+            if let subMenu = menuItem.submenu {
+                subMenu.items.forEach({ $0.state = (isSelected && $0.tag == exchange.quoteCurrency.index ? NSOnState : NSOffState) })
+            }
+        }
+        
+        if let iconImage = exchange.baseCurrency.iconImage {
             iconImage.isTemplate = true
             statusItem.image = iconImage
+        } else {
+            statusItem.image = nil
         }
     }
     
     @objc private func onSelectExchangeSite(sender: AnyObject) {
-        if let siteName = (sender as? NSMenuItem)?.title, let exchangeSite = ExchangeSite(rawValue: siteName) {
+        if let menuItem = sender as? NSMenuItem, let exchangeSite = ExchangeSite.build(fromIndex: menuItem.tag) {
             if exchangeSite != currentExchange.site {
                 currentExchange.stop()
-                currentExchange = Exchange.build(withSite: exchangeSite, delegate: self)
+                currentExchange = Exchange.build(fromSite: exchangeSite, delegate: self)
+                currentExchange.start()
             }
         }
     }
     
-    @objc private func onSelectBaseCurrency(sender: AnyObject) {
-        if let menuItem = sender as? NSMenuItem, let baseCurrency = Currency(rawValue: menuItem.title) {
+    @objc fileprivate func onSelectBaseCurrency(sender: AnyObject) {
+        if let menuItem = sender as? NSMenuItem, let baseCurrency = Currency.build(fromIndex: menuItem.tag) {
             currentExchange.baseCurrency = baseCurrency
             currentExchange.reset()
-            updateMenuStates()
+            updateMenuStates(forExchange: currentExchange)
         }
     }
     
-    @objc private func onSelectDisplayCurrency(sender: AnyObject) {
-        if let menuItem = sender as? NSMenuItem, let parentMenuItem = menuItem.parent, let displayCurrency = Currency(rawValue: menuItem.title), let baseCurrency = Currency(rawValue: parentMenuItem.title) {
+    @objc fileprivate func onSelectQuoteCurrency(sender: AnyObject) {
+        if let menuItem = sender as? NSMenuItem, let parentMenuItem = menuItem.parent, let quoteCurrency = Currency.build(fromIndex: menuItem.tag), let baseCurrency = Currency.build(fromIndex: parentMenuItem.tag) {
             currentExchange.baseCurrency = baseCurrency
-            currentExchange.displayCurrency = displayCurrency
+            currentExchange.quoteCurrency = quoteCurrency
             currentExchange.reset()
-            updateMenuStates()
+            updateMenuStates(forExchange: currentExchange)
         }
     }
     
@@ -116,10 +103,36 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 extension AppDelegate: ExchangeDelegate {
     
+    func exchange(_ exchange: Exchange, didLoadCurrencyMatrix currencyMatrix: CurrencyMatrix) {
+        currencyMenuItems.forEach({ mainMenu.removeItem($0) })
+        currencyMenuItems.removeAll()
+        
+        var itemIndex = mainMenu.index(of: currencyStartSeparator) + 1
+        for baseCurrency in exchange.availableBaseCurrencies {
+            let subMenu = NSMenu()
+            currencyMatrix[baseCurrency]?.forEach({
+                let item = NSMenuItem(title: $0.displayName, action: #selector(onSelectQuoteCurrency(sender:)), keyEquivalent: "")
+                item.tag = $0.index
+                subMenu.addItem(item)
+            })
+            
+            let item = NSMenuItem(title: baseCurrency.displayName, action: #selector(onSelectBaseCurrency(sender:)), keyEquivalent: "")
+            item.tag = baseCurrency.index
+            item.submenu = subMenu
+            mainMenu.insertItem(item, at: itemIndex)
+            currencyMenuItems.append(item)
+            
+            itemIndex += 1
+        }
+        
+        updateMenuStates(forExchange: exchange)
+    }
+    
     func exchange(_ exchange: Exchange, didUpdatePrice price: Double) {
         let currencyFormatter = NumberFormatter()
         currencyFormatter.numberStyle = .currency
-        currencyFormatter.currencyCode = exchange.displayCurrency.code
+        currencyFormatter.currencyCode = exchange.quoteCurrency.code
+        currencyFormatter.maximumFractionDigits = (price < 0.01 ? 4 : 2)
         DispatchQueue.main.async {
             self.statusItem.title = currencyFormatter.string(for: price)
         }

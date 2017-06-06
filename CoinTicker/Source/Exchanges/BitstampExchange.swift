@@ -17,26 +17,42 @@ class BitstampExchange: Exchange {
         static let TickerAPIPath = "https://www.bitstamp.net/api/v2/ticker/%{productId}/"
     }
     
+    private let webSocketQueue = DispatchQueue(label: "com.alecananian.cointicker.bitstamp-socket", qos: .utility, attributes: [.concurrent])
+    private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.bitstamp-api", qos: .utility, attributes: [.concurrent])
     private var socket = WebSocket(url: Constants.WebSocketURL)
     
     init(delegate: ExchangeDelegate) {
-        super.init(site: .bitstamp, delegate: delegate, currencyMatrix: [
-            .bitcoin: [.usd, .eur],
-            .ripple: [.usd, .eur, .bitcoin]
-        ])
+        super.init(site: .bitstamp, delegate: delegate)
         
-        socket.callbackQueue = DispatchQueue(label: "com.alecananian.cointicker.bitstamp-socket", qos: .utility, attributes: [.concurrent])
+        socket.callbackQueue = webSocketQueue
     }
     
     override func start() {
-        let productId = "\(baseCurrency.code)\(displayCurrency.code)".lowercased()
+        super.start()
         
-        let queue = DispatchQueue(label: "com.alecananian.cointicker.bitstamp-http", qos: .utility, attributes: [.concurrent])
-        Alamofire.request(Constants.TickerAPIPath.replacingOccurrences(of: "%{productId}", with: productId)).response(queue: queue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
+        currencyMatrix = [
+            .btc: [.usd, .eur],
+            .xrp: [.usd, .eur, .btc]
+        ]
+        delegate.exchange(self, didLoadCurrencyMatrix: currencyMatrix!)
+        
+        fetchPrice()
+    }
+    
+    override func stop() {
+        super.stop()
+        
+        socket.disconnect()
+    }
+    
+    private func fetchPrice() {
+        let productId = "\(baseCurrency.code)\(quoteCurrency.code)".lowercased()
+        
+        apiRequests.append(Alamofire.request(Constants.TickerAPIPath.replacingOccurrences(of: "%{productId}", with: productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
             if let tickerData = response.result.value as? [String: Any], let priceString = tickerData["last"] as? String, let price = Double(priceString) {
                 self.delegate.exchange(self, didUpdatePrice: price)
             }
-        }
+        })
         
         socket.onConnect = { [unowned self] in
             var channelName = "live_trades"
@@ -80,10 +96,6 @@ class BitstampExchange: Exchange {
         }
         
         socket.connect()
-    }
-    
-    override func stop() {
-        socket.disconnect()
     }
 
 }

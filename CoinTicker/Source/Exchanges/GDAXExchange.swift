@@ -14,30 +14,58 @@ class GDAXExchange: Exchange {
     
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://ws-feed.gdax.com")!
+        static let ProductListAPIPath = "https://api.gdax.com/products"
         static let TickerAPIPath = "https://api.gdax.com/products/%{productId}/ticker"
     }
     
+    private let webSocketQueue = DispatchQueue(label: "com.alecananian.cointicker.gdax-socket", qos: .utility, attributes: [.concurrent])
+    private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.gdax-api", qos: .utility, attributes: [.concurrent])
     private var socket = WebSocket(url: Constants.WebSocketURL)
     
     init(delegate: ExchangeDelegate) {
-        super.init(site: .gdax, delegate: delegate, currencyMatrix: [
-            .bitcoin: [.usd, .eur, .gbp],
-            .ethereum: [.usd, .eur, .bitcoin],
-            .litecoin: [.usd, .eur, .bitcoin]
-        ])
+        super.init(site: .gdax, delegate: delegate)
         
-        socket.callbackQueue = DispatchQueue(label: "com.alecananian.cointicker.gdax-socket", qos: .utility, attributes: [.concurrent])
+        socket.callbackQueue = webSocketQueue
     }
     
     override func start() {
-        let productId = "\(baseCurrency.code)-\(displayCurrency.code)"
+        super.start()
         
-        let queue = DispatchQueue(label: "com.alecananian.cointicker.gdax-http", qos: .utility, attributes: [.concurrent])
-        Alamofire.request(Constants.TickerAPIPath.replacingOccurrences(of: "%{productId}", with: productId)).response(queue: queue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
+        var currencyMatrix = CurrencyMatrix()
+        apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
+            if let currencyPairs = response.result.value as? [[String: Any]] {
+                for currencyPair in currencyPairs {
+                    if let baseCurrencyCode = currencyPair["base_currency"] as? String, let quoteCurrencyCode = currencyPair["quote_currency"] as? String, let baseCurrency = Currency.build(fromCode: baseCurrencyCode), baseCurrency.isCrypto, let quoteCurrency = Currency.build(fromCode: quoteCurrencyCode) {
+                        if currencyMatrix[baseCurrency] == nil {
+                            currencyMatrix[baseCurrency] = [Currency]()
+                        }
+                        
+                        currencyMatrix[baseCurrency]!.append(quoteCurrency)
+                    }
+                }
+                
+                self.currencyMatrix = currencyMatrix
+                self.delegate.exchange(self, didLoadCurrencyMatrix: currencyMatrix)
+                
+                self.fetchPrice()
+            }
+        })
+    }
+    
+    override func stop() {
+        super.stop()
+        
+        socket.disconnect()
+    }
+    
+    private func fetchPrice() {
+        let productId = "\(baseCurrency.code)-\(quoteCurrency.code)"
+        
+        apiRequests.append(Alamofire.request(Constants.TickerAPIPath.replacingOccurrences(of: "%{productId}", with: productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
             if let tickerData = response.result.value as? [String: Any], let priceString = tickerData["price"] as? String, let price = Double(priceString) {
                 self.delegate.exchange(self, didUpdatePrice: price)
             }
-        }
+        })
         
         socket.onConnect = { [unowned self] in
             let eventParams: [String: Any] = [
@@ -70,10 +98,6 @@ class GDAXExchange: Exchange {
         }
         
         socket.connect()
-    }
-    
-    override func stop() {
-        socket.disconnect()
     }
 
 }
