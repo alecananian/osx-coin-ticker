@@ -15,7 +15,7 @@ class GDAXExchange: Exchange {
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://ws-feed.gdax.com")!
         static let ProductListAPIPath = "https://api.gdax.com/products"
-        static let TickerAPIPath = "https://api.gdax.com/products/%{productId}/ticker"
+        static let TickerAPIPathFormat = "https://api.gdax.com/products/%s/ticker"
     }
     
     private let webSocketQueue = DispatchQueue(label: "com.alecananian.cointicker.gdax-socket", qos: .utility, attributes: [.concurrent])
@@ -61,7 +61,7 @@ class GDAXExchange: Exchange {
     private func fetchPrice() {
         let productId = "\(baseCurrency.code)-\(quoteCurrency.code)"
         
-        apiRequests.append(Alamofire.request(Constants.TickerAPIPath.replacingOccurrences(of: "%{productId}", with: productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
+        apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
             if let tickerData = response.result.value as? [String: Any], let priceString = tickerData["price"] as? String, let price = Double(priceString) {
                 self.delegate.exchange(self, didUpdatePrice: price)
             }
@@ -81,7 +81,7 @@ class GDAXExchange: Exchange {
             } catch {
                 print(error)
             }
-        }
+        } as (() -> Void)
         
         socket.onText = { [unowned self] (text: String) in
             if let data = text.data(using: .utf8, allowLossyConversion: false) {

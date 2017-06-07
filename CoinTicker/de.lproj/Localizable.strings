@@ -1,0 +1,30 @@
+"menu.exchange.title" = "Börse";
+"menu.quit.title" = "Beenden";
+
+"currency.usd.title" = "USD (US-Dollar)";
+"currency.eur.title" = "EUR (Euro)";
+"currency.gbp.title" = "GBP (Britisches Pfund)";
+"currency.cad.title" = "CAD (Kanadischer Dollar)";
+"currency.cny.title" = "CNY (Chinesische Yuan)";
+"currency.jpy.title" = "JPY (Japanischer Yen)";
+"currency.rur.title" = "RUR (Russischer Rubel)";
+"currency.rub.title" = "RUB (Russischer Rubel)";
+
+"currency.btc.title" = "BTC (Bitcoin)";
+"currency.eth.title" = "ETH (Ethereum)";
+"currency.ltc.title" = "LTC (Litecoin)";
+"currency.rep.title" = "REP (Augur)";
+"currency.dsh.title" = "DSH (Dashcoin)";
+"currency.xdg.title" = "XDG (Dogecoin)";
+"currency.etc.title" = "ETC (Ethereum Classic)";
+"currency.gno.title" = "GNO (Gnosis)";
+"currency.icn.title" = "ICN (Iconomi)";
+"currency.mln.title" = "MLN (Melon)";
+"currency.xmr.title" = "XMR (Monero)";
+"currency.nmc.title" = "NMC (Namecoin)";
+"currency.nvc.title" = "NVC (Novacoin)";
+"currency.ppc.title" = "PPC (Peercoin)";
+"currency.xrp.title" = "XRP (Ripple)";
+"currency.xlm.title" = "XLM (Stellar Lumens)";
+"currency.usdt.title" = "USDT (Tether)";
+"currency.zec.title" = "ZEC (Zcash)";

@@ -13,7 +13,7 @@ class BTCEExchange: Exchange {
     
     private struct Constants {
         static let ProductListAPIPath = "https://btc-e.com/api/3/info"
-        static let TickerAPIPath = "https://btc-e.com/api/3/ticker/%{productId}"
+        static let TickerAPIPathFormat = "https://btc-e.com/api/3/ticker/%s"
     }
     
     private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.btce-api", qos: .utility, attributes: [.concurrent])
@@ -30,8 +30,8 @@ class BTCEExchange: Exchange {
         apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
             if let result = response.result.value as? [String: Any], let currencyPairs = result["pairs"] as? [String: Any] {
                 for currencyPair in Array(currencyPairs.keys) {
-                    let currencyPairArray = currencyPair.components(separatedBy: "_")
-                    if let baseCurrencyCode = currencyPairArray.first, let quoteCurrencyCode = currencyPairArray.last, let baseCurrency = Currency.build(fromCode: baseCurrencyCode), baseCurrency.isCrypto, let quoteCurrency = Currency.build(fromCode: quoteCurrencyCode) {
+                    let currencyPairArray = currencyPair.split(separator: "_")
+                    if let baseCurrencyCode = currencyPairArray.first, let quoteCurrencyCode = currencyPairArray.last, let baseCurrency = Currency.build(fromCode: String(baseCurrencyCode)), baseCurrency.isCrypto, let quoteCurrency = Currency.build(fromCode: String(quoteCurrencyCode)) {
                         if currencyMatrix[baseCurrency] == nil {
                             currencyMatrix[baseCurrency] = [Currency]()
                         }
@@ -65,7 +65,7 @@ class BTCEExchange: Exchange {
     @objc private func fetchPrice() {
         let productId = "\(baseCurrency.code)_\(quoteCurrency.code)".lowercased()
         
-        apiRequests.append(Alamofire.request(Constants.TickerAPIPath.replacingOccurrences(of: "%{productId}", with: productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
+        apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
             if let tickerData = response.result.value as? [String: Any], let priceData = tickerData[productId] as? [String: Any], let price = priceData["buy"] as? Double {
                 self.delegate.exchange(self, didUpdatePrice: price)
                 

@@ -17,7 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     fileprivate var currencyMenuItems = [NSMenuItem]()
     @IBOutlet private var quitMenuItem: NSMenuItem!
     
-    fileprivate let statusItem = NSStatusBar.system().statusItem(withLength: NSVariableStatusItemLength)
+    fileprivate let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     
     private var currentExchange: Exchange! {
         didSet {
@@ -50,13 +50,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     fileprivate func updateMenuStates(forExchange exchange: Exchange) {
-        exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == exchange.site.index ? NSOnState : NSOffState) })
+        exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == exchange.site.index ? NSControl.StateValue.onState : NSControl.StateValue.offState) })
         
         for menuItem in currencyMenuItems {
             let isSelected = (menuItem.tag == exchange.baseCurrency.index)
-            menuItem.state = (isSelected ? NSOnState : NSOffState)
+            menuItem.state = (isSelected ? NSControl.StateValue.onState : NSControl.StateValue.offState)
             if let subMenu = menuItem.submenu {
-                subMenu.items.forEach({ $0.state = (isSelected && $0.tag == exchange.quoteCurrency.index ? NSOnState : NSOffState) })
+                subMenu.items.forEach({ $0.state = (isSelected && $0.tag == exchange.quoteCurrency.index ? NSControl.StateValue.onState : NSControl.StateValue.offState) })
             }
         }
         
@@ -96,7 +96,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @IBAction private func onQuit(sender: AnyObject) {
-        NSApplication.shared().terminate(self)
+        NSApplication.shared.terminate(self)
     }
 
 }
@@ -104,28 +104,30 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 extension AppDelegate: ExchangeDelegate {
     
     func exchange(_ exchange: Exchange, didLoadCurrencyMatrix currencyMatrix: CurrencyMatrix) {
-        currencyMenuItems.forEach({ mainMenu.removeItem($0) })
-        currencyMenuItems.removeAll()
-        
-        var itemIndex = mainMenu.index(of: currencyStartSeparator) + 1
-        for baseCurrency in exchange.availableBaseCurrencies {
-            let subMenu = NSMenu()
-            currencyMatrix[baseCurrency]?.sorted(by: { $0.displayName < $1.displayName }).forEach({
-                let item = NSMenuItem(title: $0.displayName, action: #selector(onSelectQuoteCurrency(sender:)), keyEquivalent: "")
-                item.tag = $0.index
-                subMenu.addItem(item)
-            })
+        DispatchQueue.main.async {
+            self.currencyMenuItems.forEach({ self.mainMenu.removeItem($0) })
+            self.currencyMenuItems.removeAll()
             
-            let item = NSMenuItem(title: baseCurrency.displayName, action: #selector(onSelectBaseCurrency(sender:)), keyEquivalent: "")
-            item.tag = baseCurrency.index
-            item.submenu = subMenu
-            mainMenu.insertItem(item, at: itemIndex)
-            currencyMenuItems.append(item)
+            var itemIndex = self.mainMenu.index(of: self.currencyStartSeparator) + 1
+            for baseCurrency in exchange.availableBaseCurrencies {
+                let subMenu = NSMenu()
+                currencyMatrix[baseCurrency]?.sorted(by: { $0.displayName < $1.displayName }).forEach({
+                    let item = NSMenuItem(title: $0.displayName, action: #selector(self.onSelectQuoteCurrency(sender:)), keyEquivalent: "")
+                    item.tag = $0.index
+                    subMenu.addItem(item)
+                })
+                
+                let item = NSMenuItem(title: baseCurrency.displayName, action: #selector(self.onSelectBaseCurrency(sender:)), keyEquivalent: "")
+                item.tag = baseCurrency.index
+                item.submenu = subMenu
+                self.mainMenu.insertItem(item, at: itemIndex)
+                self.currencyMenuItems.append(item)
+                
+                itemIndex += 1
+            }
             
-            itemIndex += 1
+            self.updateMenuStates(forExchange: exchange)
         }
-        
-        updateMenuStates(forExchange: exchange)
     }
     
     func exchange(_ exchange: Exchange, didUpdatePrice price: Double) {

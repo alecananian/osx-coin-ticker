@@ -14,7 +14,7 @@ class BitstampExchange: Exchange {
     
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://ws.pusherapp.com/app/de504dc5763aeef9ff52?protocol=7")!
-        static let TickerAPIPath = "https://www.bitstamp.net/api/v2/ticker/%{productId}/"
+        static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%s/"
     }
     
     private let webSocketQueue = DispatchQueue(label: "com.alecananian.cointicker.bitstamp-socket", qos: .utility, attributes: [.concurrent])
@@ -48,7 +48,7 @@ class BitstampExchange: Exchange {
     private func fetchPrice() {
         let productId = "\(baseCurrency.code)\(quoteCurrency.code)".lowercased()
         
-        apiRequests.append(Alamofire.request(Constants.TickerAPIPath.replacingOccurrences(of: "%{productId}", with: productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
+        apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
             if let tickerData = response.result.value as? [String: Any], let priceString = tickerData["last"] as? String, let price = Double(priceString) {
                 self.delegate.exchange(self, didUpdatePrice: price)
             }
@@ -75,7 +75,7 @@ class BitstampExchange: Exchange {
             } catch {
                 print(error)
             }
-        }
+        } as (() -> Void)
         
         socket.onText = { [unowned self] (text: String) in
             if let responseData = text.data(using: .utf8, allowLossyConversion: false) {

@@ -72,7 +72,7 @@ enum Currency: Int {
     }
     
     var iconImage: NSImage? {
-        return NSImage(named: code)
+        return NSImage(named: NSImage.Name(rawValue: code))
     }
     
     var isCrypto: Bool {
