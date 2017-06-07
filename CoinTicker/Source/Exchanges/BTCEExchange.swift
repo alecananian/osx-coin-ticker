@@ -13,7 +13,7 @@ class BTCEExchange: Exchange {
     
     private struct Constants {
         static let ProductListAPIPath = "https://btc-e.com/api/3/info"
-        static let TickerAPIPathFormat = "https://btc-e.com/api/3/ticker/%s"
+        static let TickerAPIPathFormat = "https://btc-e.com/api/3/ticker/%@"
     }
     
     private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.btce-api", qos: .utility, attributes: [.concurrent])

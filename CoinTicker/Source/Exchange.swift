@@ -12,12 +12,12 @@ import Alamofire
 
 enum ExchangeSite: Int {
     case bitstamp = 210
-    case btce = 220
-    case gdax = 230
-    //case btcChina = "BTCChina" // https://www.btcchina.com/apidocs/
+    case btcChina = 220
+    case btce = 230
+    case gdax = 240
     //case kraken = "Kraken" // https://www.kraken.com/help/api
     
-    static let allValues = [bitstamp, btce, gdax]
+    static let allValues = [bitstamp, btcChina, btce, gdax]
     
     var index: Int {
         return self.rawValue
@@ -26,6 +26,7 @@ enum ExchangeSite: Int {
     var displayName: String {
         switch self {
         case .bitstamp: return "Bitstamp"
+        case .btcChina: return "BTCChina"
         case .btce: return "BTC-E"
         case .gdax: return "GDAX"
         }
@@ -42,6 +43,7 @@ protocol ExchangeDelegate {
 }
 
 typealias CurrencyMatrix = [Currency: [Currency]]
+typealias JSONContainer = [String: Any]
 
 class Exchange {
     
@@ -91,6 +93,7 @@ class Exchange {
     static func build(fromSite site: ExchangeSite, delegate: ExchangeDelegate) -> Exchange {
         switch site {
         case .bitstamp: return BitstampExchange(delegate: delegate)
+        case .btcChina: return BTCChinaExchange(delegate: delegate)
         case .btce: return BTCEExchange(delegate: delegate)
         case .gdax: return GDAXExchange(delegate: delegate)
         }

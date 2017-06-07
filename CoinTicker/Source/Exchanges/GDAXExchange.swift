@@ -15,7 +15,7 @@ class GDAXExchange: Exchange {
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://ws-feed.gdax.com")!
         static let ProductListAPIPath = "https://api.gdax.com/products"
-        static let TickerAPIPathFormat = "https://api.gdax.com/products/%s/ticker"
+        static let TickerAPIPathFormat = "https://api.gdax.com/products/%@/ticker"
     }
     
     private let webSocketQueue = DispatchQueue(label: "com.alecananian.cointicker.gdax-socket", qos: .utility, attributes: [.concurrent])

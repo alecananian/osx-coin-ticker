@@ -14,7 +14,7 @@ class BitstampExchange: Exchange {
     
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://ws.pusherapp.com/app/de504dc5763aeef9ff52?protocol=7")!
-        static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%s/"
+        static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%@/"
     }
     
     private let webSocketQueue = DispatchQueue(label: "com.alecananian.cointicker.bitstamp-socket", qos: .utility, attributes: [.concurrent])
