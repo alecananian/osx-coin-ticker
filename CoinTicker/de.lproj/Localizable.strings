@@ -1,5 +1,6 @@
 "menu.exchange.title" = "Börse";
 "menu.quit.title" = "Beenden";
+"menu.label.loading" = "Wird geladen...";
 
 "currency.usd.title" = "USD (US-Dollar)";
 "currency.eur.title" = "EUR (Euro)";

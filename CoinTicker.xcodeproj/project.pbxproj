@@ -15,7 +15,6 @@
 		703581DA1EDFD1A7003FDF3E /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D91EDFD1A7003FDF3E /* Currency.swift */; };
 		703581E01EDFDBD7003FDF3E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 703581DE1EDFDBD7003FDF3E /* Localizable.strings */; };
 		705F48541EDE3A29009A629D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705F48531EDE3A29009A629D /* AppDelegate.swift */; };
-		705F48561EDE3A29009A629D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705F48551EDE3A29009A629D /* ViewController.swift */; };
 		705F48581EDE3A29009A629D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 705F48571EDE3A29009A629D /* Assets.xcassets */; };
 		705F485B1EDE3A29009A629D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705F48591EDE3A29009A629D /* Main.storyboard */; };
 		70B63D391EE498EB00E98BFB /* BTCEExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B63D381EE498EB00E98BFB /* BTCEExchange.swift */; };
@@ -34,7 +33,6 @@
 		703581DF1EDFDBD7003FDF3E /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		705F48501EDE3A29009A629D /* CoinTicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoinTicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		705F48531EDE3A29009A629D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		705F48551EDE3A29009A629D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		705F48571EDE3A29009A629D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		705F485A1EDE3A29009A629D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		705F485C1EDE3A29009A629D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -43,6 +41,8 @@
 		70B63D3B1EE732CC00E98BFB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70B63D3C1EE733B000E98BFB /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCChinaExchange.swift; sourceTree = "<group>"; };
+		70CB5A2B1EE8AAE8002F2D5A /* hy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hy; path = hy.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70CB5A301EE8D66A002F2D5A /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C4313FAA3E2256C8A5D25C1F /* Pods_CoinTicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoinTicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4CC49C8D7CCCB6A0878C5BD /* Pods-CoinTicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinTicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker.release.xcconfig"; sourceTree = "<group>"; };
 		F947BA40CD0ED03B7C2327C8 /* Pods-CoinTicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinTicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -102,7 +102,6 @@
 			isa = PBXGroup;
 			children = (
 				705F48531EDE3A29009A629D /* AppDelegate.swift */,
-				705F48551EDE3A29009A629D /* ViewController.swift */,
 				705F48621EDE3EC2009A629D /* Source */,
 				705F48571EDE3A29009A629D /* Assets.xcassets */,
 				705F48591EDE3A29009A629D /* Main.storyboard */,
@@ -185,6 +184,8 @@
 				de,
 				nl,
 				pl,
+				hy,
+				ar,
 			);
 			mainGroup = 705F48471EDE3A29009A629D;
 			productRefGroup = 705F48511EDE3A29009A629D /* Products */;
@@ -265,7 +266,6 @@
 				703581D21EDE5477003FDF3E /* GDAXExchange.swift in Sources */,
 				703581DA1EDFD1A7003FDF3E /* Currency.swift in Sources */,
 				703581D41EDE57F8003FDF3E /* TickerConfig.swift in Sources */,
-				705F48561EDE3A29009A629D /* ViewController.swift in Sources */,
 				705F48541EDE3A29009A629D /* AppDelegate.swift in Sources */,
 				70CB5A2A1EE86AD8002F2D5A /* BTCChinaExchange.swift in Sources */,
 				703581D81EDFC2EC003FDF3E /* BitstampExchange.swift in Sources */,
@@ -287,6 +287,8 @@
 				70B63D3A1EE7313400E98BFB /* de */,
 				70B63D3B1EE732CC00E98BFB /* nl */,
 				70B63D3C1EE733B000E98BFB /* pl */,
+				70CB5A2B1EE8AAE8002F2D5A /* hy */,
+				70CB5A301EE8D66A002F2D5A /* ar */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

@@ -39,7 +39,7 @@ enum ExchangeSite: Int {
 
 protocol ExchangeDelegate {
     func exchange(_ exchange: Exchange, didLoadCurrencyMatrix currencyMatrix: CurrencyMatrix)
-    func exchange(_ exchange: Exchange, didUpdatePrice price: Double)
+    func exchange(_ exchange: Exchange, didUpdatePrice price: Double?)
 }
 
 typealias CurrencyMatrix = [Currency: [Currency]]
@@ -105,7 +105,7 @@ class Exchange {
     }
     
     func start() {
-        
+        delegate.exchange(self, didUpdatePrice: nil)
     }
     
     func stop() {

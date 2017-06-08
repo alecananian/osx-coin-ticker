@@ -1,17 +1,17 @@
-"menu.exchange.title" = "Bolsa";
-"menu.quit.title" = "Salir";
-"menu.label.loading" = "Cargando...";
+"menu.exchange.title" = "Բորսա";
+"menu.quit.title" = "Դուրս գալ";
+"menu.label.loading" = "Բեռնում...";
 
-"currency.usd.title" = "USD (Dólar estadounidense)";
-"currency.eur.title" = "EUR (Euro)";
-"currency.gbp.title" = "GBP (Libra esterlina)";
-"currency.cad.title" = "CAD (Dólar canadiense)";
-"currency.cny.title" = "CNY (Yuan chino)";
-"currency.jpy.title" = "JPY (Yen japonés)";
-"currency.rur.title" = "RUR (Rublo ruso)";
-"currency.rub.title" = "RUB (Rublo ruso)";
+"currency.usd.title" = "USD (ԱՄՆ դոլար)";
+"currency.eur.title" = "EUR (Եվրո)";
+"currency.gbp.title" = "GBP (Մեծ Բրիտանիայի ֆունտ ստեռլինգ)";
+"currency.cad.title" = "CAD (Կանադական դոլար)";
+"currency.cny.title" = "CNY (Չինական յուան)";
+"currency.jpy.title" = "JPY (Ճապոնական իեն)";
+"currency.rur.title" = "RUR (Ռուսական ռուբլի)";
+"currency.rub.title" = "RUB (Ռուսական ռուբլի)";
 
-"currency.btc.title" = "BTC (Біткойн)";
+"currency.btc.title" = "BTC (Bitcoin)";
 "currency.eth.title" = "ETH (Ethereum)";
 "currency.ltc.title" = "LTC (Litecoin)";
 "currency.rep.title" = "REP (Augur)";

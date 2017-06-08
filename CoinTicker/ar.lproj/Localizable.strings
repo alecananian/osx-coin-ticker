@@ -1,0 +1,31 @@
+"menu.exchange.title" = "سوق";
+"menu.quit.title" = "إنهاء";
+"menu.label.loading" = "يتم الآن التحميل";
+
+"currency.usd.title" = "دولار أمريكي (USD)";
+"currency.eur.title" = "يورو (EUR)";
+"currency.gbp.title" = "جنيه إسترليني (GBP)";
+"currency.cad.title" = "دولار كندي (CAD)";
+"currency.cny.title" = "رنمينبي (CNY)";
+"currency.jpy.title" = "ين ياباني (JPY)";
+"currency.rur.title" = "روبل روسي (RUR)";
+"currency.rub.title" = "روبل روسي (RUB)";
+
+"currency.btc.title" = "بيتكوين (BTC)";
+"currency.eth.title" = "(ETH) Ethereum";
+"currency.ltc.title" = "(LTC) Litecoin";
+"currency.rep.title" = "(REP) Augur";
+"currency.dsh.title" = "(DSH) Dashcoin";
+"currency.xdg.title" = "(XDG) Dogecoin";
+"currency.etc.title" = "(ETC) Ethereum Classic";
+"currency.gno.title" = "(GNO) Gnosis";
+"currency.icn.title" = "(ICN) Iconomi";
+"currency.mln.title" = "(MLN) Melon";
+"currency.xmr.title" = "(XMR) Monero";
+"currency.nmc.title" = "(NMC) Namecoin";
+"currency.nvc.title" = "(NVC) Novacoin";
+"currency.ppc.title" = "(PPC) Peercoin";
+"currency.xrp.title" = "(XRP) Ripple";
+"currency.xlm.title" = "(XLM) Stellar Lumens";
+"currency.usdt.title" = "(USDT) Tether";
+"currency.zec.title" = "(ZEC) Zcash";

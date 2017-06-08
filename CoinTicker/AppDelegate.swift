@@ -130,14 +130,20 @@ extension AppDelegate: ExchangeDelegate {
         }
     }
     
-    func exchange(_ exchange: Exchange, didUpdatePrice price: Double) {
-        let currencyFormatter = NumberFormatter()
-        currencyFormatter.numberStyle = .currency
-        currencyFormatter.currencyCode = exchange.quoteCurrency.code
-        currencyFormatter.currencySymbol = exchange.quoteCurrency.symbol
-        currencyFormatter.maximumFractionDigits = (price < 0.01 ? 4 : 2)
-        DispatchQueue.main.async {
-            self.statusItem.title = currencyFormatter.string(for: price)
+    func exchange(_ exchange: Exchange, didUpdatePrice price: Double?) {
+        if let price = price {
+            let currencyFormatter = NumberFormatter()
+            currencyFormatter.numberStyle = .currency
+            currencyFormatter.currencyCode = exchange.quoteCurrency.code
+            currencyFormatter.currencySymbol = exchange.quoteCurrency.symbol
+            currencyFormatter.maximumFractionDigits = (price < 0.01 ? 4 : 2)
+            DispatchQueue.main.async {
+                self.statusItem.title = currencyFormatter.string(for: price)
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.statusItem.title = NSLocalizedString("menu.label.loading", comment: "Label displayed when network requests are loading")
+            }
         }
     }
     

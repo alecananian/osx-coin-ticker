@@ -1,5 +1,6 @@
 "menu.exchange.title" = "Биржа";
 "menu.quit.title" = "Выйти";
+"menu.label.loading" = "Загрузка...";
 
 "currency.usd.title" = "USD (Доллар США)";
 "currency.eur.title" = "EUR (Евро)";
