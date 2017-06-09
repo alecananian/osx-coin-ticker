@@ -1,6 +1,7 @@
 "menu.exchange.title" = "Բորսա";
 "menu.quit.title" = "Դուրս գալ";
 "menu.label.loading" = "Բեռնում...";
+"menu.label.offline" = "Անցանց";
 
 "currency.usd.title" = "USD (ԱՄՆ դոլար)";
 "currency.eur.title" = "EUR (Եվրո)";

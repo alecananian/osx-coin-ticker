@@ -1,6 +1,7 @@
 "menu.exchange.title" = "Bolsa";
 "menu.quit.title" = "Salir";
 "menu.label.loading" = "Cargando...";
+"menu.label.offline" = "Sin conexión";
 
 "currency.usd.title" = "USD (Dólar estadounidense)";
 "currency.eur.title" = "EUR (Euro)";

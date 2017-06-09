@@ -1,6 +1,7 @@
 "menu.exchange.title" = "Beurs";
 "menu.quit.title" = "Afsluiten";
 "menu.label.loading" = "Laden...";
+"menu.label.offline" = "Offline";
 
 "currency.usd.title" = "USD (Amerikaanse dollar)";
 "currency.eur.title" = "EUR (Euro)";

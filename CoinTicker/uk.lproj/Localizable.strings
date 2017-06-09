@@ -1,6 +1,7 @@
 "menu.exchange.title" = "Біржа";
 "menu.quit.title" = "Вийти";
 "menu.label.loading" = "Завантаження...";
+"menu.label.offline" = "Автономний";
 
 "currency.usd.title" = "USD (Долар США)";
 "currency.eur.title" = "EUR (Євро)";

@@ -1,6 +1,7 @@
 "menu.exchange.title" = "Giełda";
 "menu.quit.title" = "Zamknij";
 "menu.label.loading" = "Ładowanie...";
+"menu.label.offline" = "Offline";
 
 "currency.usd.title" = "USD (Dolar amerykański)";
 "currency.eur.title" = "EUR (Euro)";

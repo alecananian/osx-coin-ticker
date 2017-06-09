@@ -1,6 +1,7 @@
 "menu.exchange.title" = "سوق";
 "menu.quit.title" = "إنهاء";
 "menu.label.loading" = "يتم الآن التحميل";
+"menu.label.offline" = "غير متصل";
 
 "currency.usd.title" = "دولار أمريكي (USD)";
 "currency.eur.title" = "يورو (EUR)";

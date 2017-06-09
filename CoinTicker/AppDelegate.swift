@@ -25,6 +25,7 @@
 //
 
 import Cocoa
+import Alamofire
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -32,18 +33,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet fileprivate var mainMenu: NSMenu!
     @IBOutlet fileprivate var exchangeMenuItem: NSMenuItem!
     @IBOutlet fileprivate var currencyStartSeparator: NSMenuItem!
-    fileprivate var currencyMenuItems = [NSMenuItem]()
     @IBOutlet private var quitMenuItem: NSMenuItem!
+    fileprivate var currencyMenuItems = [NSMenuItem]()
     
-    fileprivate let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    private let reachabilityManager = Alamofire.NetworkReachabilityManager()!
     
     private var currentExchange: Exchange! {
         didSet {
             TickerConfig.defaultExchangeSite = currentExchange.site
         }
     }
-
+    
+    // MARK: NSApplicationDelegate
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // Listen to workspace status notifications
+        NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(onWorkspaceWillSleep(notification:)), name: NSWorkspace.willSleepNotification, object: nil)
+        NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(onWorkspaceDidWake(notification:)), name: NSWorkspace.didWakeNotification, object: nil)
+        
+        // Listen to network reachability status
+        reachabilityManager.listenerQueue = DispatchQueue(label: "com.alecananian.cointicker.reachability", qos: .utility, attributes: [.concurrent])
+        reachabilityManager.listener = { [unowned self] status in
+            if status == .reachable(.ethernetOrWiFi) || status == .reachable(.wwan) {
+                self.currentExchange?.start()
+            } else {
+                self.currentExchange?.stop()
+                self.updateMenuWithOfflineText()
+            }
+        }
+        
         // Set the main menu
         statusItem.menu = mainMenu
         
@@ -60,13 +78,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Load defaults
         currentExchange = Exchange.build(fromSite: TickerConfig.defaultExchangeSite, delegate: self)
-        currentExchange.start()
+        reachabilityManager.startListening()
+        if !reachabilityManager.isReachable {
+            updateMenuWithOfflineText()
+        }
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
-        currentExchange.stop()
+        NSWorkspace.shared.notificationCenter.removeObserver(self)
+        currentExchange?.stop()
     }
     
+    // MARK: Notifications
+    @objc private func onWorkspaceWillSleep(notification: Notification) {
+        currentExchange?.stop()
+    }
+    
+    @objc private func onWorkspaceDidWake(notification: Notification) {
+        currentExchange?.start()
+    }
+    
+    // MARK: UI Helpers
     fileprivate func updateMenuStates(forExchange exchange: Exchange) {
         exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == exchange.site.index ? NSControl.StateValue.onState : NSControl.StateValue.offState) })
         
@@ -86,6 +118,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    fileprivate func updateMenuText(_ text: String?) {
+        DispatchQueue.main.async {
+            self.statusItem.title = text
+        }
+    }
+    
+    private func updateMenuWithOfflineText() {
+        updateMenuText(NSLocalizedString("menu.label.offline", comment: "Label to display when network connection fails"))
+        if statusItem.image == nil {
+            statusItem.image = Currency.btc.iconImage
+        }
+    }
+    
+    // MARK: UI Actions
     @objc private func onSelectExchangeSite(sender: AnyObject) {
         if let menuItem = sender as? NSMenuItem, let exchangeSite = ExchangeSite.build(fromIndex: menuItem.tag) {
             if exchangeSite != currentExchange.site {
@@ -155,14 +201,11 @@ extension AppDelegate: ExchangeDelegate {
             currencyFormatter.currencyCode = exchange.quoteCurrency.code
             currencyFormatter.currencySymbol = exchange.quoteCurrency.symbol
             currencyFormatter.maximumFractionDigits = (price < 0.01 ? 4 : 2)
-            DispatchQueue.main.async {
-                self.statusItem.title = currencyFormatter.string(for: price)
-            }
+            updateMenuText(currencyFormatter.string(for: price))
         } else {
-            DispatchQueue.main.async {
-                self.statusItem.title = NSLocalizedString("menu.label.loading", comment: "Label displayed when network requests are loading")
-            }
+            updateMenuText(NSLocalizedString("menu.label.loading", comment: "Label displayed when network requests are loading"))
         }
     }
     
 }
+

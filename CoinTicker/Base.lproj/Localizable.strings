@@ -1,6 +1,7 @@
 "menu.exchange.title" = "Exchange";
 "menu.quit.title" = "Quit";
 "menu.label.loading" = "Loading...";
+"menu.label.offline" = "Offline";
 
 "currency.usd.title" = "USD (US Dollar)";
 "currency.eur.title" = "EUR (Euro)";

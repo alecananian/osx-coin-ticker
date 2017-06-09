@@ -87,7 +87,7 @@ enum Currency: Int {
         case .ppc: return "Ᵽ"
         case .xdg: return "Ð"
         case .xmr: return "ɱ"
-        default: return (isCrypto ? "\(code) " : nil)
+        default: return (isCrypto ? code : nil)
         }
     }
     
