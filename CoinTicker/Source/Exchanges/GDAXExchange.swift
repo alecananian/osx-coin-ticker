@@ -51,7 +51,7 @@ class GDAXExchange: Exchange {
         
         var currencyMatrix = CurrencyMatrix()
         apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let currencyPairs = response.result.value as? [[String: Any]] {
+            if let currencyPairs = response.result.value as? [JSONContainer] {
                 for currencyPair in currencyPairs {
                     if let baseCurrencyCode = currencyPair["base_currency"] as? String, let quoteCurrencyCode = currencyPair["quote_currency"] as? String, let baseCurrency = Currency.build(fromCode: baseCurrencyCode), baseCurrency.isCrypto, let quoteCurrency = Currency.build(fromCode: quoteCurrencyCode) {
                         if currencyMatrix[baseCurrency] == nil {
@@ -80,7 +80,7 @@ class GDAXExchange: Exchange {
         let productId = "\(baseCurrency.code)-\(quoteCurrency.code)"
         
         apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let tickerData = response.result.value as? [String: Any], let priceString = tickerData["price"] as? String, let price = Double(priceString) {
+            if let priceString = (response.result.value as? JSONContainer)?["price"] as? String, let price = Double(priceString) {
                 self.delegate.exchange(self, didUpdatePrice: price)
             }
         })
@@ -104,7 +104,7 @@ class GDAXExchange: Exchange {
         socket.onText = { [unowned self] (text: String) in
             if let data = text.data(using: .utf8, allowLossyConversion: false) {
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? JSONContainer {
                         if let type = json["type"] as? String, type == "match", let priceString = json["price"] as? String, let price = Double(priceString) {
                             self.delegate.exchange(self, didUpdatePrice: price)
                         }

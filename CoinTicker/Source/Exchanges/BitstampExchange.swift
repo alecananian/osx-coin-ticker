@@ -67,7 +67,7 @@ class BitstampExchange: Exchange {
         let productId = "\(baseCurrency.code)\(quoteCurrency.code)".lowercased()
         
         apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let tickerData = response.result.value as? [String: Any], let priceString = tickerData["last"] as? String, let price = Double(priceString) {
+            if let priceString = (response.result.value as? JSONContainer)?["last"] as? String, let price = Double(priceString) {
                 self.delegate.exchange(self, didUpdatePrice: price)
             }
         })
@@ -98,9 +98,9 @@ class BitstampExchange: Exchange {
         socket.onText = { [unowned self] (text: String) in
             if let responseData = text.data(using: .utf8, allowLossyConversion: false) {
                 do {
-                    if let responseJSON = try JSONSerialization.jsonObject(with: responseData, options: .mutableContainers) as? [String: Any] {
+                    if let responseJSON = try JSONSerialization.jsonObject(with: responseData, options: .mutableContainers) as? JSONContainer {
                         if let type = responseJSON["event"] as? String, type == "trade" {
-                            if let data = (responseJSON["data"] as? String)?.data(using: .utf8), let subResponseJSON = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any] {
+                            if let data = (responseJSON["data"] as? String)?.data(using: .utf8), let subResponseJSON = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? JSONContainer {
                                 if let priceNumber = subResponseJSON["price"] as? NSNumber {
                                     self.delegate.exchange(self, didUpdatePrice: priceNumber.doubleValue)
                                 }

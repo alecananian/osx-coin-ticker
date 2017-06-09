@@ -12,10 +12,11 @@
 "currency.rub.title" = "RUB (Russischer Rubel)";
 
 "currency.btc.title" = "BTC (Bitcoin)";
+"currency.xbt.title" = "XBT (Bitcoin)";
 "currency.eth.title" = "ETH (Ethereum)";
 "currency.ltc.title" = "LTC (Litecoin)";
 "currency.rep.title" = "REP (Augur)";
-"currency.dsh.title" = "DSH (Dashcoin)";
+"currency.dash.title" = "DASH (Dash)";
 "currency.xdg.title" = "XDG (Dogecoin)";
 "currency.etc.title" = "ETC (Ethereum Classic)";
 "currency.gno.title" = "GNO (Gnosis)";

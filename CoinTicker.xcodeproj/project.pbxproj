@@ -18,6 +18,7 @@
 		705F48581EDE3A29009A629D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 705F48571EDE3A29009A629D /* Assets.xcassets */; };
 		705F485B1EDE3A29009A629D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705F48591EDE3A29009A629D /* Main.storyboard */; };
 		70B63D391EE498EB00E98BFB /* BTCEExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B63D381EE498EB00E98BFB /* BTCEExchange.swift */; };
+		70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C19EA01EEA310700B668AB /* KrakenExchange.swift */; };
 		70CB5A2A1EE86AD8002F2D5A /* BTCChinaExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +41,7 @@
 		70B63D3A1EE7313400E98BFB /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70B63D3B1EE732CC00E98BFB /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70B63D3C1EE733B000E98BFB /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70C19EA01EEA310700B668AB /* KrakenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrakenExchange.swift; sourceTree = "<group>"; };
 		70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCChinaExchange.swift; sourceTree = "<group>"; };
 		70CB5A2B1EE8AAE8002F2D5A /* hy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hy; path = hy.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70CB5A301EE8D66A002F2D5A /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */,
 				70B63D381EE498EB00E98BFB /* BTCEExchange.swift */,
 				703581D11EDE5477003FDF3E /* GDAXExchange.swift */,
+				70C19EA01EEA310700B668AB /* KrakenExchange.swift */,
 			);
 			path = Exchanges;
 			sourceTree = "<group>";
@@ -269,6 +272,7 @@
 				705F48541EDE3A29009A629D /* AppDelegate.swift in Sources */,
 				70CB5A2A1EE86AD8002F2D5A /* BTCChinaExchange.swift in Sources */,
 				703581D81EDFC2EC003FDF3E /* BitstampExchange.swift in Sources */,
+				70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */,
 				70B63D391EE498EB00E98BFB /* BTCEExchange.swift in Sources */,
 				703581D61EDE580B003FDF3E /* Exchange.swift in Sources */,
 			);

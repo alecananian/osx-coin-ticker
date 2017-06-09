@@ -1,8 +1,8 @@
 //
-//  BTCEExchange.swift
+//  KrakenExchange.swift
 //  CoinTicker
 //
-//  Created by Alec Ananian on 6/04/17.
+//  Created by Alec Ananian on 6/08/17.
 //  Copyright © 2017 Alec Ananian.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,34 +27,31 @@
 import Foundation
 import Alamofire
 
-class BTCEExchange: Exchange {
+class KrakenExchange: Exchange {
     
     private struct Constants {
-        static let ProductListAPIPath = "https://btc-e.com/api/3/info"
-        static let TickerAPIPathFormat = "https://btc-e.com/api/3/ticker/%@"
+        static let ProductListAPIPath = "https://api.kraken.com/0/public/AssetPairs"
+        static let TickerAPIPathFormat = "https://api.kraken.com/0/public/Ticker?pair=%@"
     }
     
-    private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.btce-api", qos: .utility, attributes: [.concurrent])
+    private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.kraken-api", qos: .utility, attributes: [.concurrent])
     private var requestTimer: Timer?
     
     init(delegate: ExchangeDelegate) {
-        super.init(site: .btce, delegate: delegate)
+        super.init(site: .kraken, delegate: delegate)
     }
     
     override func start() {
         super.start()
         
-        var currencyMatrix = CurrencyMatrix()
         apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let currencyPairs = (response.result.value as? JSONContainer)?["pairs"] as? JSONContainer {
-                for (currencyPair, _) in currencyPairs {
-                    let currencyPairArray = currencyPair.split(separator: "_")
-                    if let baseCurrencyCode = currencyPairArray.first, let quoteCurrencyCode = currencyPairArray.last, let baseCurrency = Currency.build(fromCode: String(baseCurrencyCode)), baseCurrency.isCrypto, let quoteCurrency = Currency.build(fromCode: String(quoteCurrencyCode)) {
-                        if currencyMatrix[baseCurrency] == nil {
-                            currencyMatrix[baseCurrency] = [Currency]()
+            if let currencyPairs = (response.result.value as? JSONContainer)?["result"] as? JSONContainer {
+                var currencyMatrix = CurrencyMatrix()
+                for (currencyPairString, currencyPairData) in currencyPairs {
+                    if !currencyPairString.contains(".d"), let currencyPairData = currencyPairData as? JSONContainer {
+                        if let baseCurrencyCode = currencyPairData["base"] as? String, let baseCurrency = Currency.build(fromCode: baseCurrencyCode), let quoteCurrencyCode = currencyPairData["quote"] as? String, let quoteCurrency = Currency.build(fromCode: quoteCurrencyCode) {
+                            currencyMatrix[baseCurrency, default: [Currency]()].append(quoteCurrency)
                         }
-                        
-                        currencyMatrix[baseCurrency]!.append(quoteCurrency)
                     }
                 }
                 
@@ -81,11 +78,13 @@ class BTCEExchange: Exchange {
     }
     
     @objc private func fetchPrice() {
-        let productId = "\(baseCurrency.code)_\(quoteCurrency.code)".lowercased()
+        let productId = "\(baseCurrency.code)\(quoteCurrency.code)".uppercased()
         
         apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let price = ((response.result.value as? JSONContainer)?[productId] as? JSONContainer)?["buy"] as? Double {
-                self.delegate.exchange(self, didUpdatePrice: price)
+            if let result = (response.result.value as? JSONContainer)?["result"] as? JSONContainer, let currencyPairCode = result.keys.first, let currencyPairData = result[currencyPairCode] as? JSONContainer {
+                if let priceString = (currencyPairData["p"] as? [String])?.last, let price = Double(priceString) {
+                    self.delegate.exchange(self, didUpdatePrice: price)
+                }
             }
             
             DispatchQueue.main.async {

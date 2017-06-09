@@ -27,6 +27,7 @@
 import Cocoa
 
 enum Currency: Int {
+    
     // Physical
     case cad = 10
     case cny = 20
@@ -39,7 +40,8 @@ enum Currency: Int {
     
     // Crypto
     case btc = 100
-    case dsh = 110
+    case xbt = 105
+    case dash = 110
     case etc = 120
     case eth = 130
     case gno = 140
@@ -58,9 +60,9 @@ enum Currency: Int {
     case zec = 270
     
     static let AllPhysical = [cad, cny, eur, gbp, jpy, rur, rub, usd]
-    static let AllCrypto = [btc, eth, ltc, dsh, etc, gno, icn,
-                            mln, nmc, nvc, ppc, rep, usdt, xdg,
-                            xlm, xmr, xrp, zec]
+    static let AllCrypto = [btc, xbt, eth, ltc, dash, etc, gno, icn,
+                            mln, nmc, nvc, ppc, rep, usdt, xdg, xlm,
+                            xmr, xrp, zec]
     static let AllValues = AllCrypto + AllPhysical
     
     var code: String {
@@ -98,8 +100,18 @@ enum Currency: Int {
     }
     
     static func build(fromCode code: String) -> Currency? {
-        let normalizedCode = code.uppercased()
-        return AllValues.first(where: { $0.code.uppercased() == normalizedCode })
+        var normalizedCode = code.uppercased()
+        if let currency = AllValues.first(where: { $0.code.uppercased() == normalizedCode }) {
+            return currency
+        }
+        
+        // Further normalization for Kraken API which prefixes X for crypto currencies and Z for physical
+        if normalizedCode.count >= 4 && (normalizedCode.characters.first == "X" || normalizedCode.characters.first == "Z") {
+            normalizedCode = String(normalizedCode.suffix(normalizedCode.count - 1))
+            return AllValues.first(where: { $0.code.uppercased() == normalizedCode })
+        }
+        
+        return nil
     }
     
     static func build(fromIndex index: Int) -> Currency? {

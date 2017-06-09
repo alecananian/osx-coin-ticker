@@ -33,9 +33,9 @@ enum ExchangeSite: Int {
     case btcChina = 220
     case btce = 230
     case gdax = 240
-    //case kraken = "Kraken" // https://www.kraken.com/help/api
+    case kraken = 250
     
-    static let allValues = [bitstamp, btcChina, btce, gdax]
+    static let allValues = [bitstamp, btcChina, btce, gdax, kraken]
     
     var index: Int {
         return self.rawValue
@@ -47,6 +47,7 @@ enum ExchangeSite: Int {
         case .btcChina: return "BTCChina"
         case .btce: return "BTC-E"
         case .gdax: return "GDAX"
+        case .kraken: return "Kraken"
         }
     }
     
@@ -102,7 +103,16 @@ class Exchange {
     
     var availableBaseCurrencies: [Currency] {
         if let baseCurrencies = currencyMatrix?.keys {
-            return Array(baseCurrencies).sorted(by: { $0.displayName < $1.displayName })
+            return Array(baseCurrencies).sorted(by: {
+                // Always bring Bitcoin to the top
+                if $0 == .btc || $0 == .xbt {
+                    return true
+                } else if $1 == .btc || $1 == .xbt {
+                    return false
+                }
+                
+                return ($0.displayName < $1.displayName)
+            })
         }
         
         return [Currency]()
@@ -114,6 +124,7 @@ class Exchange {
         case .btcChina: return BTCChinaExchange(delegate: delegate)
         case .btce: return BTCEExchange(delegate: delegate)
         case .gdax: return GDAXExchange(delegate: delegate)
+        case .kraken: return KrakenExchange(delegate: delegate)
         }
     }
     
