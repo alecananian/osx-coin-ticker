@@ -26,7 +26,7 @@
 
 import Foundation
 import Alamofire
-import Starscream
+import SocketIO
 
 class GDAXExchange: Exchange {
     
