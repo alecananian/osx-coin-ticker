@@ -1,0 +1,33 @@
+"menu.exchange.title" = "交易所";
+"menu.quit.title" = "退出";
+"menu.label.loading" = "正在加载···";
+"menu.label.offline" = "脱机";
+
+"currency.usd.title" = "USD (美元)";
+"currency.eur.title" = "EUR (欧元)";
+"currency.gbp.title" = "GBP (英镑)";
+"currency.cad.title" = "CAD (加拿大元)";
+"currency.cny.title" = "CNY (中国人民币)";
+"currency.jpy.title" = "JPY (日元)";
+"currency.rur.title" = "RUR (俄罗斯卢布)";
+"currency.rub.title" = "RUB (俄罗斯卢布)";
+
+"currency.btc.title" = "BTC (比特币)";
+"currency.xbt.title" = "XBT (比特币)";
+"currency.eth.title" = "ETH (以太坊)";
+"currency.ltc.title" = "LTC (莱特币)";
+"currency.rep.title" = "REP (Augur)";
+"currency.dash.title" = "DASH (加密货币)";
+"currency.xdg.title" = "XDG (多吉币)";
+"currency.etc.title" = "ETC (古典以太坊)";
+"currency.gno.title" = "GNO (Gnosis)";
+"currency.icn.title" = "ICN (Iconomi)";
+"currency.mln.title" = "MLN (Melon)";
+"currency.xmr.title" = "XMR (门罗币)";
+"currency.nmc.title" = "NMC (域名币)";
+"currency.nvc.title" = "NVC (Novacoin)";
+"currency.ppc.title" = "PPC (点点币)";
+"currency.xrp.title" = "XRP (瑞波币)";
+"currency.xlm.title" = "XLM (恒星币)";
+"currency.usdt.title" = "USDT (Tether)";
+"currency.zec.title" = "ZEC (Zcash)";

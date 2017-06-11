@@ -3,14 +3,14 @@
 "menu.label.loading" = "يتم الآن التحميل";
 "menu.label.offline" = "غير متصل";
 
-"currency.usd.title" = "دولار أمريكي (USD)";
-"currency.eur.title" = "يورو (EUR)";
-"currency.gbp.title" = "جنيه إسترليني (GBP)";
-"currency.cad.title" = "دولار كندي (CAD)";
-"currency.cny.title" = "رنمينبي (CNY)";
-"currency.jpy.title" = "ين ياباني (JPY)";
-"currency.rur.title" = "روبل روسي (RUR)";
-"currency.rub.title" = "روبل روسي (RUB)";
+"currency.usd.title" = "الدولار الأمريكي (USD)";
+"currency.eur.title" = "اليورو (EUR)";
+"currency.gbp.title" = "الجنيه البريطاني (GBP)";
+"currency.cad.title" = "الدولار الكندي (CAD)";
+"currency.cny.title" = "اليوان الرينمنبي الصيني (CNY)";
+"currency.jpy.title" = "الين الياباني (JPY)";
+"currency.rur.title" = "الروبل الروسي (RUR)";
+"currency.rub.title" = "الروبل الروسي (RUB)";
 
 "currency.btc.title" = "بيتكوين (BTC)";
 "currency.xbt.title" = "بيتكوين (XBT)";

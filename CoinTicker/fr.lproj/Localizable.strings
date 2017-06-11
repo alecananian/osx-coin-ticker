@@ -1,0 +1,33 @@
+"menu.exchange.title" = "Bourse";
+"menu.quit.title" = "Quitter";
+"menu.label.loading" = "Chargement...";
+"menu.label.offline" = "Hors connexion";
+
+"currency.usd.title" = "USD (Dollar des États-Unis)";
+"currency.eur.title" = "EUR (Euro)";
+"currency.gbp.title" = "GBP (Livre britannique)";
+"currency.cad.title" = "CAD (Dollar canadien)";
+"currency.cny.title" = "CNY (Yuan chinois)";
+"currency.jpy.title" = "JPY (Yen japonais)";
+"currency.rur.title" = "RUR (Rouble russe)";
+"currency.rub.title" = "RUB (Rouble russe)";
+
+"currency.btc.title" = "BTC (Bitcoin)";
+"currency.xbt.title" = "XBT (Bitcoin)";
+"currency.eth.title" = "ETH (Ethereum)";
+"currency.ltc.title" = "LTC (Litecoin)";
+"currency.rep.title" = "REP (Augur)";
+"currency.dash.title" = "DASH (Dash)";
+"currency.xdg.title" = "XDG (Dogecoin)";
+"currency.etc.title" = "ETC (Ethereum Classic)";
+"currency.gno.title" = "GNO (Gnosis)";
+"currency.icn.title" = "ICN (Iconomi)";
+"currency.mln.title" = "MLN (Melon)";
+"currency.xmr.title" = "XMR (Monero)";
+"currency.nmc.title" = "NMC (Namecoin)";
+"currency.nvc.title" = "NVC (Novacoin)";
+"currency.ppc.title" = "PPC (Peercoin)";
+"currency.xrp.title" = "XRP (Ripple)";
+"currency.xlm.title" = "XLM (Stellar Lumens)";
+"currency.usdt.title" = "USDT (Tether)";
+"currency.zec.title" = "ZEC (Zcash)";

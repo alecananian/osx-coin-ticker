@@ -1,0 +1,33 @@
+"menu.exchange.title" = "取引所";
+"menu.quit.title" = "終了";
+"menu.label.loading" = "読み込み中...";
+"menu.label.offline" = "オフライン";
+
+"currency.usd.title" = "USD (アメリカドル)";
+"currency.eur.title" = "EUR (ユーロ)";
+"currency.gbp.title" = "GBP (イギリスポンド)";
+"currency.cad.title" = "CAD (カナダドル)";
+"currency.cny.title" = "CNY (中国人民元)";
+"currency.jpy.title" = "JPY (日本円)";
+"currency.rur.title" = "RUR (ロシアルーブル)";
+"currency.rub.title" = "RUB (ロシアルーブル)";
+
+"currency.btc.title" = "BTC (ビットコイン)";
+"currency.xbt.title" = "XBT (ビットコイン)";
+"currency.eth.title" = "ETH (イーサリアム)";
+"currency.ltc.title" = "LTC (ライトコイン)";
+"currency.rep.title" = "REP (Augur)";
+"currency.dash.title" = "DASH (Dash)";
+"currency.xdg.title" = "XDG (ドージコイン)";
+"currency.etc.title" = "ETC (Ethereum Classic)";
+"currency.gno.title" = "GNO (Gnosis)";
+"currency.icn.title" = "ICN (Iconomi)";
+"currency.mln.title" = "MLN (Melon)";
+"currency.xmr.title" = "XMR (Monero)";
+"currency.nmc.title" = "NMC (ネームコイン)";
+"currency.nvc.title" = "NVC (Novacoin)";
+"currency.ppc.title" = "PPC (ピアコイン)";
+"currency.xrp.title" = "XRP (Ripple)";
+"currency.xlm.title" = "XLM (Stellar Lumens)";
+"currency.usdt.title" = "USDT (Tether)";
+"currency.zec.title" = "ZEC (Zcash)";
