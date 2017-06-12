@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		70111A441EE13DD4006B480F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70111A451EE13E6D006B480F /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70155C371EEDDD150037A819 /* CoinTicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoinTicker.entitlements; sourceTree = "<group>"; };
 		703533711EDFDC1700CACC78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		703581D11EDE5477003FDF3E /* GDAXExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDAXExchange.swift; sourceTree = "<group>"; };
 		703581D31EDE57F8003FDF3E /* TickerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickerConfig.swift; sourceTree = "<group>"; };
@@ -111,6 +112,7 @@
 		705F48521EDE3A29009A629D /* CoinTicker */ = {
 			isa = PBXGroup;
 			children = (
+				70155C371EEDDD150037A819 /* CoinTicker.entitlements */,
 				705F48531EDE3A29009A629D /* AppDelegate.swift */,
 				705F48621EDE3EC2009A629D /* Source */,
 				705F48571EDE3A29009A629D /* Assets.xcassets */,
@@ -175,9 +177,14 @@
 				TargetAttributes = {
 					705F484F1EDE3A29009A629D = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = AWLQA6XB3W;
+						DevelopmentTeam = JQW3SW3342;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -442,10 +449,11 @@
 			baseConfigurationReference = F947BA40CD0ED03B7C2327C8 /* Pods-CoinTicker.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CoinTicker/CoinTicker.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = AWLQA6XB3W;
+				DEVELOPMENT_TEAM = JQW3SW3342;
 				INFOPLIST_FILE = CoinTicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alecananian.cointicker;
@@ -461,10 +469,11 @@
 			baseConfigurationReference = D4CC49C8D7CCCB6A0878C5BD /* Pods-CoinTicker.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = CoinTicker/CoinTicker.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = AWLQA6XB3W;
+				DEVELOPMENT_TEAM = JQW3SW3342;
 				INFOPLIST_FILE = CoinTicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alecananian.cointicker;
