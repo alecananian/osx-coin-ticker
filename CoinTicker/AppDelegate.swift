@@ -200,7 +200,7 @@ extension AppDelegate: ExchangeDelegate {
             currencyFormatter.numberStyle = .currency
             currencyFormatter.currencyCode = exchange.quoteCurrency.code
             currencyFormatter.currencySymbol = exchange.quoteCurrency.symbol
-            currencyFormatter.maximumFractionDigits = (price < 0.01 ? 4 : 2)
+            currencyFormatter.maximumFractionDigits = (price < 1 ? 5 : 2)
             updateMenuText(currencyFormatter.string(for: price))
         } else {
             updateMenuText(NSLocalizedString("menu.label.loading", comment: "Label displayed when network requests are loading"))
