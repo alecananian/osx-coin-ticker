@@ -1,14 +1,14 @@
-"menu.label.loading" = "Loading...";
-"menu.label.offline" = "Offline";
+"menu.label.loading" = "Yükleniyor...";
+"menu.label.offline" = "Çevrimdışı";
 
-"currency.usd.title" = "USD (US Dollar)";
+"currency.usd.title" = "USD (ABD doları)";
 "currency.eur.title" = "EUR (Euro)";
-"currency.gbp.title" = "GBP (British Pound)";
-"currency.cad.title" = "CAD (Canadian Dollar)";
-"currency.cny.title" = "CNY (Chinese Yuan)";
-"currency.jpy.title" = "JPY (Japanese Yen)";
-"currency.rur.title" = "RUR (Russian Ruble)";
-"currency.rub.title" = "RUB (Russian Ruble)";
+"currency.gbp.title" = "GBP (İngiliz sterlini)";
+"currency.cad.title" = "CAD (Kanada doları)";
+"currency.cny.title" = "CNY (Çin yuanı)";
+"currency.jpy.title" = "JPY (Japon yeni)";
+"currency.rur.title" = "RUR (Rus rublesi)";
+"currency.rub.title" = "RUB (Rus rublesi)";
 
 "currency.btc.title" = "BTC (Bitcoin)";
 "currency.xbt.title" = "XBT (Bitcoin)";

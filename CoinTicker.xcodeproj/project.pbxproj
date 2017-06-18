@@ -54,6 +54,8 @@
 		70155C541EF5C0750037A819 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70155C551EF5C07C0037A819 /* hy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hy; path = hy.lproj/Main.strings; sourceTree = "<group>"; };
 		70155C561EF5C07C0037A819 /* hy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hy; path = hy.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70155C571EF723E10037A819 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Main.strings; sourceTree = "<group>"; };
+		70155C581EF723E20037A819 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		703533711EDFDC1700CACC78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		703581D11EDE5477003FDF3E /* GDAXExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDAXExchange.swift; sourceTree = "<group>"; };
 		703581D31EDE57F8003FDF3E /* TickerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickerConfig.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				"zh-Hant",
 				ar,
 				hy,
+				tr,
 			);
 			mainGroup = 705F48471EDE3A29009A629D;
 			productRefGroup = 705F48511EDE3A29009A629D /* Products */;
@@ -336,6 +339,7 @@
 				70155C521EF5C0670037A819 /* zh-Hant */,
 				70155C541EF5C0750037A819 /* ar */,
 				70155C561EF5C07C0037A819 /* hy */,
+				70155C581EF723E20037A819 /* tr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -359,6 +363,7 @@
 				70155C511EF5C0670037A819 /* zh-Hant */,
 				70155C531EF5C0750037A819 /* ar */,
 				70155C551EF5C07C0037A819 /* hy */,
+				70155C571EF723E10037A819 /* tr */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
