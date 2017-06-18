@@ -31,7 +31,8 @@ import Alamofire
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet fileprivate var mainMenu: NSMenu!
-    @IBOutlet fileprivate var exchangeMenuItem: NSMenuItem!
+    @IBOutlet private var exchangeMenuItem: NSMenuItem!
+    @IBOutlet private var updateIntervalMenuItem: NSMenuItem!
     @IBOutlet fileprivate var currencyStartSeparator: NSMenuItem!
     @IBOutlet private var quitMenuItem: NSMenuItem!
     fileprivate var currencyMenuItems = [NSMenuItem]()
@@ -65,10 +66,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         // Set the main menu
         statusItem.menu = mainMenu
         
-        // Update translations
-        exchangeMenuItem.title = NSLocalizedString("menu.exchange.title", comment: "Exchange")
-        quitMenuItem.title = NSLocalizedString("menu.quit.title", comment: "Quit")
-        
         // Set up exchange sub-menu
         for exchangeSite in ExchangeSite.allValues {
             let item = NSMenuItem(title: exchangeSite.displayName, action: #selector(onSelectExchangeSite(sender:)), keyEquivalent: "")
@@ -100,13 +97,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // MARK: UI Helpers
     fileprivate func updateMenuStates(forExchange exchange: Exchange) {
-        exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == exchange.site.index ? NSControl.StateValue.onState : NSControl.StateValue.offState) })
+        exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == exchange.site.index ? .onState : .offState) })
+        updateIntervalMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == TickerConfig.updateInterval ? .onState : .offState) })
         
         for menuItem in currencyMenuItems {
             let isSelected = (menuItem.tag == exchange.baseCurrency.index)
-            menuItem.state = (isSelected ? NSControl.StateValue.onState : NSControl.StateValue.offState)
+            menuItem.state = (isSelected ? .onState : .offState)
             if let subMenu = menuItem.submenu {
-                subMenu.items.forEach({ $0.state = (isSelected && $0.tag == exchange.quoteCurrency.index ? NSControl.StateValue.onState : NSControl.StateValue.offState) })
+                subMenu.items.forEach({ $0.state = (isSelected && $0.tag == exchange.quoteCurrency.index ? .onState : .offState) })
             }
         }
         
@@ -139,6 +137,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 currentExchange = Exchange.build(fromSite: exchangeSite, delegate: self)
                 currentExchange.start()
             }
+        }
+    }
+    
+    @IBAction private func onSelectUpdateInterval(sender: AnyObject) {
+        if let menuItem = sender as? NSMenuItem {
+            TickerConfig.updateInterval = menuItem.tag
+            currentExchange.reset()
+            updateMenuStates(forExchange: currentExchange)
         }
     }
     

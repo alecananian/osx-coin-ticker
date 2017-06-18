@@ -76,46 +76,52 @@ class GDAXExchange: Exchange {
         socket.disconnect()
     }
     
-    private func fetchPrice() {
+    override internal func fetchPrice() {
         let productId = "\(baseCurrency.code)-\(quoteCurrency.code)"
         
         apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
             if let priceString = (response.result.value as? JSONContainer)?["price"] as? String, let price = Double(priceString) {
                 self.delegate.exchange(self, didUpdatePrice: price)
             }
+            
+            if TickerConfig.updateInterval != TickerConfig.RealTimeUpdateInterval {
+                self.startRequestTimer()
+            }
         })
         
-        socket.onConnect = { [unowned self] in
-            let eventParams: [String: Any] = [
-                "type": "subscribe",
-                "product_ids": [productId]
-            ]
-            
-            do {
-                let eventJSON = try JSONSerialization.data(withJSONObject: eventParams, options: [])
-                if let eventString = String(data: eventJSON, encoding: .utf8) {
-                    self.socket.write(string: eventString)
-                }
-            } catch {
-                print(error)
-            }
-        } as (() -> Void)
-        
-        socket.onText = { [unowned self] (text: String) in
-            if let data = text.data(using: .utf8, allowLossyConversion: false) {
+        if TickerConfig.updateInterval == TickerConfig.RealTimeUpdateInterval {
+            socket.onConnect = { [unowned self] in
+                let eventParams: [String: Any] = [
+                    "type": "subscribe",
+                    "product_ids": [productId]
+                ]
+                
                 do {
-                    if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? JSONContainer {
-                        if let type = json["type"] as? String, type == "match", let priceString = json["price"] as? String, let price = Double(priceString) {
-                            self.delegate.exchange(self, didUpdatePrice: price)
-                        }
+                    let eventJSON = try JSONSerialization.data(withJSONObject: eventParams, options: [])
+                    if let eventString = String(data: eventJSON, encoding: .utf8) {
+                        self.socket.write(string: eventString)
                     }
                 } catch {
                     print(error)
                 }
+            } as (() -> Void)
+            
+            socket.onText = { [unowned self] (text: String) in
+                if let data = text.data(using: .utf8, allowLossyConversion: false) {
+                    do {
+                        if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? JSONContainer {
+                            if let type = json["type"] as? String, type == "match", let priceString = json["price"] as? String, let price = Double(priceString) {
+                                self.delegate.exchange(self, didUpdatePrice: price)
+                            }
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
             }
+            
+            socket.connect()
         }
-        
-        socket.connect()
     }
 
 }

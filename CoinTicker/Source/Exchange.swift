@@ -69,6 +69,7 @@ class Exchange {
     internal var site: ExchangeSite
     internal var delegate: ExchangeDelegate
     internal var apiRequests = [DataRequest]()
+    internal var requestTimer: Timer?
     internal var currencyMatrix: CurrencyMatrix? {
         didSet {
             if availableBaseCurrencies.contains(TickerConfig.defaultBaseCurrency) {
@@ -139,11 +140,29 @@ class Exchange {
     
     func stop() {
         apiRequests.forEach({ $0.cancel() })
+        requestTimer?.invalidate()
+        requestTimer = nil
     }
     
     func reset() {
         stop()
         start()
+    }
+    
+    internal func fetchPrice() {
+        // Override
+    }
+    
+    internal func startRequestTimer() {
+        DispatchQueue.main.async {
+            self.requestTimer = Timer.scheduledTimer(timeInterval: Double(TickerConfig.updateInterval), target: self, selector: #selector(self.onRequestTimerFired(_:)), userInfo: nil, repeats: false)
+        }
+    }
+    
+    @objc internal func onRequestTimerFired(_ timer: Timer) {
+        requestTimer?.invalidate()
+        requestTimer = nil
+        fetchPrice()
     }
 
 }

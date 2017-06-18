@@ -35,7 +35,6 @@ class KrakenExchange: Exchange {
     }
     
     private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.kraken-api", qos: .utility, attributes: [.concurrent])
-    private var requestTimer: Timer?
     
     init(delegate: ExchangeDelegate) {
         super.init(site: .kraken, delegate: delegate)
@@ -63,21 +62,7 @@ class KrakenExchange: Exchange {
         })
     }
     
-    override func stop() {
-        super.stop()
-        
-        requestTimer?.invalidate()
-        requestTimer = nil
-    }
-    
-    @objc private func onRequestTimerFired(_ timer: Timer) {
-        requestTimer?.invalidate()
-        requestTimer = nil
-        
-        fetchPrice()
-    }
-    
-    @objc private func fetchPrice() {
+    override internal func fetchPrice() {
         let productId = "\(baseCurrency.code)\(quoteCurrency.code)".uppercased()
         
         apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
@@ -87,9 +72,7 @@ class KrakenExchange: Exchange {
                 }
             }
             
-            DispatchQueue.main.async {
-                self.requestTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(self.onRequestTimerFired(_:)), userInfo: nil, repeats: false)
-            }
+            self.startRequestTimer()
         })
     }
 
