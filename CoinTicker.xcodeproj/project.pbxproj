@@ -56,6 +56,10 @@
 		70155C561EF5C07C0037A819 /* hy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hy; path = hy.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70155C571EF723E10037A819 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Main.strings; sourceTree = "<group>"; };
 		70155C581EF723E20037A819 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70155C591EF729460037A819 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Main.strings; sourceTree = "<group>"; };
+		70155C5A1EF729460037A819 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70155C5B1EF72AC60037A819 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Main.strings; sourceTree = "<group>"; };
+		70155C5C1EF72AC70037A819 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
 		703533711EDFDC1700CACC78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		703581D11EDE5477003FDF3E /* GDAXExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDAXExchange.swift; sourceTree = "<group>"; };
 		703581D31EDE57F8003FDF3E /* TickerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickerConfig.swift; sourceTree = "<group>"; };
@@ -228,6 +232,8 @@
 				ar,
 				hy,
 				tr,
+				da,
+				nb,
 			);
 			mainGroup = 705F48471EDE3A29009A629D;
 			productRefGroup = 705F48511EDE3A29009A629D /* Products */;
@@ -340,6 +346,8 @@
 				70155C541EF5C0750037A819 /* ar */,
 				70155C561EF5C07C0037A819 /* hy */,
 				70155C581EF723E20037A819 /* tr */,
+				70155C5A1EF729460037A819 /* da */,
+				70155C5C1EF72AC70037A819 /* nb */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -364,6 +372,8 @@
 				70155C531EF5C0750037A819 /* ar */,
 				70155C551EF5C07C0037A819 /* hy */,
 				70155C571EF723E10037A819 /* tr */,
+				70155C591EF729460037A819 /* da */,
+				70155C5B1EF72AC60037A819 /* nb */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

@@ -1,14 +1,14 @@
-"menu.label.loading" = "Chargement ...";
-"menu.label.offline" = "Hors connexion";
+"menu.label.loading" = "Laster inn...";
+"menu.label.offline" = "Frakoblet";
 
-"currency.usd.title" = "USD (Dollar des États-Unis)";
+"currency.usd.title" = "USD (Amerikansk dollar)";
 "currency.eur.title" = "EUR (Euro)";
-"currency.gbp.title" = "GBP (Livre britannique)";
-"currency.cad.title" = "CAD (Dollar canadien)";
-"currency.cny.title" = "CNY (Yuan chinois)";
-"currency.jpy.title" = "JPY (Yen japonais)";
-"currency.rur.title" = "RUR (Rouble russe)";
-"currency.rub.title" = "RUB (Rouble russe)";
+"currency.gbp.title" = "GBP (Britisk pund)";
+"currency.cad.title" = "CAD (Canadisk dollar)";
+"currency.cny.title" = "CNY (Kinesiske yuan)";
+"currency.jpy.title" = "JPY (Japansk yen)";
+"currency.rur.title" = "RUR (Russisk rubel)";
+"currency.rub.title" = "RUB (Russisk rubel)";
 
 "currency.btc.title" = "BTC (Bitcoin)";
 "currency.xbt.title" = "XBT (Bitcoin)";
