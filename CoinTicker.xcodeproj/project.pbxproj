@@ -72,6 +72,10 @@
 		705F485A1EDE3A29009A629D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		705F485C1EDE3A29009A629D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		70B63D381EE498EB00E98BFB /* BTCEExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCEExchange.swift; sourceTree = "<group>"; };
+		70BB722A1EFA37CC0072BF42 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Main.strings; sourceTree = "<group>"; };
+		70BB722B1EFA37CC0072BF42 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70BB722C1EFA3A040072BF42 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Main.strings; sourceTree = "<group>"; };
+		70BB722D1EFA3A040072BF42 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70C19EA01EEA310700B668AB /* KrakenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrakenExchange.swift; sourceTree = "<group>"; };
 		70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCChinaExchange.swift; sourceTree = "<group>"; };
 		C4313FAA3E2256C8A5D25C1F /* Pods_CoinTicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoinTicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,6 +238,8 @@
 				tr,
 				da,
 				nb,
+				hr,
+				fi,
 			);
 			mainGroup = 705F48471EDE3A29009A629D;
 			productRefGroup = 705F48511EDE3A29009A629D /* Products */;
@@ -348,6 +354,8 @@
 				70155C581EF723E20037A819 /* tr */,
 				70155C5A1EF729460037A819 /* da */,
 				70155C5C1EF72AC70037A819 /* nb */,
+				70BB722B1EFA37CC0072BF42 /* hr */,
+				70BB722D1EFA3A040072BF42 /* fi */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -374,6 +382,8 @@
 				70155C571EF723E10037A819 /* tr */,
 				70155C591EF729460037A819 /* da */,
 				70155C5B1EF72AC60037A819 /* nb */,
+				70BB722A1EFA37CC0072BF42 /* hr */,
+				70BB722C1EFA3A040072BF42 /* fi */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
