@@ -15,6 +15,7 @@
                         <outlet property="exchangeMenuItem" destination="5Er-8L-qOO" id="blb-hw-lEA"/>
                         <outlet property="mainMenu" destination="vYf-vh-d69" id="rvF-sV-ypa"/>
                         <outlet property="quitMenuItem" destination="aEa-aJ-8Ch" id="Zct-AC-IIh"/>
+                        <outlet property="updateIntervalMenuItem" destination="lbB-L9-6x8" id="W1b-AO-D4g"/>
                     </connections>
                 </customObject>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -22,22 +23,79 @@
                     <items>
                         <menuItem title="Exchange" id="5Er-8L-qOO">
                             <modifierMask key="keyEquivalentModifierMask"/>
-                            <menu key="submenu" title="Exchange" id="fga-XW-why">
-                                <accessibility identifier="ExchangeMenuItem"/>
+                            <menu key="submenu" title="Exchange" id="fga-XW-why" userLabel="Exchange Sub Menu">
+                                <accessibility identifier="exchangeSubMenu"/>
                             </menu>
+                            <accessibility identifier="exchangeMenuItem"/>
                         </menuItem>
-                        <menuItem isSeparatorItem="YES" id="0qJ-1T-SNb"/>
-                        <menuItem isSeparatorItem="YES" id="kz9-oF-43U"/>
+                        <menuItem title="Update Interval" id="lbB-L9-6x8">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <menu key="submenu" title="Update Interval" id="CVu-iO-yB7" userLabel="Update Interval Sub Menu">
+                                <items>
+                                    <menuItem title="Real-Time" tag="5" id="iQK-Z7-1Fe">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <accessibility identifier="realTimeMenuItem"/>
+                                        <connections>
+                                            <action selector="onSelectUpdateIntervalWithSender:" target="Voe-Tx-rLC" id="Rlz-gp-Jou"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="30 seconds" tag="30" id="Rhw-zp-0cE">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <accessibility identifier="seconds30MenuItem"/>
+                                        <connections>
+                                            <action selector="onSelectUpdateIntervalWithSender:" target="Voe-Tx-rLC" id="R9s-C8-rL6"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="1 minute" tag="60" id="nHw-cI-P1y">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <accessibility identifier="minutes1MenuItem"/>
+                                        <connections>
+                                            <action selector="onSelectUpdateIntervalWithSender:" target="Voe-Tx-rLC" id="sol-R2-en7"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="5 minutes" tag="300" id="UVx-hm-2HX">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <accessibility identifier="minutes5MenuItem"/>
+                                        <connections>
+                                            <action selector="onSelectUpdateIntervalWithSender:" target="Voe-Tx-rLC" id="DEB-T6-KNQ"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="15 minutes" tag="900" id="zO4-RI-LsE">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <accessibility identifier="minutes15MenuItem"/>
+                                        <connections>
+                                            <action selector="onSelectUpdateIntervalWithSender:" target="Voe-Tx-rLC" id="pwX-Hq-YJN"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="30 minutes" tag="1800" id="iCj-ws-s49">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <accessibility identifier="minutes30MenuItem"/>
+                                        <connections>
+                                            <action selector="onSelectUpdateIntervalWithSender:" target="Voe-Tx-rLC" id="yCZ-I7-2Fa"/>
+                                        </connections>
+                                    </menuItem>
+                                </items>
+                                <accessibility identifier="updateIntervalSubMenu"/>
+                            </menu>
+                            <accessibility identifier="updateIntervalMenuItem"/>
+                        </menuItem>
+                        <menuItem isSeparatorItem="YES" id="0qJ-1T-SNb">
+                            <accessibility identifier="currencyStartSeparator"/>
+                        </menuItem>
+                        <menuItem isSeparatorItem="YES" id="kz9-oF-43U" userLabel="Currency End Separator">
+                            <accessibility identifier="currencyEndSeparator"/>
+                        </menuItem>
                         <menuItem title="Quit" keyEquivalent="q" id="aEa-aJ-8Ch">
-                            <accessibility identifier="QuitMenuItem"/>
+                            <accessibility identifier="quitMenuItem"/>
                             <connections>
                                 <action selector="onQuitWithSender:" target="Voe-Tx-rLC" id="KhP-PC-8lw"/>
                             </connections>
                         </menuItem>
                     </items>
+                    <accessibility identifier="mainMenu"/>
                 </menu>
                 <application id="hnw-xV-0zn" sceneMemberID="viewController">
-                    <menu key="mainMenu" title="Main Menu" systemMenu="main" id="AYu-sK-qS6"/>
+                    <menu key="mainMenu" systemMenu="main" id="AYu-sK-qS6"/>
                     <connections>
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
@@ -49,7 +107,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController storyboardIdentifier="MainWindowController" id="B8D-0N-5wS" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
+                    <window key="window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>

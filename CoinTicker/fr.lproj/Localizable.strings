@@ -1,6 +1,4 @@
-"menu.exchange.title" = "Bourse";
-"menu.quit.title" = "Quitter";
-"menu.label.loading" = "Chargement...";
+"menu.label.loading" = "Chargement ...";
 "menu.label.offline" = "Hors connexion";
 
 "currency.usd.title" = "USD (Dollar des États-Unis)";

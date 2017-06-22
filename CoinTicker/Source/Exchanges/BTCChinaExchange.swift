@@ -61,7 +61,7 @@ class BTCChinaExchange: Exchange {
         socket.disconnect()
     }
     
-    private func fetchPrice() {
+    override internal func fetchPrice() {
         let parsePrice: (_ json: JSONContainer) -> Void = { [unowned self] (json) in
             if let tickerJSON = json["ticker"] as? JSONContainer {
                 if let priceString = tickerJSON["last"] as? String, let price = Double(priceString) {
@@ -77,20 +77,26 @@ class BTCChinaExchange: Exchange {
             if let responseJSON = response.result.value as? JSONContainer {
                 parsePrice(responseJSON)
             }
+            
+            if TickerConfig.updateInterval != TickerConfig.RealTimeUpdateInterval {
+                self.startRequestTimer()
+            }
         })
         
-        let socketProductId = "\(quoteCurrency.code)\(baseCurrency.code)".lowercased()
-        socket.on(clientEvent: .connect) { [unowned self] (data, ack) in
-            self.socket.emit("subscribe", with: ["marketdata_\(socketProductId)"])
-        }
-        
-        socket.on("ticker") { (data, _) in
-            if let responseJSON = data.first as? JSONContainer {
-                parsePrice(responseJSON)
+        if TickerConfig.updateInterval == TickerConfig.RealTimeUpdateInterval {
+            let socketProductId = "\(quoteCurrency.code)\(baseCurrency.code)".lowercased()
+            socket.on(clientEvent: .connect) { [unowned self] (data, ack) in
+                self.socket.emit("subscribe", with: ["marketdata_\(socketProductId)"])
             }
+            
+            socket.on("ticker") { (data, _) in
+                if let responseJSON = data.first as? JSONContainer {
+                    parsePrice(responseJSON)
+                }
+            }
+            
+            socket.connect()
         }
-        
-        socket.connect()
     }
     
 }

@@ -80,6 +80,7 @@ enum Currency: Int {
     var symbol: String? {
         switch self {
         case .rur, .rub: return "₽"
+        case .btc, .xbt: return "₿"
         case .eth: return "Ξ"
         case .ltc: return "Ł"
         case .etc: return "⟠"

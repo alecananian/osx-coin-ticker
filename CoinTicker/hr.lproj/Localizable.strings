@@ -1,17 +1,17 @@
-"menu.label.loading" = "Загрузка...";
-"menu.label.offline" = "Автономный";
+"menu.label.loading" = "Učitavanje...";
+"menu.label.offline" = "Izvan mreže";
 
-"currency.usd.title" = "USD (Доллар США)";
-"currency.eur.title" = "EUR (Евро)";
-"currency.gbp.title" = "GBP (Британский фунт)";
-"currency.cad.title" = "CAD (Канадский доллар)";
-"currency.cny.title" = "CNY (Китайский юань)";
-"currency.jpy.title" = "JPY (Японская иена)";
-"currency.rur.title" = "RUR (Российский рубль)";
-"currency.rub.title" = "RUB (Российский рубль)";
+"currency.usd.title" = "USD (Američki dolar)";
+"currency.eur.title" = "EUR (Euro)";
+"currency.gbp.title" = "GBP (Britanska funta)";
+"currency.cad.title" = "CAD (Kanadski dolar)";
+"currency.cny.title" = "CNY (Kineski juan)";
+"currency.jpy.title" = "JPY (Japanski jen)";
+"currency.rur.title" = "RUR (Ruski rubalj)";
+"currency.rub.title" = "RUB (Ruski rubalj)";
 
-"currency.btc.title" = "BTC (Биткойн)";
-"currency.xbt.title" = "XBT (Биткойн)";
+"currency.btc.title" = "BTC (Bitcoin)";
+"currency.xbt.title" = "XBT (Bitcoin)";
 "currency.eth.title" = "ETH (Ethereum)";
 "currency.ltc.title" = "LTC (Litecoin)";
 "currency.rep.title" = "REP (Augur)";

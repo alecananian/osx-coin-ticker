@@ -63,57 +63,63 @@ class BitstampExchange: Exchange {
         socket.disconnect()
     }
     
-    private func fetchPrice() {
+    override internal func fetchPrice() {
         let productId = "\(baseCurrency.code)\(quoteCurrency.code)".lowercased()
         
         apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
             if let priceString = (response.result.value as? JSONContainer)?["last"] as? String, let price = Double(priceString) {
                 self.delegate.exchange(self, didUpdatePrice: price)
             }
+            
+            if TickerConfig.updateInterval != TickerConfig.RealTimeUpdateInterval {
+                self.startRequestTimer()
+            }
         })
         
-        socket.onConnect = { [unowned self] in
-            var channelName = "live_trades"
-            if productId != "btcusd" {
-                channelName += "_\(productId)"
-            }
-            
-            let eventParams: [String: Any] = [
-                "event": "pusher:subscribe",
-                "data": [
-                    "channel": channelName
-                ]
-            ]
-            
-            do {
-                let eventJSON = try JSONSerialization.data(withJSONObject: eventParams, options: [])
-                if let eventString = String(data: eventJSON, encoding: .utf8) {
-                    self.socket.write(string: eventString)
+        if TickerConfig.updateInterval == TickerConfig.RealTimeUpdateInterval {
+            socket.onConnect = { [unowned self] in
+                var channelName = "live_trades"
+                if productId != "btcusd" {
+                    channelName += "_\(productId)"
                 }
-            } catch {
-                print(error)
-            }
-        } as (() -> Void)
-        
-        socket.onText = { [unowned self] (text: String) in
-            if let responseData = text.data(using: .utf8, allowLossyConversion: false) {
+                
+                let eventParams: [String: Any] = [
+                    "event": "pusher:subscribe",
+                    "data": [
+                        "channel": channelName
+                    ]
+                ]
+                
                 do {
-                    if let responseJSON = try JSONSerialization.jsonObject(with: responseData, options: .mutableContainers) as? JSONContainer {
-                        if let type = responseJSON["event"] as? String, type == "trade" {
-                            if let data = (responseJSON["data"] as? String)?.data(using: .utf8), let subResponseJSON = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? JSONContainer {
-                                if let priceNumber = subResponseJSON["price"] as? NSNumber {
-                                    self.delegate.exchange(self, didUpdatePrice: priceNumber.doubleValue)
-                                }
-                            }
-                        }
+                    let eventJSON = try JSONSerialization.data(withJSONObject: eventParams, options: [])
+                    if let eventString = String(data: eventJSON, encoding: .utf8) {
+                        self.socket.write(string: eventString)
                     }
                 } catch {
                     print(error)
                 }
+            } as (() -> Void)
+            
+            socket.onText = { [unowned self] (text: String) in
+                if let responseData = text.data(using: .utf8, allowLossyConversion: false) {
+                    do {
+                        if let responseJSON = try JSONSerialization.jsonObject(with: responseData, options: .mutableContainers) as? JSONContainer {
+                            if let type = responseJSON["event"] as? String, type == "trade" {
+                                if let data = (responseJSON["data"] as? String)?.data(using: .utf8), let subResponseJSON = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? JSONContainer {
+                                    if let priceNumber = subResponseJSON["price"] as? NSNumber {
+                                        self.delegate.exchange(self, didUpdatePrice: priceNumber.doubleValue)
+                                    }
+                                }
+                            }
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
             }
+            
+            socket.connect()
         }
-        
-        socket.connect()
     }
 
 }

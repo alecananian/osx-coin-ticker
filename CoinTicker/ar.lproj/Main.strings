@@ -1,0 +1,33 @@
+
+/* Class = "NSMenu"; title = "Exchange"; ObjectID = "fga-XW-why"; */
+"fga-XW-why.title" = "سوق";
+
+/* Class = "NSMenuItem"; title = "Exchange"; ObjectID = "5Er-8L-qOO"; */
+"5Er-8L-qOO.title" = "سوق";
+
+/* Class = "NSMenu"; title = "Update Interval"; ObjectID = "CVu-iO-yB7"; */
+"CVu-iO-yB7.title" = "الفاصل الزمني للتحديث";
+
+/* Class = "NSMenuItem"; title = "Update Interval"; ObjectID = "lbB-L9-6x8"; */
+"lbB-L9-6x8.title" = "الفاصل الزمني للتحديث";
+
+/* Class = "NSMenuItem"; title = "Real-Time"; ObjectID = "iQK-Z7-1Fe"; */
+"iQK-Z7-1Fe.title" = "الوقت الحقيقي";
+
+/* Class = "NSMenuItem"; title = "30 seconds"; ObjectID = "Rhw-zp-0cE"; */
+"Rhw-zp-0cE.title" = "30 ثانية";
+
+/* Class = "NSMenuItem"; title = "1 minute"; ObjectID = "nHw-cI-P1y"; */
+"nHw-cI-P1y.title" = "1 دقيقة";
+
+/* Class = "NSMenuItem"; title = "5 minutes"; ObjectID = "UVx-hm-2HX"; */
+"UVx-hm-2HX.title" = "5 دقائق";
+
+/* Class = "NSMenuItem"; title = "15 minutes"; ObjectID = "zO4-RI-LsE"; */
+"zO4-RI-LsE.title" = "15 دقيقة";
+
+/* Class = "NSMenuItem"; title = "30 minutes"; ObjectID = "iCj-ws-s49"; */
+"iCj-ws-s49.title" = "30 دقيقة";
+
+/* Class = "NSMenuItem"; title = "Quit"; ObjectID = "aEa-aJ-8Ch"; */
+"aEa-aJ-8Ch.title" = "إنهاء";

@@ -30,8 +30,23 @@ class TickerConfig {
     
     private struct Keys {
         static let UserDefaultsExchangeSite = "userDefaults.exchangeSite"
+        static let UserDefaultsUpdateInterval = "userDefaults.updateInterval"
         static let UserDefaultsBaseCurrency = "userDefaults.baseCurrency"
         static let UserDefaultsQuoteCurrency = "userDefaults.quoteCurrency"
+    }
+    
+    static let RealTimeUpdateInterval: Int = 5
+    
+    static var updateInterval: Int {
+        get {
+            let updateInterval = UserDefaults.standard.integer(forKey: Keys.UserDefaultsUpdateInterval)
+            return (updateInterval > 0 ? updateInterval : RealTimeUpdateInterval)
+        }
+        
+        set {
+            let updateInterval = (newValue > 0 ? newValue : RealTimeUpdateInterval)
+            UserDefaults.standard.set(updateInterval, forKey: Keys.UserDefaultsUpdateInterval)
+        }
     }
     
     static var defaultExchangeSite: ExchangeSite {
