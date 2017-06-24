@@ -32,10 +32,11 @@ enum ExchangeSite: Int {
     case bitstamp = 210
     case btcChina = 220
     case btce = 230
+    case coincheck = 235
     case gdax = 240
     case kraken = 250
     
-    static let allValues = [bitstamp, btcChina, btce, gdax, kraken]
+    static let allValues = [bitstamp, btcChina, btce, coincheck, gdax, kraken]
     
     var index: Int {
         return self.rawValue
@@ -46,6 +47,7 @@ enum ExchangeSite: Int {
         case .bitstamp: return "Bitstamp"
         case .btcChina: return "BTCChina"
         case .btce: return "BTC-E"
+        case .coincheck: return "Coincheck"
         case .gdax: return "GDAX"
         case .kraken: return "Kraken"
         }
@@ -124,6 +126,7 @@ class Exchange {
         case .bitstamp: return BitstampExchange(delegate: delegate)
         case .btcChina: return BTCChinaExchange(delegate: delegate)
         case .btce: return BTCEExchange(delegate: delegate)
+        case .coincheck: return CoincheckExchange(delegate: delegate)
         case .gdax: return GDAXExchange(delegate: delegate)
         case .kraken: return KrakenExchange(delegate: delegate)
         }

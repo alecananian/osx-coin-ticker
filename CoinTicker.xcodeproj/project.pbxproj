@@ -18,6 +18,7 @@
 		705F48581EDE3A29009A629D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 705F48571EDE3A29009A629D /* Assets.xcassets */; };
 		705F485B1EDE3A29009A629D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705F48591EDE3A29009A629D /* Main.storyboard */; };
 		70B63D391EE498EB00E98BFB /* BTCEExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B63D381EE498EB00E98BFB /* BTCEExchange.swift */; };
+		70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */; };
 		70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C19EA01EEA310700B668AB /* KrakenExchange.swift */; };
 		70CB5A2A1EE86AD8002F2D5A /* BTCChinaExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */; };
 /* End PBXBuildFile section */
@@ -76,6 +77,7 @@
 		70BB722B1EFA37CC0072BF42 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70BB722C1EFA3A040072BF42 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Main.strings; sourceTree = "<group>"; };
 		70BB722D1EFA3A040072BF42 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoincheckExchange.swift; sourceTree = "<group>"; };
 		70C19EA01EEA310700B668AB /* KrakenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrakenExchange.swift; sourceTree = "<group>"; };
 		70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCChinaExchange.swift; sourceTree = "<group>"; };
 		C4313FAA3E2256C8A5D25C1F /* Pods_CoinTicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoinTicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +112,7 @@
 				703581D71EDFC2EC003FDF3E /* BitstampExchange.swift */,
 				70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */,
 				70B63D381EE498EB00E98BFB /* BTCEExchange.swift */,
+				70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */,
 				703581D11EDE5477003FDF3E /* GDAXExchange.swift */,
 				70C19EA01EEA310700B668AB /* KrakenExchange.swift */,
 			);
@@ -317,6 +320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */,
 				703581D21EDE5477003FDF3E /* GDAXExchange.swift in Sources */,
 				703581DA1EDFD1A7003FDF3E /* Currency.swift in Sources */,
 				703581D41EDE57F8003FDF3E /* TickerConfig.swift in Sources */,
