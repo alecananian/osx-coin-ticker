@@ -34,6 +34,7 @@ enum Currency: Int {
     case eur = 30
     case gbp = 40
     case jpy = 50
+    case krw = 55
     case rur = 60
     case rub = 65
     case usd = 70
@@ -59,7 +60,7 @@ enum Currency: Int {
     case xrp = 260
     case zec = 270
     
-    static let AllPhysical = [cad, cny, eur, gbp, jpy, rur, rub, usd]
+    static let AllPhysical = [cad, cny, eur, gbp, jpy, krw, rur, rub, usd]
     static let AllCrypto = [btc, xbt, eth, ltc, dash, etc, gno, icn,
                             mln, nmc, nvc, ppc, rep, usdt, xdg, xlm,
                             xmr, xrp, zec]
