@@ -184,6 +184,7 @@ extension AppDelegate: ExchangeDelegate {
                 currencyMatrix[baseCurrency]?.sorted(by: { $0.displayName < $1.displayName }).forEach({
                     let item = NSMenuItem(title: $0.displayName, action: #selector(self.onSelectQuoteCurrency(sender:)), keyEquivalent: "")
                     item.tag = $0.index
+                    item.image = $0.iconImage
                     subMenu.addItem(item)
                 })
                 
