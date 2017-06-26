@@ -83,6 +83,8 @@
 		70BB722D1EFA3A040072BF42 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoincheckExchange.swift; sourceTree = "<group>"; };
 		70C19EA01EEA310700B668AB /* KrakenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrakenExchange.swift; sourceTree = "<group>"; };
+		70C7275C1F00CC490020AC66 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Main.strings; sourceTree = "<group>"; };
+		70C7275D1F00CC490020AC66 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCChinaExchange.swift; sourceTree = "<group>"; };
 		C4313FAA3E2256C8A5D25C1F /* Pods_CoinTicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoinTicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4CC49C8D7CCCB6A0878C5BD /* Pods-CoinTicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinTicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker.release.xcconfig"; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				hr,
 				fi,
 				ko,
+				cs,
 			);
 			mainGroup = 705F48471EDE3A29009A629D;
 			productRefGroup = 705F48511EDE3A29009A629D /* Products */;
@@ -368,6 +371,7 @@
 				70BB722B1EFA37CC0072BF42 /* hr */,
 				70BB722D1EFA3A040072BF42 /* fi */,
 				700DF5E31EFF932700B53BDE /* ko */,
+				70C7275D1F00CC490020AC66 /* cs */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -397,6 +401,7 @@
 				70BB722A1EFA37CC0072BF42 /* hr */,
 				70BB722C1EFA3A040072BF42 /* fi */,
 				700DF5E21EFF932700B53BDE /* ko */,
+				70C7275C1F00CC490020AC66 /* cs */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
