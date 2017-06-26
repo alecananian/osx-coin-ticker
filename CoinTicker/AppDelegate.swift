@@ -181,15 +181,24 @@ extension AppDelegate: ExchangeDelegate {
             var itemIndex = self.mainMenu.index(of: self.currencyStartSeparator) + 1
             for baseCurrency in exchange.availableBaseCurrencies {
                 let subMenu = NSMenu()
-                currencyMatrix[baseCurrency]?.sorted(by: { $0.displayName < $1.displayName }).forEach({
-                    let item = NSMenuItem(title: $0.displayName, action: #selector(self.onSelectQuoteCurrency(sender:)), keyEquivalent: "")
-                    item.tag = $0.index
-                    item.image = $0.iconImage
+                currencyMatrix[baseCurrency]?.sorted(by: { $0.displayName < $1.displayName }).forEach({ (quoteCurrency) in
+                    let item = NSMenuItem(title: quoteCurrency.displayName, action: #selector(self.onSelectQuoteCurrency(sender:)), keyEquivalent: "")
+                    item.tag = quoteCurrency.index
+                    if let smallIconImage = quoteCurrency.smallIconImage {
+                        smallIconImage.isTemplate = quoteCurrency.isCrypto
+                        item.image = smallIconImage
+                    }
+                    
                     subMenu.addItem(item)
                 })
                 
                 let item = NSMenuItem(title: baseCurrency.displayName, action: #selector(self.onSelectBaseCurrency(sender:)), keyEquivalent: "")
                 item.tag = baseCurrency.index
+                if let smallIconImage = baseCurrency.smallIconImage {
+                    smallIconImage.isTemplate = true
+                    item.image = smallIconImage
+                }
+                
                 item.submenu = subMenu
                 self.mainMenu.insertItem(item, at: itemIndex)
                 self.currencyMenuItems.append(item)

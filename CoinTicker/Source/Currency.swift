@@ -97,6 +97,10 @@ enum Currency: Int {
         return NSImage(named: NSImage.Name(rawValue: code))
     }
     
+    var smallIconImage: NSImage? {
+        return NSImage(named: NSImage.Name(rawValue: "\(code)_small"))
+    }
+    
     var isCrypto: Bool {
         return (self.rawValue >= 100)
     }
