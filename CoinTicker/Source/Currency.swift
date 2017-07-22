@@ -43,6 +43,7 @@ enum Currency: Int {
     case btc = 100
     case xbt = 105
     case dash = 110
+    case eos = 115
     case etc = 120
     case eth = 130
     case gno = 140
@@ -61,9 +62,9 @@ enum Currency: Int {
     case zec = 270
     
     static let AllPhysical = [cad, cny, eur, gbp, jpy, krw, rur, rub, usd]
-    static let AllCrypto = [btc, xbt, eth, ltc, dash, etc, gno, icn,
-                            mln, nmc, nvc, ppc, rep, usdt, xdg, xlm,
-                            xmr, xrp, zec]
+    static let AllCrypto = [btc, xbt, eos, eth, ltc, dash, etc, gno, icn,
+                            mln, nmc, nvc, ppc, rep, usdt, xdg, xlm, xmr,
+                            xrp, zec]
     static let AllValues = AllCrypto + AllPhysical
     
     var code: String {
