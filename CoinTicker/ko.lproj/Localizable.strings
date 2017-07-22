@@ -1,0 +1,33 @@
+"menu.label.loading" = "알림 로딩중...";
+"menu.label.offline" = "오프라인";
+
+"currency.usd.title" = "USD (미국 달러)";
+"currency.eur.title" = "EUR (유로)";
+"currency.gbp.title" = "GBP (파운드 스털링)";
+"currency.cad.title" = "CAD (캐나다 달러)";
+"currency.cny.title" = "CNY (중국 위안)";
+"currency.jpy.title" = "JPY (일본 엔)";
+"currency.krw.title" = "KRW (대한민국 원)";
+"currency.rur.title" = "RUR (러시아 루블)";
+"currency.rub.title" = "RUB (러시아 루블)";
+
+"currency.btc.title" = "BTC (비트코인)";
+"currency.xbt.title" = "XBT (비트코인)";
+"currency.eos.title" = "EOS (Eos Coin)";
+"currency.eth.title" = "ETH (이더리움)";
+"currency.ltc.title" = "LTC (라이트코인)";
+"currency.rep.title" = "REP (Augur)";
+"currency.dash.title" = "DASH (Dash)";
+"currency.xdg.title" = "XDG (도지코인)";
+"currency.etc.title" = "ETC (이더리움 클래식)";
+"currency.gno.title" = "GNO (Gnosis)";
+"currency.icn.title" = "ICN (Iconomi)";
+"currency.mln.title" = "MLN (Melon)";
+"currency.xmr.title" = "XMR (Monero)";
+"currency.nmc.title" = "NMC (네임코인)";
+"currency.nvc.title" = "NVC (Novacoin)";
+"currency.ppc.title" = "PPC (피어코인)";
+"currency.xrp.title" = "XRP (리플)";
+"currency.xlm.title" = "XLM (Stellar Lumens)";
+"currency.usdt.title" = "USDT (Tether)";
+"currency.zec.title" = "ZEC (Zcash)";

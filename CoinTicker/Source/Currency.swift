@@ -34,6 +34,7 @@ enum Currency: Int {
     case eur = 30
     case gbp = 40
     case jpy = 50
+    case krw = 55
     case rur = 60
     case rub = 65
     case usd = 70
@@ -42,6 +43,7 @@ enum Currency: Int {
     case btc = 100
     case xbt = 105
     case dash = 110
+    case eos = 115
     case etc = 120
     case eth = 130
     case gno = 140
@@ -59,10 +61,10 @@ enum Currency: Int {
     case xrp = 260
     case zec = 270
     
-    static let AllPhysical = [cad, cny, eur, gbp, jpy, rur, rub, usd]
-    static let AllCrypto = [btc, xbt, eth, ltc, dash, etc, gno, icn,
-                            mln, nmc, nvc, ppc, rep, usdt, xdg, xlm,
-                            xmr, xrp, zec]
+    static let AllPhysical = [cad, cny, eur, gbp, jpy, krw, rur, rub, usd]
+    static let AllCrypto = [btc, xbt, eos, eth, ltc, dash, etc, gno, icn,
+                            mln, nmc, nvc, ppc, rep, usdt, xdg, xlm, xmr,
+                            xrp, zec]
     static let AllValues = AllCrypto + AllPhysical
     
     var code: String {
@@ -94,6 +96,10 @@ enum Currency: Int {
     
     var iconImage: NSImage? {
         return NSImage(named: NSImage.Name(rawValue: code))
+    }
+    
+    var smallIconImage: NSImage? {
+        return NSImage(named: NSImage.Name(rawValue: "\(code)_small"))
     }
     
     var isCrypto: Bool {

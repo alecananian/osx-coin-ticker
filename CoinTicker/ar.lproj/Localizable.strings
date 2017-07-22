@@ -7,11 +7,13 @@
 "currency.cad.title" = "الدولار الكندي (CAD)";
 "currency.cny.title" = "اليوان الرينمنبي الصيني (CNY)";
 "currency.jpy.title" = "الين الياباني (JPY)";
+"currency.krw.title" = "وون كوري جنوبي (KRW)";
 "currency.rur.title" = "الروبل الروسي (RUR)";
 "currency.rub.title" = "الروبل الروسي (RUB)";
 
 "currency.btc.title" = "بيتكوين (BTC)";
 "currency.xbt.title" = "بيتكوين (XBT)";
+"currency.eos.title" = "(EOS) Eos Coin";
 "currency.eth.title" = "(ETH) Ethereum";
 "currency.ltc.title" = "(LTC) Litecoin";
 "currency.rep.title" = "(REP) Augur";

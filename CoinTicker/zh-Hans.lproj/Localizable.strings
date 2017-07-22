@@ -7,11 +7,13 @@
 "currency.cad.title" = "CAD (加拿大元)";
 "currency.cny.title" = "CNY (中国人民币)";
 "currency.jpy.title" = "JPY (日元)";
+"currency.krw.title" = "KRW (韩圆)";
 "currency.rur.title" = "RUR (俄罗斯卢布)";
 "currency.rub.title" = "RUB (俄罗斯卢布)";
 
 "currency.btc.title" = "BTC (比特币)";
 "currency.xbt.title" = "XBT (比特币)";
+"currency.eos.title" = "EOS (Eos Coin)";
 "currency.eth.title" = "ETH (以太坊)";
 "currency.ltc.title" = "LTC (莱特币)";
 "currency.rep.title" = "REP (Augur)";

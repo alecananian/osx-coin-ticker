@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4A02161E067CD0EBA5985D5D /* Pods_CoinTicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4313FAA3E2256C8A5D25C1F /* Pods_CoinTicker.framework */; };
+		700DF5E11EFF8E5700B53BDE /* KorbitExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700DF5E01EFF8E5100B53BDE /* KorbitExchange.swift */; };
 		703581D21EDE5477003FDF3E /* GDAXExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D11EDE5477003FDF3E /* GDAXExchange.swift */; };
 		703581D41EDE57F8003FDF3E /* TickerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D31EDE57F8003FDF3E /* TickerConfig.swift */; };
 		703581D61EDE580B003FDF3E /* Exchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D51EDE580B003FDF3E /* Exchange.swift */; };
@@ -18,11 +19,15 @@
 		705F48581EDE3A29009A629D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 705F48571EDE3A29009A629D /* Assets.xcassets */; };
 		705F485B1EDE3A29009A629D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705F48591EDE3A29009A629D /* Main.storyboard */; };
 		70B63D391EE498EB00E98BFB /* BTCEExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B63D381EE498EB00E98BFB /* BTCEExchange.swift */; };
+		70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */; };
 		70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C19EA01EEA310700B668AB /* KrakenExchange.swift */; };
 		70CB5A2A1EE86AD8002F2D5A /* BTCChinaExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		700DF5E01EFF8E5100B53BDE /* KorbitExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KorbitExchange.swift; sourceTree = "<group>"; };
+		700DF5E21EFF932700B53BDE /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
+		700DF5E31EFF932700B53BDE /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70155C371EEDDD150037A819 /* CoinTicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CoinTicker.entitlements; sourceTree = "<group>"; };
 		70155C391EF5BF260037A819 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main.strings; sourceTree = "<group>"; };
 		70155C3A1EF5BF260037A819 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -76,7 +81,10 @@
 		70BB722B1EFA37CC0072BF42 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70BB722C1EFA3A040072BF42 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Main.strings; sourceTree = "<group>"; };
 		70BB722D1EFA3A040072BF42 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoincheckExchange.swift; sourceTree = "<group>"; };
 		70C19EA01EEA310700B668AB /* KrakenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrakenExchange.swift; sourceTree = "<group>"; };
+		70C7275C1F00CC490020AC66 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Main.strings; sourceTree = "<group>"; };
+		70C7275D1F00CC490020AC66 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCChinaExchange.swift; sourceTree = "<group>"; };
 		C4313FAA3E2256C8A5D25C1F /* Pods_CoinTicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoinTicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4CC49C8D7CCCB6A0878C5BD /* Pods-CoinTicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinTicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker.release.xcconfig"; sourceTree = "<group>"; };
@@ -110,7 +118,9 @@
 				703581D71EDFC2EC003FDF3E /* BitstampExchange.swift */,
 				70CB5A291EE86009002F2D5A /* BTCChinaExchange.swift */,
 				70B63D381EE498EB00E98BFB /* BTCEExchange.swift */,
+				70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */,
 				703581D11EDE5477003FDF3E /* GDAXExchange.swift */,
+				700DF5E01EFF8E5100B53BDE /* KorbitExchange.swift */,
 				70C19EA01EEA310700B668AB /* KrakenExchange.swift */,
 			);
 			path = Exchanges;
@@ -240,6 +250,8 @@
 				nb,
 				hr,
 				fi,
+				ko,
+				cs,
 			);
 			mainGroup = 705F48471EDE3A29009A629D;
 			productRefGroup = 705F48511EDE3A29009A629D /* Products */;
@@ -317,6 +329,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */,
 				703581D21EDE5477003FDF3E /* GDAXExchange.swift in Sources */,
 				703581DA1EDFD1A7003FDF3E /* Currency.swift in Sources */,
 				703581D41EDE57F8003FDF3E /* TickerConfig.swift in Sources */,
@@ -324,6 +337,7 @@
 				70CB5A2A1EE86AD8002F2D5A /* BTCChinaExchange.swift in Sources */,
 				703581D81EDFC2EC003FDF3E /* BitstampExchange.swift in Sources */,
 				70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */,
+				700DF5E11EFF8E5700B53BDE /* KorbitExchange.swift in Sources */,
 				70B63D391EE498EB00E98BFB /* BTCEExchange.swift in Sources */,
 				703581D61EDE580B003FDF3E /* Exchange.swift in Sources */,
 			);
@@ -356,6 +370,8 @@
 				70155C5C1EF72AC70037A819 /* nb */,
 				70BB722B1EFA37CC0072BF42 /* hr */,
 				70BB722D1EFA3A040072BF42 /* fi */,
+				700DF5E31EFF932700B53BDE /* ko */,
+				70C7275D1F00CC490020AC66 /* cs */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -384,6 +400,8 @@
 				70155C5B1EF72AC60037A819 /* nb */,
 				70BB722A1EFA37CC0072BF42 /* hr */,
 				70BB722C1EFA3A040072BF42 /* fi */,
+				700DF5E21EFF932700B53BDE /* ko */,
+				70C7275C1F00CC490020AC66 /* cs */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

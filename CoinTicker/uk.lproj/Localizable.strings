@@ -7,11 +7,13 @@
 "currency.cad.title" = "CAD (Канадський долар)";
 "currency.cny.title" = "CNY (Китайський юань)";
 "currency.jpy.title" = "JPY (Японська єна)";
+"currency.krw.title" = "KRW (Південнокорейська вона)";
 "currency.rur.title" = "RUR (Російський рубль)";
 "currency.rub.title" = "RUB (Російський рубль)";
 
 "currency.btc.title" = "BTC (Біткойн)";
 "currency.xbt.title" = "XBT (Біткойн)";
+"currency.eos.title" = "EOS (Eos Coin)";
 "currency.eth.title" = "ETH (Ethereum)";
 "currency.ltc.title" = "LTC (Litecoin)";
 "currency.rep.title" = "REP (Augur)";
