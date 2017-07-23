@@ -127,4 +127,8 @@ Carthage/Build
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 
+### Fabric ###
+fabric.apikey
+fabric.buildsecret
+
 # End of https://www.gitignore.io/api/osx,swift,xcode,cocoapods

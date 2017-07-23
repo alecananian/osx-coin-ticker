@@ -26,6 +26,8 @@
 
 import Cocoa
 import Alamofire
+import Fabric
+import Crashlytics
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -48,6 +50,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // MARK: NSApplicationDelegate
     func applicationDidFinishLaunching(_ aNotification: Notification) {
+        // Start Fabric
+        UserDefaults.standard.register(defaults: ["NSApplicationCrashOnExceptions": true])
+        if let resourceURL = Bundle.main.url(forResource: "fabric", withExtension: "apikey") {
+            do {
+                var apiKey = try String.init(contentsOf: resourceURL, encoding: .utf8)
+                apiKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
+                Crashlytics.start(withAPIKey: apiKey)
+            } catch {
+                print("Error loading Fabric API key: \(error)")
+            }
+        }
+        
         // Listen to workspace status notifications
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(onWorkspaceWillSleep(notification:)), name: NSWorkspace.willSleepNotification, object: nil)
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(onWorkspaceDidWake(notification:)), name: NSWorkspace.didWakeNotification, object: nil)
@@ -136,6 +150,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 currentExchange.stop()
                 currentExchange = Exchange.build(fromSite: exchangeSite, delegate: self)
                 currentExchange.start()
+                TrackingUtils.didSelectExchange(exchangeSite)
             }
         }
     }
@@ -145,6 +160,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             TickerConfig.updateInterval = menuItem.tag
             currentExchange.reset()
             updateMenuStates(forExchange: currentExchange)
+            TrackingUtils.didSelectUpdateInterval(TickerConfig.updateInterval)
         }
     }
     
@@ -153,15 +169,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             currentExchange.baseCurrency = baseCurrency
             currentExchange.reset()
             updateMenuStates(forExchange: currentExchange)
+            TrackingUtils.didSelectBaseCurrency(baseCurrency)
         }
     }
     
     @objc fileprivate func onSelectQuoteCurrency(sender: AnyObject) {
         if let menuItem = sender as? NSMenuItem, let parentMenuItem = menuItem.parent, let quoteCurrency = Currency.build(fromIndex: menuItem.tag), let baseCurrency = Currency.build(fromIndex: parentMenuItem.tag) {
+            if baseCurrency != currentExchange.baseCurrency {
+                TrackingUtils.didSelectBaseCurrency(baseCurrency)
+            }
+            
             currentExchange.baseCurrency = baseCurrency
             currentExchange.quoteCurrency = quoteCurrency
             currentExchange.reset()
             updateMenuStates(forExchange: currentExchange)
+            TrackingUtils.didSelectQuoteCurrency(quoteCurrency)
         }
     }
     
