@@ -67,7 +67,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(onWorkspaceDidWake(notification:)), name: NSWorkspace.didWakeNotification, object: nil)
         
         // Listen to network reachability status
-        reachabilityManager.listenerQueue = DispatchQueue(label: "com.alecananian.cointicker.reachability", qos: .utility, attributes: [.concurrent])
+        reachabilityManager.listenerQueue = DispatchQueue(label: "cointicker.reachability", qos: .utility, attributes: [.concurrent])
         reachabilityManager.listener = { [unowned self] status in
             if status == .reachable(.ethernetOrWiFi) || status == .reachable(.wwan) {
                 self.currentExchange?.start()

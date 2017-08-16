@@ -33,7 +33,7 @@ class KorbitExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.korbit.co.kr/v1/ticker?currency_pair=%@"
     }
     
-    private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.korbit-api", qos: .utility, attributes: [.concurrent])
+    private let apiResponseQueue = DispatchQueue(label: "cointicker.korbit-api", qos: .utility, attributes: [.concurrent])
     
     init(delegate: ExchangeDelegate) {
         super.init(site: .korbit, delegate: delegate)

@@ -34,7 +34,7 @@ class KrakenExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.kraken.com/0/public/Ticker?pair=%@"
     }
     
-    private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.kraken-api", qos: .utility, attributes: [.concurrent])
+    private let apiResponseQueue = DispatchQueue(label: "cointicker.kraken-api", qos: .utility, attributes: [.concurrent])
     
     init(delegate: ExchangeDelegate) {
         super.init(site: .kraken, delegate: delegate)

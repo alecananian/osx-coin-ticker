@@ -34,7 +34,7 @@ class BTCEExchange: Exchange {
         static let TickerAPIPathFormat = "https://btc-e.com/api/3/ticker/%@"
     }
     
-    private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.btce-api", qos: .utility, attributes: [.concurrent])
+    private let apiResponseQueue = DispatchQueue(label: "cointicker.btce-api", qos: .utility, attributes: [.concurrent])
     
     init(delegate: ExchangeDelegate) {
         super.init(site: .btce, delegate: delegate)

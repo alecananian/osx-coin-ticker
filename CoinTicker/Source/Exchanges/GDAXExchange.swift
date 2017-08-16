@@ -36,8 +36,8 @@ class GDAXExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.gdax.com/products/%@/ticker"
     }
     
-    private let webSocketQueue = DispatchQueue(label: "com.alecananian.cointicker.gdax-socket", qos: .utility, attributes: [.concurrent])
-    private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.gdax-api", qos: .utility, attributes: [.concurrent])
+    private let webSocketQueue = DispatchQueue(label: "cointicker.gdax-socket", qos: .utility, attributes: [.concurrent])
+    private let apiResponseQueue = DispatchQueue(label: "cointicker.gdax-api", qos: .utility, attributes: [.concurrent])
     private var socket = WebSocket(url: Constants.WebSocketURL)
     
     init(delegate: ExchangeDelegate) {
