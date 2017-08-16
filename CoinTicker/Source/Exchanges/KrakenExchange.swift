@@ -67,7 +67,7 @@ class KrakenExchange: Exchange {
         
         apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
             if let result = (response.result.value as? JSONContainer)?["result"] as? JSONContainer, let currencyPairCode = result.keys.first, let currencyPairData = result[currencyPairCode] as? JSONContainer {
-                if let priceString = (currencyPairData["p"] as? [String])?.last, let price = Double(priceString) {
+                if let priceString = (currencyPairData["c"] as? [String])?.first, let price = Double(priceString) {
                     self.delegate.exchange(self, didUpdatePrice: price)
                 }
             }
