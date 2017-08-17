@@ -35,8 +35,8 @@ class BTCChinaExchange: Exchange {
         static let TickerAPIPathFormat = "https://data.btcchina.com/data/ticker?market=%@"
     }
     
-    private let webSocketQueue = DispatchQueue(label: "com.alecananian.cointicker.btcchina-socket", qos: .utility, attributes: [.concurrent])
-    private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.btcchina-api", qos: .utility, attributes: [.concurrent])
+    private let webSocketQueue = DispatchQueue(label: "cointicker.btcchina-socket", qos: .utility, attributes: [.concurrent])
+    private let apiResponseQueue = DispatchQueue(label: "cointicker.btcchina-api", qos: .utility, attributes: [.concurrent])
     private var socket = SocketIOClient(socketURL: Constants.WebSocketURL)
     
     init(delegate: ExchangeDelegate) {

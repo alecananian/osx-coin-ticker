@@ -35,8 +35,8 @@ class BitstampExchange: Exchange {
         static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%@/"
     }
     
-    private let webSocketQueue = DispatchQueue(label: "com.alecananian.cointicker.bitstamp-socket", qos: .utility, attributes: [.concurrent])
-    private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.bitstamp-api", qos: .utility, attributes: [.concurrent])
+    private let webSocketQueue = DispatchQueue(label: "cointicker.bitstamp-socket", qos: .utility, attributes: [.concurrent])
+    private let apiResponseQueue = DispatchQueue(label: "cointicker.bitstamp-api", qos: .utility, attributes: [.concurrent])
     private var socket = WebSocket(url: Constants.WebSocketURL)
     
     init(delegate: ExchangeDelegate) {

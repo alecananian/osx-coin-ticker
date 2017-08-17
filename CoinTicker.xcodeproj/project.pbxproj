@@ -18,6 +18,8 @@
 		705F48541EDE3A29009A629D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705F48531EDE3A29009A629D /* AppDelegate.swift */; };
 		705F48581EDE3A29009A629D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 705F48571EDE3A29009A629D /* Assets.xcassets */; };
 		705F485B1EDE3A29009A629D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705F48591EDE3A29009A629D /* Main.storyboard */; };
+		70AE284B1F25214D0082BDD2 /* TrackingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AE284A1F2520FC0082BDD2 /* TrackingUtils.swift */; };
+		70AE284E1F2524E30082BDD2 /* fabric.apikey in Resources */ = {isa = PBXBuildFile; fileRef = 70AE284D1F2524E30082BDD2 /* fabric.apikey */; };
 		70B63D391EE498EB00E98BFB /* BTCEExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B63D381EE498EB00E98BFB /* BTCEExchange.swift */; };
 		70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */; };
 		70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C19EA01EEA310700B668AB /* KrakenExchange.swift */; };
@@ -76,6 +78,9 @@
 		705F48571EDE3A29009A629D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		705F485A1EDE3A29009A629D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		705F485C1EDE3A29009A629D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		70AE284A1F2520FC0082BDD2 /* TrackingUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackingUtils.swift; sourceTree = "<group>"; };
+		70AE284D1F2524E30082BDD2 /* fabric.apikey */ = {isa = PBXFileReference; lastKnownFileType = text; path = fabric.apikey; sourceTree = "<group>"; };
+		70AE284F1F2524F00082BDD2 /* fabric.buildsecret */ = {isa = PBXFileReference; lastKnownFileType = text; path = fabric.buildsecret; sourceTree = "<group>"; };
 		70B63D381EE498EB00E98BFB /* BTCEExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BTCEExchange.swift; sourceTree = "<group>"; };
 		70BB722A1EFA37CC0072BF42 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Main.strings; sourceTree = "<group>"; };
 		70BB722B1EFA37CC0072BF42 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -150,6 +155,7 @@
 				70155C371EEDDD150037A819 /* CoinTicker.entitlements */,
 				705F48531EDE3A29009A629D /* AppDelegate.swift */,
 				705F48621EDE3EC2009A629D /* Source */,
+				70AE284C1F2524C00082BDD2 /* Resources */,
 				705F48571EDE3A29009A629D /* Assets.xcassets */,
 				705F48591EDE3A29009A629D /* Main.storyboard */,
 				705F485C1EDE3A29009A629D /* Info.plist */,
@@ -165,8 +171,26 @@
 				703581D51EDE580B003FDF3E /* Exchange.swift */,
 				703581D31EDE57F8003FDF3E /* TickerConfig.swift */,
 				703581D01EDE5469003FDF3E /* Exchanges */,
+				70AE28491F2520FC0082BDD2 /* Utilities */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		70AE28491F2520FC0082BDD2 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				70AE284A1F2520FC0082BDD2 /* TrackingUtils.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		70AE284C1F2524C00082BDD2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				70AE284D1F2524E30082BDD2 /* fabric.apikey */,
+				70AE284F1F2524F00082BDD2 /* fabric.buildsecret */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		9E5E9B1C44AAA8CFA4B0B331 /* Frameworks */ = {
@@ -190,6 +214,7 @@
 				705F484E1EDE3A29009A629D /* Resources */,
 				495CA9F0A15077CA3B6B018F /* [CP] Embed Pods Frameworks */,
 				2DC0616423D299B61A0E18ED /* [CP] Copy Pods Resources */,
+				70AE28471F251EA80082BDD2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -269,6 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				705F48581EDE3A29009A629D /* Assets.xcassets in Resources */,
+				70AE284E1F2524E30082BDD2 /* fabric.apikey in Resources */,
 				703581E01EDFDBD7003FDF3E /* Localizable.strings in Resources */,
 				705F485B1EDE3A29009A629D /* Main.storyboard in Resources */,
 			);
@@ -307,6 +333,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		70AE28471F251EA80082BDD2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "FABRIC_APIKEY_FILE=\"${SRCROOT}/CoinTicker/Resources/fabric.apikey\"\nFABRIC_BUILDSECRET_FILE=\"${SRCROOT}/CoinTicker/Resources/fabric.buildsecret\"\n\nif test ! -f \"$FABRIC_APIKEY_FILE\" -o ! -f \"$FABRIC_BUILDSECRET_FILE\"; then\n    echo \"This build wants to upload dSYM files to Crashlytics.\"\n    echo \"Uploading is possible only if a Fabric API key and a Fabric build secret are\"\n    echo \"available. This build is failing because at least one of these pieces of\"\n    echo \"information is missing.\"\n    echo \"\"\n    echo \"To fix the problem, create the following files and store the API key and\"\n    echo \"build secret, respectively, within those files:\"\n    echo \"\"\n    echo \"  $FABRIC_APIKEY_FILE\"\n    echo \"  $FABRIC_BUILDSECRET_FILE\"\n    echo \"\"\n\n    # Let the build fail\n    exit 1\nfi\n\nFABRIC_APIKEY=$(cat \"$FABRIC_APIKEY_FILE\")\nif test $? -ne 0; then\n    echo \"Cannot read $FABRIC_APIKEY_FILE\"\n    exit 1\nfi\n\nFABRIC_BUILDSECRET=$(cat \"$FABRIC_BUILDSECRET_FILE\")\nif test $? -ne 0; then\n    echo \"Cannot read $FABRIC_BUILDSECRET_FILE\"\n    exit 1\nfi\n\necho \"Uploading dSYM files to Crashlytics\"\n\"${PODS_ROOT}/Fabric/run\" \"$FABRIC_APIKEY\" \"$FABRIC_BUILDSECRET\"";
+		};
 		885B29D35E6CB2760E88D97D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -335,6 +374,7 @@
 				703581D41EDE57F8003FDF3E /* TickerConfig.swift in Sources */,
 				705F48541EDE3A29009A629D /* AppDelegate.swift in Sources */,
 				70CB5A2A1EE86AD8002F2D5A /* BTCChinaExchange.swift in Sources */,
+				70AE284B1F25214D0082BDD2 /* TrackingUtils.swift in Sources */,
 				703581D81EDFC2EC003FDF3E /* BitstampExchange.swift in Sources */,
 				70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */,
 				700DF5E11EFF8E5700B53BDE /* KorbitExchange.swift in Sources */,

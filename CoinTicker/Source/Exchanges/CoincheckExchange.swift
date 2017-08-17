@@ -33,7 +33,7 @@ class CoincheckExchange: Exchange {
         static let TickerAPIPath = "https://coincheck.com/api/ticker"
     }
     
-    private let apiResponseQueue = DispatchQueue(label: "com.alecananian.cointicker.coincheck-api", qos: .utility, attributes: [.concurrent])
+    private let apiResponseQueue = DispatchQueue(label: "cointicker.coincheck-api", qos: .utility, attributes: [.concurrent])
     
     init(delegate: ExchangeDelegate) {
         super.init(site: .coincheck, delegate: delegate)
