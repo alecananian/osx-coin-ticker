@@ -111,14 +111,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // MARK: UI Helpers
     fileprivate func updateMenuStates(forExchange exchange: Exchange) {
-        exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == exchange.site.index ? .onState : .offState) })
-        updateIntervalMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == TickerConfig.updateInterval ? .onState : .offState) })
+        exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == exchange.site.index ? .on : .off) })
+        updateIntervalMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == TickerConfig.updateInterval ? .on : .off) })
         
         for menuItem in currencyMenuItems {
             let isSelected = (menuItem.tag == exchange.baseCurrency.index)
-            menuItem.state = (isSelected ? .onState : .offState)
+            menuItem.state = (isSelected ? .on : .off)
             if let subMenu = menuItem.submenu {
-                subMenu.items.forEach({ $0.state = (isSelected && $0.tag == exchange.quoteCurrency.index ? .onState : .offState) })
+                subMenu.items.forEach({ $0.state = (isSelected && $0.tag == exchange.quoteCurrency.index ? .on : .off) })
             }
         }
         
