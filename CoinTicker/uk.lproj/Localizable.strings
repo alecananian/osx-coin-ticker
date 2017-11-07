@@ -13,6 +13,8 @@
 
 "currency.btc.title" = "BTC (Біткойн)";
 "currency.xbt.title" = "XBT (Біткойн)";
+"currency.bcc.title" = "BCC (Bitcoin Cash)";
+"currency.bch.title" = "BCH (Bitcoin Cash)";
 "currency.eos.title" = "EOS (Eos Coin)";
 "currency.eth.title" = "ETH (Ethereum)";
 "currency.ltc.title" = "LTC (Litecoin)";
