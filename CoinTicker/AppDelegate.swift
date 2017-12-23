@@ -208,7 +208,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             var iconImage: NSImage? = nil
             if TickerConfig.selectedCurrencyPairs.count == 1 {
-                iconImage = TickerConfig.selectedCurrencyPairs.keys.first!.baseCurrency.iconImage
+                iconImage = TickerConfig.selectedCurrencyPairs.first!.baseCurrency.iconImage
                 iconImage?.isTemplate = true
             }
             
@@ -218,26 +218,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     fileprivate func updatePrices() {
-        let priceStrings = TickerConfig.selectedCurrencyPairs.flatMap { (currencyPair, price) in
-            var priceString: String
-            if price > 0 {
-                currencyFormatter.numberStyle = .currency
-                currencyFormatter.currencyCode = currencyPair.quoteCurrency.code
-                currencyFormatter.currencySymbol = currencyPair.quoteCurrency.symbol
-                currencyFormatter.maximumFractionDigits = (price < 1 ? 5 : 2)
-                priceString = currencyFormatter.string(for: price)!
-            } else {
-                priceString = NSLocalizedString("menu.label.loading", comment: "Label displayed when network requests are loading")
-            }
-            
-            if TickerConfig.selectedCurrencyPairs.count == 1 {
-                return priceString
-            }
-            
-            return "\(currencyPair.baseCurrency.code): \(priceString)"
-        }
-        
         DispatchQueue.main.async {
+            let priceStrings = TickerConfig.selectedCurrencyPairs.flatMap { (currencyPair) in
+                let price = TickerConfig.price(for: currencyPair)
+                var priceString: String
+                if price > 0 {
+                    self.currencyFormatter.numberStyle = .currency
+                    self.currencyFormatter.currencyCode = currencyPair.quoteCurrency.code
+                    self.currencyFormatter.currencySymbol = currencyPair.quoteCurrency.symbol
+                    self.currencyFormatter.maximumFractionDigits = (price < 1 ? 5 : 2)
+                    priceString = self.currencyFormatter.string(for: price)!
+                } else {
+                    priceString = NSLocalizedString("menu.label.loading", comment: "Label displayed when network requests are loading")
+                }
+                
+                if TickerConfig.selectedCurrencyPairs.count == 1 {
+                    return priceString
+                }
+                
+                return "\(currencyPair.baseCurrency.code): \(priceString)"
+            }
+            
             self.statusItem.title = priceStrings.joined(separator: " • ")
         }
     }
@@ -247,14 +248,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 extension AppDelegate: ExchangeDelegate {
     
     func exchange(_ exchange: Exchange, didUpdateAvailableCurrencyPairs availableCurrencyPairs: [CurrencyPair]) {
-        TickerConfig.selectedCurrencyPairs.keys.forEach { (currencyPair) in
+        TickerConfig.selectedCurrencyPairs.forEach { (currencyPair) in
             if !availableCurrencyPairs.contains(currencyPair) {
                 TickerConfig.deselectCurrencyPair(currencyPair)
             }
         }
         
-        if TickerConfig.selectedCurrencyPairs.count == 0, let currencyPair = availableCurrencyPairs.first {
-            _ = TickerConfig.toggle(currencyPair: currencyPair)
+        if TickerConfig.selectedCurrencyPairs.count == 0 {
+            var currencyPair: CurrencyPair? = nil
+            if let localCurrencyCode = Locale.current.currencyCode, let localCurrency = Currency.build(fromCode: localCurrencyCode) {
+                currencyPair = availableCurrencyPairs.first(where: { $0.quoteCurrency == localCurrency })
+            }
+            
+            if currencyPair == nil {
+                if let usdCurrencyPair = availableCurrencyPairs.first(where: { $0.quoteCurrency == .usd }) {
+                    currencyPair = usdCurrencyPair
+                } else {
+                    currencyPair = availableCurrencyPairs.first
+                }
+            }
+        
+            _ = TickerConfig.toggle(currencyPair: currencyPair!)
         }
         
         updateMenuItems()

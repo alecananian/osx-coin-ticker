@@ -60,7 +60,7 @@ class KrakenExchange: Exchange {
     }
     
     override internal func fetch() {
-        TickerConfig.selectedCurrencyPairs.keys.forEach({ (currencyPair) in
+        TickerConfig.selectedCurrencyPairs.forEach({ (currencyPair) in
             let productId = "\(currencyPair.baseCurrency.code)\(currencyPair.quoteCurrency.code)".uppercased()
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
             apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { (response) in

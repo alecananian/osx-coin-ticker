@@ -51,7 +51,7 @@ class KorbitExchange: Exchange {
     }
     
     override internal func fetch() {
-        TickerConfig.selectedCurrencyPairs.keys.forEach({ (currencyPair) in
+        TickerConfig.selectedCurrencyPairs.forEach({ (currencyPair) in
             let productId = currencyPair.code(withSeparator: "_").lowercased()
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
             apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { (response) in

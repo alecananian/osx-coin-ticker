@@ -70,7 +70,7 @@ class BitstampExchange: Exchange {
                 sockets = [WebSocket]()
             }
             
-            TickerConfig.selectedCurrencyPairs.keys.forEach({ (currencyPair) in
+            TickerConfig.selectedCurrencyPairs.forEach({ (currencyPair) in
                 let productId = self.productId(forCurrencyPair: currencyPair)
                 let socket = WebSocket(url: Constants.WebSocketURL)
                 socket.callbackQueue = socketResponseQueue(label: productId)
@@ -104,7 +104,7 @@ class BitstampExchange: Exchange {
                 sockets!.append(socket)
             })
         } else {
-            TickerConfig.selectedCurrencyPairs.keys.forEach({ (currencyPair) in
+            TickerConfig.selectedCurrencyPairs.forEach({ (currencyPair) in
                 let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId(forCurrencyPair: currencyPair))
                 apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { (response) in
                     switch response.result {

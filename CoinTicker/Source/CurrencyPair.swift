@@ -74,15 +74,27 @@ struct CurrencyPair: Hashable, Comparable {
     }
     
     static func <(lhs: CurrencyPair, rhs: CurrencyPair) -> Bool {
-        return (
-            (lhs.baseCurrency.isBitcoin && !rhs.baseCurrency.isBitcoin) ||
-            (lhs.baseCurrency.isBitcoinCash && !rhs.baseCurrency.isBitcoin && !rhs.baseCurrency.isBitcoinCash) ||
-            (lhs.baseCurrency == rhs.baseCurrency && (
-                (lhs.quoteCurrency.isBitcoin && !rhs.quoteCurrency.isBitcoin) ||
-                (lhs.quoteCurrency.code < rhs.quoteCurrency.code)
-            )) ||
-            (lhs.baseCurrency.code < rhs.baseCurrency.code)
-        )
+        if lhs.baseCurrency.isBitcoin && !rhs.baseCurrency.isBitcoin {
+            return true
+        }
+        
+        if !lhs.baseCurrency.isBitcoin && rhs.baseCurrency.isBitcoin {
+            return false
+        }
+        
+        if lhs.baseCurrency.isBitcoinCash && !rhs.baseCurrency.isBitcoin && !rhs.baseCurrency.isBitcoinCash {
+            return true
+        }
+        
+        if lhs.baseCurrency == rhs.baseCurrency {
+            if lhs.quoteCurrency.isBitcoin && !rhs.quoteCurrency.isBitcoin {
+                return true
+            }
+            
+            return lhs.quoteCurrency.code < lhs.quoteCurrency.code
+        }
+        
+        return lhs.baseCurrency.code < rhs.baseCurrency.code
     }
     
     static func == (lhs: CurrencyPair, rhs: CurrencyPair) -> Bool {
