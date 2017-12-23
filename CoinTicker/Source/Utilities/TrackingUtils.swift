@@ -30,14 +30,15 @@ import Crashlytics
 enum TrackedEvent: String {
     case selectExchange = "Select Exchange"
     case selectUpdateInterval = "Select Update Interval"
-    case selectBaseCurrency = "Select Base Currency"
-    case selectQuoteCurrency = "Select Quote Currency"
+    case selectCurrencyPair = "Select Currency Pair"
+    case deselectCurrencyPair = "Deselect Currency Pair"
 }
 
 enum TrackedEventAttributes: String {
     case exchange = "Exchange"
     case updateInterval = "Update Interval"
     case currency = "Currency"
+    case currencyPair = "Currency Pair"
 }
 
 struct TrackingUtils {
@@ -54,12 +55,12 @@ struct TrackingUtils {
         log(.selectUpdateInterval, withAttributes: [TrackedEventAttributes.updateInterval.rawValue: updateInterval])
     }
     
-    static func didSelectBaseCurrency(_ currency: Currency) {
-        log(.selectBaseCurrency, withAttributes: [TrackedEventAttributes.currency.rawValue: currency.code])
+    static func didSelectCurrencyPair(_ currencyPair: CurrencyPair) {
+        log(.selectCurrencyPair, withAttributes: [TrackedEventAttributes.currencyPair.rawValue: currencyPair.code])
     }
     
-    static func didSelectQuoteCurrency(_ currency: Currency) {
-        log(.selectQuoteCurrency, withAttributes: [TrackedEventAttributes.currency.rawValue: currency.code])
+    static func didDeselectCurrencyPair(_ currencyPair: CurrencyPair) {
+        log(.deselectCurrencyPair, withAttributes: [TrackedEventAttributes.currencyPair.rawValue: currencyPair.code])
     }
     
 }

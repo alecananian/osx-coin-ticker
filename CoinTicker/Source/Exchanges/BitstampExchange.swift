@@ -27,6 +27,7 @@
 import Foundation
 import Alamofire
 import SocketIO
+import SwiftyJSON
 
 class BitstampExchange: Exchange {
     
@@ -35,90 +36,87 @@ class BitstampExchange: Exchange {
         static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%@/"
     }
     
-    private let webSocketQueue = DispatchQueue(label: "cointicker.bitstamp-socket", qos: .utility, attributes: [.concurrent])
-    private let apiResponseQueue = DispatchQueue(label: "cointicker.bitstamp-api", qos: .utility, attributes: [.concurrent])
-    private var socket = WebSocket(url: Constants.WebSocketURL)
+    private var sockets: [WebSocket]?
     
     init(delegate: ExchangeDelegate) {
         super.init(site: .bitstamp, delegate: delegate)
-        
-        socket.callbackQueue = webSocketQueue
     }
     
-    override func start() {
-        super.start()
-        
-        currencyMatrix = [
-            .btc: [.usd, .eur],
-            .xrp: [.usd, .eur, .btc]
+    override func load() {
+        super.load()
+        availableCurrencyPairs = [
+            CurrencyPair(baseCurrency: .btc, quoteCurrency: .usd),
+            CurrencyPair(baseCurrency: .btc, quoteCurrency: .eur),
+            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .usd),
+            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .eur),
+            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .btc)
         ]
-        delegate.exchange(self, didLoadCurrencyMatrix: currencyMatrix!)
-        
-        fetchPrice()
+        delegate.exchange(self, didUpdateAvailableCurrencyPairs: availableCurrencyPairs)
+        fetch()
     }
     
     override func stop() {
         super.stop()
-        
-        socket.disconnect()
+        sockets?.forEach({ $0.disconnect() })
     }
     
-    override internal func fetchPrice() {
-        let productId = "\(baseCurrency.code)\(quoteCurrency.code)".lowercased()
-        
-        apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let priceString = (response.result.value as? JSONContainer)?["last"] as? String, let price = Double(priceString) {
-                self.delegate.exchange(self, didUpdatePrice: price)
+    private func productId(forCurrencyPair currencyPair: CurrencyPair) -> String {
+        return "\(currencyPair.baseCurrency.code)\(currencyPair.quoteCurrency.code)".lowercased()
+    }
+    
+    override internal func fetch() {
+        if TickerConfig.isRealTimeUpdateIntervalSelected {
+            if sockets == nil {
+                sockets = [WebSocket]()
             }
             
-            if TickerConfig.updateInterval != TickerConfig.RealTimeUpdateInterval {
-                self.startRequestTimer()
-            }
-        })
-        
-        if TickerConfig.updateInterval == TickerConfig.RealTimeUpdateInterval {
-            socket.onConnect = { [unowned self] in
-                var channelName = "live_trades"
-                if productId != "btcusd" {
-                    channelName += "_\(productId)"
-                }
-                
-                let eventParams: [String: Any] = [
-                    "event": "pusher:subscribe",
-                    "data": [
-                        "channel": channelName
-                    ]
-                ]
-                
-                do {
-                    let eventJSON = try JSONSerialization.data(withJSONObject: eventParams, options: [])
-                    if let eventString = String(data: eventJSON, encoding: .utf8) {
-                        self.socket.write(string: eventString)
+            TickerConfig.selectedCurrencyPairs.keys.forEach({ (currencyPair) in
+                let productId = self.productId(forCurrencyPair: currencyPair)
+                let socket = WebSocket(url: Constants.WebSocketURL)
+                socket.callbackQueue = socketResponseQueue(label: productId)
+                socket.onConnect = {
+                    var channelName = "live_trades"
+                    if currencyPair.baseCurrency != .btc || currencyPair.quoteCurrency != .usd {
+                        channelName += "_\(productId)"
                     }
-                } catch {
-                    print(error)
-                }
-            } as (() -> Void)
-            
-            socket.onText = { [unowned self] (text: String) in
-                if let responseData = text.data(using: .utf8, allowLossyConversion: false) {
-                    do {
-                        if let responseJSON = try JSONSerialization.jsonObject(with: responseData, options: .mutableContainers) as? JSONContainer {
-                            if let type = responseJSON["event"] as? String, type == "trade" {
-                                if let data = (responseJSON["data"] as? String)?.data(using: .utf8), let subResponseJSON = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? JSONContainer {
-                                    if let priceNumber = subResponseJSON["price"] as? NSNumber {
-                                        self.delegate.exchange(self, didUpdatePrice: priceNumber.doubleValue)
-                                    }
-                                }
-                            }
-                        }
-                    } catch {
-                        print(error)
+                    
+                    let json = JSON([
+                        "event": "pusher:subscribe",
+                        "data": [
+                            "channel": channelName
+                        ]
+                    ])
+                    
+                    if let string = json.rawString() {
+                        socket.write(string: string)
+                    }
+                } as (() -> Void)
+                
+                socket.onText = { (text: String) in
+                    let json = JSON(parseJSON: text)
+                    if json["event"] == "trade" {
+                        let dataJSON = JSON(parseJSON: json["data"].stringValue)
+                        TickerConfig.setPrice(dataJSON["price"].doubleValue, forCurrencyPair: currencyPair)
                     }
                 }
-            }
+                
+                socket.connect()
+                sockets!.append(socket)
+            })
+        } else {
+            TickerConfig.selectedCurrencyPairs.keys.forEach({ (currencyPair) in
+                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId(forCurrencyPair: currencyPair))
+                apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { (response) in
+                    switch response.result {
+                    case .success(let value):
+                        TickerConfig.setPrice(JSON(value)["last"].doubleValue, forCurrencyPair: currencyPair)
+                    case .failure(let error):
+                        print("Error retrieving prices for \(currencyPair): \(error)")
+                    }
+                })
+            })
             
-            socket.connect()
+            startRequestTimer()
         }
     }
 

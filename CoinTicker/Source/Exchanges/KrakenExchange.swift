@@ -26,6 +26,7 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 
 class KrakenExchange: Exchange {
     
@@ -34,46 +35,45 @@ class KrakenExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.kraken.com/0/public/Ticker?pair=%@"
     }
     
-    private let apiResponseQueue = DispatchQueue(label: "cointicker.kraken-api", qos: .utility, attributes: [.concurrent])
-    
     init(delegate: ExchangeDelegate) {
         super.init(site: .kraken, delegate: delegate)
     }
     
-    override func start() {
-        super.start()
-        
-        apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let currencyPairs = (response.result.value as? JSONContainer)?["result"] as? JSONContainer {
-                var currencyMatrix = CurrencyMatrix()
-                for (currencyPairString, currencyPairData) in currencyPairs {
-                    if !currencyPairString.contains(".d"), let currencyPairData = currencyPairData as? JSONContainer {
-                        if let baseCurrencyCode = currencyPairData["base"] as? String, let baseCurrency = Currency.build(fromCode: baseCurrencyCode), let quoteCurrencyCode = currencyPairData["quote"] as? String, let quoteCurrency = Currency.build(fromCode: quoteCurrencyCode) {
-                            currencyMatrix[baseCurrency, default: [Currency]()].append(quoteCurrency)
-                        }
+    override func load() {
+        super.load()
+        apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue(label: "currencyPairs"), responseSerializer: apiResponseSerializer) { [unowned self] (response) in
+            switch response.result {
+            case .success(let value):
+                for (productId, result) in JSON(value)["result"] {
+                    if !productId.contains(".d"), let currencyPair = CurrencyPair(baseCurrency: result["base"].string, quoteCurrency: result["quote"].string) {
+                        self.availableCurrencyPairs.append(currencyPair)
                     }
                 }
                 
-                self.currencyMatrix = currencyMatrix
-                self.delegate.exchange(self, didLoadCurrencyMatrix: currencyMatrix)
-                
-                self.fetchPrice()
+                self.availableCurrencyPairs = self.availableCurrencyPairs.sorted()
+                self.delegate.exchange(self, didUpdateAvailableCurrencyPairs: self.availableCurrencyPairs)
+                self.fetch()
+            case .failure(let error):
+                print("Error retrieving currency pairs: \(error)")
             }
         })
     }
     
-    override internal func fetchPrice() {
-        let productId = "\(baseCurrency.code)\(quoteCurrency.code)".uppercased()
-        
-        apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let result = (response.result.value as? JSONContainer)?["result"] as? JSONContainer, let currencyPairCode = result.keys.first, let currencyPairData = result[currencyPairCode] as? JSONContainer {
-                if let priceString = (currencyPairData["c"] as? [String])?.first, let price = Double(priceString) {
-                    self.delegate.exchange(self, didUpdatePrice: price)
+    override internal func fetch() {
+        TickerConfig.selectedCurrencyPairs.keys.forEach({ (currencyPair) in
+            let productId = "\(currencyPair.baseCurrency.code)\(currencyPair.quoteCurrency.code)".uppercased()
+            let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
+            apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { (response) in
+                switch response.result {
+                case .success(let value):
+                    TickerConfig.setPrice((JSON(value)["result"].first?.1["c"].first?.1.doubleValue ?? 0), forCurrencyPair: currencyPair)
+                case .failure(let error):
+                    print("Error retrieving prices for \(currencyPair): \(error)")
                 }
-            }
-            
-            self.startRequestTimer()
+            })
         })
+        
+        startRequestTimer()
     }
 
 }

@@ -26,6 +26,7 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 
 class KorbitExchange: Exchange {
     
@@ -33,43 +34,37 @@ class KorbitExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.korbit.co.kr/v1/ticker?currency_pair=%@"
     }
     
-    private let apiResponseQueue = DispatchQueue(label: "cointicker.korbit-api", qos: .utility, attributes: [.concurrent])
-    
     init(delegate: ExchangeDelegate) {
         super.init(site: .korbit, delegate: delegate)
     }
     
-    override func start() {
-        super.start()
-        
-        currencyMatrix = [
-            .btc: [.krw],
-            .eth: [.krw],
-            .etc: [.krw],
-            .xrp: [.krw]
+    override func load() {
+        super.load()
+        availableCurrencyPairs = [
+            CurrencyPair(baseCurrency: .btc, quoteCurrency: .krw),
+            CurrencyPair(baseCurrency: .eth, quoteCurrency: .krw),
+            CurrencyPair(baseCurrency: .etc, quoteCurrency: .krw),
+            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .krw)
         ]
-        
-        delegate.exchange(self, didLoadCurrencyMatrix: currencyMatrix!)
-        fetchPrice()
+        delegate.exchange(self, didUpdateAvailableCurrencyPairs: availableCurrencyPairs)
+        fetch()
     }
     
-    override func stop() {
-        super.stop()
-        
-        requestTimer?.invalidate()
-        requestTimer = nil
-    }
-    
-    override internal func fetchPrice() {
-        let productId = "\(baseCurrency.code)_\(quoteCurrency.code)".lowercased()
-        
-        apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let priceString = (response.result.value as? JSONContainer)?["last"] as? String, let price = Double(priceString) {
-                self.delegate.exchange(self, didUpdatePrice: price)
-            }
-            
-            self.startRequestTimer()
+    override internal func fetch() {
+        TickerConfig.selectedCurrencyPairs.keys.forEach({ (currencyPair) in
+            let productId = currencyPair.code(withSeparator: "_").lowercased()
+            let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
+            apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { (response) in
+                switch response.result {
+                case .success(let value):
+                    TickerConfig.setPrice(JSON(value)["last"].doubleValue, forCurrencyPair: currencyPair)
+                case .failure(let error):
+                    print("Error retrieving prices for \(currencyPair): \(error)")
+                }
+            })
         })
+        
+        startRequestTimer()
     }
 
 }

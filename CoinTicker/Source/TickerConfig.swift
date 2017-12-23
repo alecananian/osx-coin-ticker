@@ -26,27 +26,24 @@
 
 import Foundation
 
+protocol TickerConfigDelegate {
+    
+    func didSelectUpdateInterval()
+    func didUpdateSelectedCurrencyPairs()
+    func didUpdatePrices()
+    
+}
+
 class TickerConfig {
     
     private struct Keys {
         static let UserDefaultsExchangeSite = "userDefaults.exchangeSite"
         static let UserDefaultsUpdateInterval = "userDefaults.updateInterval"
-        static let UserDefaultsBaseCurrency = "userDefaults.baseCurrency"
-        static let UserDefaultsQuoteCurrency = "userDefaults.quoteCurrency"
+        static let UserDefaultsSelectedCurrencyPairCodes = "userDefaults.selectedCurrencyPairCodes"
     }
     
-    static let RealTimeUpdateInterval: Int = 5
-    
-    static var updateInterval: Int {
-        get {
-            let updateInterval = UserDefaults.standard.integer(forKey: Keys.UserDefaultsUpdateInterval)
-            return (updateInterval > 0 ? updateInterval : RealTimeUpdateInterval)
-        }
-        
-        set {
-            let updateInterval = (newValue > 0 ? newValue : RealTimeUpdateInterval)
-            UserDefaults.standard.set(updateInterval, forKey: Keys.UserDefaultsUpdateInterval)
-        }
+    private struct Constants {
+        static let RealTimeUpdateInterval: Int = 5
     }
     
     static var defaultExchangeSite: ExchangeSite {
@@ -64,38 +61,116 @@ class TickerConfig {
         }
     }
     
-    static var defaultBaseCurrency: Currency {
-        get {
-            let index = UserDefaults.standard.integer(forKey: Keys.UserDefaultsBaseCurrency)
-            if let currency = Currency.build(fromIndex: index) {
-                return currency
-            }
-            
-            return .btc
+    static var delegate: TickerConfigDelegate?
+    
+    private static var _selectedUpdateInterval: Int!
+    static var selectedUpdateInterval: Int {
+        if _selectedUpdateInterval == nil {
+            let updateInterval = UserDefaults.standard.integer(forKey: Keys.UserDefaultsUpdateInterval)
+            _selectedUpdateInterval = (updateInterval > 0 ? updateInterval : Constants.RealTimeUpdateInterval)
+            delegate?.didSelectUpdateInterval()
         }
         
-        set {
-            UserDefaults.standard.set(newValue.index, forKey: Keys.UserDefaultsBaseCurrency)
+        return _selectedUpdateInterval
+    }
+    
+    static func select(updateInterval: Int) {
+        _selectedUpdateInterval = updateInterval
+        save()
+        delegate?.didSelectUpdateInterval()
+        TrackingUtils.didSelectUpdateInterval(updateInterval)
+    }
+    
+    static var isRealTimeUpdateIntervalSelected: Bool {
+        return (selectedUpdateInterval == Constants.RealTimeUpdateInterval)
+    }
+    
+    private static var _selectedCurrencyPairs: [CurrencyPair: Double]!
+    static var selectedCurrencyPairs: [CurrencyPair: Double] {
+        if _selectedCurrencyPairs == nil {
+            _selectedCurrencyPairs = [CurrencyPair: Double]()
+            if let selectedCurrencyPairCodes = UserDefaults.standard.object(forKey: Keys.UserDefaultsSelectedCurrencyPairCodes) as? [String] {
+                selectedCurrencyPairCodes.forEach({ (currencyPairCode) in
+                    if let currencyPair = CurrencyPair(code: currencyPairCode) {
+                        _selectedCurrencyPairs[currencyPair] = 0
+                    }
+                })
+                
+                delegate?.didUpdateSelectedCurrencyPairs()
+            }
+        }
+        
+        return _selectedCurrencyPairs
+    }
+    
+    static var selectedCurrencyPairCodes: [String] {
+        return selectedCurrencyPairs.keys.map({ $0.code })
+    }
+    
+    static func toggle(currencyPair: CurrencyPair) -> Bool {
+        if selectedCurrencyPairs.keys.contains(where: { $0 == currencyPair }) {
+            if selectedCurrencyPairs.count > 1 {
+                deselectCurrencyPair(currencyPair)
+                return false
+            }
+        } else {
+            _selectedCurrencyPairs[currencyPair] = 0
+            save()
+            delegate?.didUpdateSelectedCurrencyPairs()
+            TrackingUtils.didSelectCurrencyPair(currencyPair)
+        }
+        
+        return true
+    }
+    
+    static func toggle(baseCurrency: Currency, quoteCurrency: Currency) -> Bool {
+        let currencyPair = CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency)
+        return toggle(currencyPair: currencyPair)
+    }
+    
+    static func deselectCurrencyPair(_ currencyPair: CurrencyPair) {
+        _selectedCurrencyPairs.removeValue(forKey: currencyPair)
+        save()
+        delegate?.didUpdateSelectedCurrencyPairs()
+        TrackingUtils.didDeselectCurrencyPair(currencyPair)
+    }
+    
+    static func setPrice(_ price: Double, forCurrencyPair currencyPair: CurrencyPair) {
+        _selectedCurrencyPairs[currencyPair] = price
+        delegate?.didUpdatePrices()
+    }
+    
+    static func setPrice(_ price: Double, forBaseCurrency baseCurrency: Currency, quoteCurrency: Currency) {
+        let currencyPair = CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency)
+        setPrice(price, forCurrencyPair: currencyPair)
+    }
+    
+    static func setPrice(_ price: Double, forCurrencyPairCode currencyPairCode: String) {
+        if let currencyPair = CurrencyPair(code: currencyPairCode) {
+            setPrice(price, forCurrencyPair: currencyPair)
         }
     }
     
-    static var defaultQuoteCurrency: Currency {
-        get {
-            let index = UserDefaults.standard.integer(forKey: Keys.UserDefaultsQuoteCurrency)
-            if let currency = Currency.build(fromIndex: index) {
-                return currency
-            }
-            
-            if let currency = Currency.build(fromLocale: Locale.current) {
-                return currency
-            }
-            
-            return .usd
-        }
-        
-        set {
-            UserDefaults.standard.set(newValue.index, forKey: Keys.UserDefaultsQuoteCurrency)
-        }
+    static var selectedBaseCurrencies: [Currency] {
+        return selectedCurrencyPairs.keys.flatMap({ $0.baseCurrency })
+    }
+    
+    static var selectedQuoteCurrencies: [Currency] {
+        return selectedCurrencyPairs.keys.flatMap({ $0.quoteCurrency })
+    }
+    
+    static func isWatching(baseCurrency: Currency) -> Bool {
+        return selectedCurrencyPairs.keys.contains(where: { $0.baseCurrency == baseCurrency })
+    }
+    
+    static func isWatching(baseCurrency: Currency, quoteCurrency: Currency) -> Bool {
+        let currencyPair = CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency)
+        return selectedCurrencyPairs.keys.contains(currencyPair)
+    }
+    
+    static func save() {
+        UserDefaults.standard.set(selectedCurrencyPairCodes, forKey: Keys.UserDefaultsSelectedCurrencyPairCodes)
+        UserDefaults.standard.set(selectedUpdateInterval, forKey: Keys.UserDefaultsUpdateInterval)
     }
 
 }

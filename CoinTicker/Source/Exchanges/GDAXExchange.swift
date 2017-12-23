@@ -27,6 +27,7 @@
 import Foundation
 import Alamofire
 import SocketIO
+import SwiftyJSON
 
 class GDAXExchange: Exchange {
     
@@ -36,91 +37,77 @@ class GDAXExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.gdax.com/products/%@/ticker"
     }
     
-    private let webSocketQueue = DispatchQueue(label: "cointicker.gdax-socket", qos: .utility, attributes: [.concurrent])
-    private let apiResponseQueue = DispatchQueue(label: "cointicker.gdax-api", qos: .utility, attributes: [.concurrent])
-    private var socket = WebSocket(url: Constants.WebSocketURL)
+    private let socket = WebSocket(url: Constants.WebSocketURL)
     
     init(delegate: ExchangeDelegate) {
         super.init(site: .gdax, delegate: delegate)
-        
-        socket.callbackQueue = webSocketQueue
+        socket.callbackQueue = DispatchQueue(label: "cointicker.gdax-socket", qos: .utility, attributes: [.concurrent])
     }
     
-    override func start() {
-        super.start()
-        
-        var currencyMatrix = CurrencyMatrix()
-        apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let currencyPairs = response.result.value as? [JSONContainer] {
-                for currencyPair in currencyPairs {
-                    if let baseCurrencyCode = currencyPair["base_currency"] as? String, let quoteCurrencyCode = currencyPair["quote_currency"] as? String, let baseCurrency = Currency.build(fromCode: baseCurrencyCode), baseCurrency.isCrypto, let quoteCurrency = Currency.build(fromCode: quoteCurrencyCode) {
-                        if currencyMatrix[baseCurrency] == nil {
-                            currencyMatrix[baseCurrency] = [Currency]()
+    override func load() {
+        super.load()
+        apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue(label: "currencyPairs"), responseSerializer: apiResponseSerializer) { [unowned self] (response) in
+            switch response.result {
+            case .success(let value):
+                if let results = JSON(value).array {
+                    results.forEach({ (result) in
+                        if let currencyPair = CurrencyPair(baseCurrency: result["base_currency"].string, quoteCurrency: result["quote_currency"].string) {
+                            self.availableCurrencyPairs.append(currencyPair)
                         }
-                        
-                        currencyMatrix[baseCurrency]!.append(quoteCurrency)
-                    }
+                    })
+                    
+                    self.availableCurrencyPairs = self.availableCurrencyPairs.sorted()
+                    self.delegate.exchange(self, didUpdateAvailableCurrencyPairs: self.availableCurrencyPairs)
+                    self.fetch()
                 }
-                
-                self.currencyMatrix = currencyMatrix
-                self.delegate.exchange(self, didLoadCurrencyMatrix: currencyMatrix)
-                
-                self.fetchPrice()
+            case .failure(let error):
+                print("Error retrieving currency pairs: \(error)")
             }
         })
     }
     
     override func stop() {
         super.stop()
-        
         socket.disconnect()
     }
     
-    override internal func fetchPrice() {
-        let productId = "\(baseCurrency.code)-\(quoteCurrency.code)"
-        
-        apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let priceString = (response.result.value as? JSONContainer)?["price"] as? String, let price = Double(priceString) {
-                self.delegate.exchange(self, didUpdatePrice: price)
-            }
-            
-            if TickerConfig.updateInterval != TickerConfig.RealTimeUpdateInterval {
-                self.startRequestTimer()
-            }
-        })
-        
-        if TickerConfig.updateInterval == TickerConfig.RealTimeUpdateInterval {
+    override internal func fetch() {
+        if TickerConfig.isRealTimeUpdateIntervalSelected {
             socket.onConnect = { [unowned self] in
-                let eventParams: [String: Any] = [
+                let json = JSON([
                     "type": "subscribe",
-                    "product_ids": [productId]
-                ]
-                
-                do {
-                    let eventJSON = try JSONSerialization.data(withJSONObject: eventParams, options: [])
-                    if let eventString = String(data: eventJSON, encoding: .utf8) {
-                        self.socket.write(string: eventString)
-                    }
-                } catch {
-                    print(error)
+                    "product_ids": TickerConfig.selectedCurrencyPairCodes,
+                    "channels": ["ticker"]
+                ])
+
+                if let string = json.rawString() {
+                    self.socket.write(string: string)
                 }
             } as (() -> Void)
             
-            socket.onText = { [unowned self] (text: String) in
-                if let data = text.data(using: .utf8, allowLossyConversion: false) {
-                    do {
-                        if let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? JSONContainer {
-                            if let type = json["type"] as? String, type == "match", let priceString = json["price"] as? String, let price = Double(priceString) {
-                                self.delegate.exchange(self, didUpdatePrice: price)
-                            }
-                        }
-                    } catch {
-                        print(error)
-                    }
+            socket.onText = { (text: String) in
+                let json = JSON(parseJSON: text)
+                if json["type"].string == "ticker" {
+                    TickerConfig.setPrice(json["price"].doubleValue, forCurrencyPairCode: json["product_id"].stringValue)
                 }
             }
             
             socket.connect()
+        } else {
+            TickerConfig.selectedCurrencyPairs.keys.forEach({ (currencyPair) in
+                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.code)
+                apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { (response) in
+                    switch response.result {
+                    case .success(let value):
+                        let json = JSON(value)
+                        TickerConfig.setPrice(json["price"].doubleValue, forCurrencyPair: currencyPair)
+                    case .failure(let error):
+                        print("Error retrieving prices for \(currencyPair): \(error)")
+                    }
+                })
+            })
+            
+            startRequestTimer()
         }
     }
 

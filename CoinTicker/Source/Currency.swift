@@ -121,6 +121,14 @@ enum Currency: Int {
         return (self.rawValue >= 100)
     }
     
+    var isBitcoin: Bool {
+        return (self == .btc || self == .xbt)
+    }
+    
+    var isBitcoinCash: Bool {
+        return (self == .bcc || self == .bch)
+    }
+    
     static func build(fromCode code: String) -> Currency? {
         var normalizedCode = code.uppercased()
         if let currency = AllValues.first(where: { $0.code.uppercased() == normalizedCode }) {
@@ -149,3 +157,4 @@ enum Currency: Int {
     }
     
 }
+

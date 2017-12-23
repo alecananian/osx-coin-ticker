@@ -26,6 +26,7 @@
 
 import Foundation
 import Alamofire
+import SwiftyJSON
 
 class CoincheckExchange: Exchange {
     
@@ -33,34 +34,28 @@ class CoincheckExchange: Exchange {
         static let TickerAPIPath = "https://coincheck.com/api/ticker"
     }
     
-    private let apiResponseQueue = DispatchQueue(label: "cointicker.coincheck-api", qos: .utility, attributes: [.concurrent])
-    
     init(delegate: ExchangeDelegate) {
         super.init(site: .coincheck, delegate: delegate)
     }
     
-    override func start() {
-        super.start()
-        
-        currencyMatrix = [.btc: [.jpy]]
-        delegate.exchange(self, didLoadCurrencyMatrix: currencyMatrix!)
-        fetchPrice()
+    override func load() {
+        super.load()
+        availableCurrencyPairs = [CurrencyPair(baseCurrency: .btc, quoteCurrency: .jpy)]
+        delegate.exchange(self, didUpdateAvailableCurrencyPairs: availableCurrencyPairs)
+        fetch()
     }
     
-    override func stop() {
-        super.stop()
-        
-        requestTimer?.invalidate()
-        requestTimer = nil
-    }
-    
-    override internal func fetchPrice() {
-        apiRequests.append(Alamofire.request(Constants.TickerAPIPath).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let price = (response.result.value as? JSONContainer)?["last"] as? Double {
-                self.delegate.exchange(self, didUpdatePrice: price)
+    override internal func fetch() {
+        let currencyPair = availableCurrencyPairs.first!
+        apiRequests.append(Alamofire.request(Constants.TickerAPIPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { [weak self] (response) in
+            switch response.result {
+            case .success(let value):
+                TickerConfig.setPrice(JSON(value)["last"].doubleValue, forCurrencyPair: currencyPair)
+            case .failure(let error):
+                print("Error retrieving prices for \(currencyPair): \(error)")
             }
             
-            self.startRequestTimer()
+            self?.startRequestTimer()
         })
     }
 
