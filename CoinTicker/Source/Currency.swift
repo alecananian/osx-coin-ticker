@@ -26,7 +26,7 @@
 
 import Cocoa
 
-enum Currency: Int {
+enum Currency: Int, Codable {
     
     // Physical
     case cad = 10

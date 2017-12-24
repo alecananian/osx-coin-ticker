@@ -45,7 +45,7 @@ class KrakenExchange: Exchange {
             switch response.result {
             case .success(let value):
                 for (productId, result) in JSON(value)["result"] {
-                    if !productId.contains(".d"), let currencyPair = CurrencyPair(baseCurrency: result["base"].string, quoteCurrency: result["quote"].string) {
+                    if !productId.contains(".d"), let currencyPair = CurrencyPair(baseCurrency: result["base"].string, quoteCurrency: result["quote"].string, customCode: productId) {
                         self.availableCurrencyPairs.append(currencyPair)
                     }
                 }
@@ -60,20 +60,22 @@ class KrakenExchange: Exchange {
     }
     
     override internal func fetch() {
-        TickerConfig.selectedCurrencyPairs.forEach({ (currencyPair) in
-            let productId = "\(currencyPair.baseCurrency.code)\(currencyPair.quoteCurrency.code)".uppercased()
-            let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
-            apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { (response) in
-                switch response.result {
-                case .success(let value):
-                    TickerConfig.setPrice((JSON(value)["result"].first?.1["c"].first?.1.doubleValue ?? 0), forCurrencyPair: currencyPair)
-                case .failure(let error):
-                    print("Error retrieving prices for \(currencyPair): \(error)")
+        let productIds: [String] = TickerConfig.selectedCurrencyPairs.flatMap({ $0.customCode })
+        let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
+        apiRequests.append(Alamofire.request(apiPath).response(queue: apiResponseQueue(label: "ticker"), responseSerializer: apiResponseSerializer) { [weak self] (response) in
+            switch response.result {
+            case .success(let value):
+                for (productId, result) in JSON(value)["result"] {
+                    if let currencyPair = self?.availableCurrencyPair(customCode: productId), let price = result["c"].array?.first?.doubleValue {
+                        TickerConfig.setPrice(price, for: currencyPair)
+                    }
                 }
-            })
+            case .failure(let error):
+                print("Error retrieving prices: \(error)")
+            }
+            
+            self?.startRequestTimer()
         })
-        
-        startRequestTimer()
     }
 
 }

@@ -39,7 +39,7 @@ class TickerConfig {
     private struct Keys {
         static let UserDefaultsExchangeSite = "userDefaults.exchangeSite"
         static let UserDefaultsUpdateInterval = "userDefaults.updateInterval"
-        static let UserDefaultsSelectedCurrencyPairCodes = "userDefaults.selectedCurrencyPairCodes"
+        static let UserDefaultsSelectedCurrencyPairs = "userDefaults.selectedCurrencyPairs"
     }
     
     private struct Constants {
@@ -88,30 +88,28 @@ class TickerConfig {
     private static var _selectedCurrencyPairs: [CurrencyPair]!
     static var selectedCurrencyPairs: [CurrencyPair] {
         if _selectedCurrencyPairs == nil {
-            _selectedCurrencyPairs = [CurrencyPair]()
-            if let selectedCurrencyPairCodes = UserDefaults.standard.object(forKey: Keys.UserDefaultsSelectedCurrencyPairCodes) as? [String] {
-                selectedCurrencyPairCodes.forEach({ (currencyPairCode) in
-                    if let currencyPair = CurrencyPair(code: currencyPairCode) {
-                        _selectedCurrencyPairs.append(currencyPair)
-                    }
-                })
-                
-                delegate?.didUpdateSelectedCurrencyPairs()
+            do {
+                if let jsonData = UserDefaults.standard.object(forKey: Keys.UserDefaultsSelectedCurrencyPairs) as? Data {
+                    _selectedCurrencyPairs = try JSONDecoder().decode([CurrencyPair].self, from: jsonData)
+                }
+            } catch {
+                print("Error decoding UserDefaults: \(error)")
             }
+            
+            if _selectedCurrencyPairs == nil {
+                _selectedCurrencyPairs = [CurrencyPair]()
+            }
+            
+            delegate?.didUpdateSelectedCurrencyPairs()
         }
         
         return _selectedCurrencyPairs
     }
     
-    static var selectedCurrencyPairCodes: [String] {
-        return selectedCurrencyPairs.map({ $0.code })
-    }
-    
-    static func toggle(currencyPair: CurrencyPair) -> Bool {
+    static func toggle(currencyPair: CurrencyPair) {
         if selectedCurrencyPairs.contains(currencyPair) {
             if selectedCurrencyPairs.count > 1 {
-                deselectCurrencyPair(currencyPair)
-                return false
+                deselect(currencyPair: currencyPair)
             }
         } else {
             _selectedCurrencyPairs.append(currencyPair)
@@ -120,16 +118,9 @@ class TickerConfig {
             delegate?.didUpdateSelectedCurrencyPairs()
             TrackingUtils.didSelectCurrencyPair(currencyPair)
         }
-        
-        return true
     }
     
-    static func toggle(baseCurrency: Currency, quoteCurrency: Currency) -> Bool {
-        let currencyPair = CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency)
-        return toggle(currencyPair: currencyPair)
-    }
-    
-    static func deselectCurrencyPair(_ currencyPair: CurrencyPair) {
+    static func deselect(currencyPair: CurrencyPair) {
         if let index = _selectedCurrencyPairs.index(of: currencyPair) {
             _selectedCurrencyPairs.remove(at: index)
             save()
@@ -139,20 +130,9 @@ class TickerConfig {
     }
     
     private static var _currencyPairPrices = [CurrencyPair: Double]()
-    static func setPrice(_ price: Double, forCurrencyPair currencyPair: CurrencyPair) {
+    static func setPrice(_ price: Double, for currencyPair: CurrencyPair) {
         _currencyPairPrices[currencyPair] = price
         delegate?.didUpdatePrices()
-    }
-    
-    static func setPrice(_ price: Double, forBaseCurrency baseCurrency: Currency, quoteCurrency: Currency) {
-        let currencyPair = CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency)
-        setPrice(price, forCurrencyPair: currencyPair)
-    }
-    
-    static func setPrice(_ price: Double, forCurrencyPairCode currencyPairCode: String) {
-        if let currencyPair = CurrencyPair(code: currencyPairCode) {
-            setPrice(price, forCurrencyPair: currencyPair)
-        }
     }
     
     static func price(for currencyPair: CurrencyPair) -> Double {
@@ -168,13 +148,16 @@ class TickerConfig {
     }
     
     static func isWatching(baseCurrency: Currency, quoteCurrency: Currency) -> Bool {
-        let currencyPair = CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency)
-        return selectedCurrencyPairs.contains(currencyPair)
+        return selectedCurrencyPairs.contains(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency })
     }
     
     static func save() {
-        UserDefaults.standard.set(selectedCurrencyPairCodes, forKey: Keys.UserDefaultsSelectedCurrencyPairCodes)
-        UserDefaults.standard.set(selectedUpdateInterval, forKey: Keys.UserDefaultsUpdateInterval)
+        do {
+            UserDefaults.standard.set(selectedUpdateInterval, forKey: Keys.UserDefaultsUpdateInterval)
+            UserDefaults.standard.set(try JSONEncoder().encode(selectedCurrencyPairs), forKey: Keys.UserDefaultsSelectedCurrencyPairs)
+        } catch {
+            print("Error saving to UserDefaults: \(error)")
+        }
     }
 
 }

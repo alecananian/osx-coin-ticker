@@ -33,6 +33,7 @@ class BitstampExchange: Exchange {
     
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://ws.pusherapp.com/app/de504dc5763aeef9ff52?protocol=7")!
+        static let ProductListAPIPath = "https://www.bitstamp.net/api/v2/trading-pairs-info/"
         static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%@/"
     }
     
@@ -44,15 +45,23 @@ class BitstampExchange: Exchange {
     
     override func load() {
         super.load()
-        availableCurrencyPairs = [
-            CurrencyPair(baseCurrency: .btc, quoteCurrency: .usd),
-            CurrencyPair(baseCurrency: .btc, quoteCurrency: .eur),
-            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .usd),
-            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .eur),
-            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .btc)
-        ]
-        delegate.exchange(self, didUpdateAvailableCurrencyPairs: availableCurrencyPairs)
-        fetch()
+        apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue(label: "currencyPairs"), responseSerializer: apiResponseSerializer) { [unowned self] (response) in
+            switch response.result {
+            case .success(let value):
+                JSON(value).arrayValue.forEach({ (result) in
+                    let currencyCodes = result["name"].stringValue.split(separator: "/")
+                    if currencyCodes.count == 2, let currencyPair = CurrencyPair(baseCurrency: String(currencyCodes.first!), quoteCurrency: String(currencyCodes.last!), customCode: result["url_symbol"].stringValue), currencyPair.baseCurrency.isCrypto {
+                        self.availableCurrencyPairs.append(currencyPair)
+                    }
+                })
+                
+                self.availableCurrencyPairs = self.availableCurrencyPairs.sorted()
+                self.delegate.exchange(self, didUpdateAvailableCurrencyPairs: self.availableCurrencyPairs)
+                self.fetch()
+            case .failure(let error):
+                print("Error retrieving currency pairs: \(error)")
+            }
+        })
     }
     
     override func stop() {
@@ -60,18 +69,13 @@ class BitstampExchange: Exchange {
         sockets?.forEach({ $0.disconnect() })
     }
     
-    private func productId(forCurrencyPair currencyPair: CurrencyPair) -> String {
-        return "\(currencyPair.baseCurrency.code)\(currencyPair.quoteCurrency.code)".lowercased()
-    }
-    
     override internal func fetch() {
         if TickerConfig.isRealTimeUpdateIntervalSelected {
-            if sockets == nil {
-                sockets = [WebSocket]()
-            }
+            sockets?.forEach({ $0.disconnect() })
+            sockets = [WebSocket]()
             
             TickerConfig.selectedCurrencyPairs.forEach({ (currencyPair) in
-                let productId = self.productId(forCurrencyPair: currencyPair)
+                let productId = currencyPair.customCode
                 let socket = WebSocket(url: Constants.WebSocketURL)
                 socket.callbackQueue = socketResponseQueue(label: productId)
                 socket.onConnect = {
@@ -90,13 +94,13 @@ class BitstampExchange: Exchange {
                     if let string = json.rawString() {
                         socket.write(string: string)
                     }
-                } as (() -> Void)
+                }
                 
                 socket.onText = { (text: String) in
                     let json = JSON(parseJSON: text)
                     if json["event"] == "trade" {
                         let dataJSON = JSON(parseJSON: json["data"].stringValue)
-                        TickerConfig.setPrice(dataJSON["price"].doubleValue, forCurrencyPair: currencyPair)
+                        TickerConfig.setPrice(dataJSON["price"].doubleValue, for: currencyPair)
                     }
                 }
                 
@@ -105,11 +109,12 @@ class BitstampExchange: Exchange {
             })
         } else {
             TickerConfig.selectedCurrencyPairs.forEach({ (currencyPair) in
-                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId(forCurrencyPair: currencyPair))
-                apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { (response) in
+                let productId = currencyPair.customCode
+                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
+                apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: productId), responseSerializer: apiResponseSerializer) { (response) in
                     switch response.result {
                     case .success(let value):
-                        TickerConfig.setPrice(JSON(value)["last"].doubleValue, forCurrencyPair: currencyPair)
+                        TickerConfig.setPrice(JSON(value)["last"].doubleValue, for: currencyPair)
                     case .failure(let error):
                         print("Error retrieving prices for \(currencyPair): \(error)")
                     }

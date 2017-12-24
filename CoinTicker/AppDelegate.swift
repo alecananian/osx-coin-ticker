@@ -128,12 +128,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc private func onSelectExchangeSite(sender: AnyObject) {
         if let menuItem = sender as? NSMenuItem, let exchangeSite = menuItem.representedObject as? ExchangeSite {
             if exchangeSite != currentExchange.site {
+                // End current exchange
+                currentExchange.stop()
+                
                 // Deselect all exchange menu items and select this one
                 exchangeMenuItem.submenu?.items.forEach({ $0.state = .off })
                 menuItem.state = .on
                 
-                // End current exchange and start the new one
-                currentExchange.stop()
+                // Remove all currency selections
+                currencyMenuItems.forEach({ mainMenu.removeItem($0) })
+                currencyMenuItems.removeAll()
+                
+                // Start new exchange
                 currentExchange = Exchange.build(fromSite: exchangeSite, delegate: self)
                 currentExchange.load()
                 
@@ -150,8 +156,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc private func onSelectQuoteCurrency(sender: AnyObject) {
-        if let menuItem = sender as? NSMenuItem, let quoteCurrency = menuItem.representedObject as? Currency, let baseCurrency = menuItem.parent?.representedObject as? Currency {
-            _ = TickerConfig.toggle(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency)
+        if let menuItem = sender as? NSMenuItem, let currencyPair = currentExchange.availableCurrencyPair(baseCurrency: menuItem.parent?.representedObject as? Currency, quoteCurrency: menuItem.representedObject as? Currency) {
+            TickerConfig.toggle(currencyPair: currencyPair)
         }
     }
     
@@ -250,7 +256,7 @@ extension AppDelegate: ExchangeDelegate {
     func exchange(_ exchange: Exchange, didUpdateAvailableCurrencyPairs availableCurrencyPairs: [CurrencyPair]) {
         TickerConfig.selectedCurrencyPairs.forEach { (currencyPair) in
             if !availableCurrencyPairs.contains(currencyPair) {
-                TickerConfig.deselectCurrencyPair(currencyPair)
+                TickerConfig.deselect(currencyPair: currencyPair)
             }
         }
         
@@ -268,7 +274,7 @@ extension AppDelegate: ExchangeDelegate {
                 }
             }
         
-            _ = TickerConfig.toggle(currencyPair: currencyPair!)
+            TickerConfig.toggle(currencyPair: currencyPair!)
         }
         
         updateMenuItems()

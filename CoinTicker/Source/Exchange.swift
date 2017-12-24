@@ -98,6 +98,18 @@ class Exchange {
         return DispatchQueue(label: "cointicker.bitstamp-socket.\(label)", qos: .utility, attributes: [.concurrent])
     }
     
+    func availableCurrencyPair(baseCurrency: Currency?, quoteCurrency: Currency?) -> CurrencyPair? {
+        guard let baseCurrency = baseCurrency, let quoteCurrency = quoteCurrency else {
+            return nil
+        }
+        
+        return availableCurrencyPairs.first(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency })
+    }
+    
+    func availableCurrencyPair(customCode: String) -> CurrencyPair? {
+        return availableCurrencyPairs.first(where: { $0.customCode == customCode })
+    }
+    
     func load() {
         // Override
     }

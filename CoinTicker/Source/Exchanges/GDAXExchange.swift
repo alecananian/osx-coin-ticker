@@ -37,11 +37,10 @@ class GDAXExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.gdax.com/products/%@/ticker"
     }
     
-    private let socket = WebSocket(url: Constants.WebSocketURL)
+    private var socket: WebSocket?
     
     init(delegate: ExchangeDelegate) {
         super.init(site: .gdax, delegate: delegate)
-        socket.callbackQueue = DispatchQueue(label: "cointicker.gdax-socket", qos: .utility, attributes: [.concurrent])
     }
     
     override func load() {
@@ -51,7 +50,7 @@ class GDAXExchange: Exchange {
             case .success(let value):
                 if let results = JSON(value).array {
                     results.forEach({ (result) in
-                        if let currencyPair = CurrencyPair(baseCurrency: result["base_currency"].string, quoteCurrency: result["quote_currency"].string) {
+                        if let currencyPair = CurrencyPair(baseCurrency: result["base_currency"].string, quoteCurrency: result["quote_currency"].string, customCode: result["id"].string) {
                             self.availableCurrencyPairs.append(currencyPair)
                         }
                     })
@@ -68,39 +67,43 @@ class GDAXExchange: Exchange {
     
     override func stop() {
         super.stop()
-        socket.disconnect()
+        socket?.disconnect()
     }
     
     override internal func fetch() {
         if TickerConfig.isRealTimeUpdateIntervalSelected {
-            socket.onConnect = { [unowned self] in
+            let socket = WebSocket(url: Constants.WebSocketURL)
+            socket.callbackQueue = DispatchQueue(label: "cointicker.gdax-socket", qos: .utility, attributes: [.concurrent])
+            
+            let productIds: [String] = TickerConfig.selectedCurrencyPairs.flatMap({ $0.customCode })
+            socket.onConnect = {
                 let json = JSON([
                     "type": "subscribe",
-                    "product_ids": TickerConfig.selectedCurrencyPairCodes,
+                    "product_ids": productIds,
                     "channels": ["ticker"]
                 ])
 
                 if let string = json.rawString() {
-                    self.socket.write(string: string)
+                    socket.write(string: string)
                 }
-            } as (() -> Void)
+            }
             
-            socket.onText = { (text: String) in
+            socket.onText = { [weak self] (text: String) in
                 let json = JSON(parseJSON: text)
-                if json["type"].string == "ticker" {
-                    TickerConfig.setPrice(json["price"].doubleValue, forCurrencyPairCode: json["product_id"].stringValue)
+                if json["type"].string == "ticker", let currencyPair = self?.availableCurrencyPair(customCode: json["product_id"].stringValue) {
+                    TickerConfig.setPrice(json["price"].doubleValue, for: currencyPair)
                 }
             }
             
             socket.connect()
+            self.socket = socket
         } else {
             TickerConfig.selectedCurrencyPairs.forEach({ (currencyPair) in
-                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.code)
-                apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { (response) in
+                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
+                apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: String(describing: currencyPair)), responseSerializer: apiResponseSerializer) { (response) in
                     switch response.result {
                     case .success(let value):
-                        let json = JSON(value)
-                        TickerConfig.setPrice(json["price"].doubleValue, forCurrencyPair: currencyPair)
+                        TickerConfig.setPrice(JSON(value)["price"].doubleValue, for: currencyPair)
                     case .failure(let error):
                         print("Error retrieving prices for \(currencyPair): \(error)")
                     }

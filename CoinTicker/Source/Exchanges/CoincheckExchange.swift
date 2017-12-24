@@ -47,10 +47,10 @@ class CoincheckExchange: Exchange {
     
     override internal func fetch() {
         let currencyPair = availableCurrencyPairs.first!
-        apiRequests.append(Alamofire.request(Constants.TickerAPIPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { [weak self] (response) in
+        apiRequests.append(Alamofire.request(Constants.TickerAPIPath).response(queue: apiResponseQueue(label: currencyPair.customCode), responseSerializer: apiResponseSerializer) { [weak self] (response) in
             switch response.result {
             case .success(let value):
-                TickerConfig.setPrice(JSON(value)["last"].doubleValue, forCurrencyPair: currencyPair)
+                TickerConfig.setPrice(JSON(value)["last"].doubleValue, for: currencyPair)
             case .failure(let error):
                 print("Error retrieving prices for \(currencyPair): \(error)")
             }

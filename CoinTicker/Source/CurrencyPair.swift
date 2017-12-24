@@ -26,17 +26,24 @@
 
 import Foundation
 
-struct CurrencyPair: Hashable, Comparable {
+struct CurrencyPair: Comparable, Codable {
     
     var baseCurrency: Currency
     var quoteCurrency: Currency
+    var customCode: String
     
-    init(baseCurrency: Currency, quoteCurrency: Currency) {
+    init(baseCurrency: Currency, quoteCurrency: Currency, customCode: String? = nil) {
         self.baseCurrency = baseCurrency
         self.quoteCurrency = quoteCurrency
+        
+        if let customCode = customCode {
+            self.customCode = customCode
+        } else {
+            self.customCode = "\(baseCurrency.code)\(quoteCurrency.code)"
+        }
     }
     
-    init?(baseCurrency: String?, quoteCurrency: String?) {
+    init?(baseCurrency: String?, quoteCurrency: String?, customCode: String? = nil) {
         guard let baseCurrencyString = baseCurrency, let quoteCurrencyString = quoteCurrency else {
             return nil
         }
@@ -45,33 +52,28 @@ struct CurrencyPair: Hashable, Comparable {
             return nil
         }
         
-        self = CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency)
+        self = CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode)
     }
     
-    init?(code: String, separator: String = "-") {
-        let currencyCodes = code.split(separator: "-")
-        guard currencyCodes.count == 2 else {
-            return nil
-        }
-        
-        guard let currencyPair = CurrencyPair(baseCurrency: String(currencyCodes.first!), quoteCurrency: String(currencyCodes.last!)) else {
-            return nil
-        }
-        
-        self = currencyPair
+}
+
+extension CurrencyPair: CustomStringConvertible {
+    
+    var description: String {
+        return "\(baseCurrency.code)\(quoteCurrency.code)"
     }
     
-    var code: String {
-        return code(withSeparator: "-")
-    }
+}
+
+extension CurrencyPair: Hashable {
     
     var hashValue: Int {
-        return code.hashValue
+        return String(describing: self).hashValue
     }
     
-    func code(withSeparator separator: Character) -> String {
-        return "\(baseCurrency.code)\(separator)\(quoteCurrency.code)"
-    }
+}
+
+extension CurrencyPair: Equatable {
     
     static func <(lhs: CurrencyPair, rhs: CurrencyPair) -> Bool {
         if lhs.baseCurrency.isBitcoin && !rhs.baseCurrency.isBitcoin {

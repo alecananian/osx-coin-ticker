@@ -41,10 +41,10 @@ class KorbitExchange: Exchange {
     override func load() {
         super.load()
         availableCurrencyPairs = [
-            CurrencyPair(baseCurrency: .btc, quoteCurrency: .krw),
-            CurrencyPair(baseCurrency: .eth, quoteCurrency: .krw),
-            CurrencyPair(baseCurrency: .etc, quoteCurrency: .krw),
-            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .krw)
+            CurrencyPair(baseCurrency: .btc, quoteCurrency: .krw, customCode: "btc_krw"),
+            CurrencyPair(baseCurrency: .eth, quoteCurrency: .krw, customCode: "eth_krw"),
+            CurrencyPair(baseCurrency: .etc, quoteCurrency: .krw, customCode: "etc_krw"),
+            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .krw, customCode: "xrp_krw")
         ]
         delegate.exchange(self, didUpdateAvailableCurrencyPairs: availableCurrencyPairs)
         fetch()
@@ -52,12 +52,12 @@ class KorbitExchange: Exchange {
     
     override internal func fetch() {
         TickerConfig.selectedCurrencyPairs.forEach({ (currencyPair) in
-            let productId = currencyPair.code(withSeparator: "_").lowercased()
+            let productId = currencyPair.customCode
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
-            apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: currencyPair.code), responseSerializer: apiResponseSerializer) { (response) in
+            apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: productId), responseSerializer: apiResponseSerializer) { (response) in
                 switch response.result {
                 case .success(let value):
-                    TickerConfig.setPrice(JSON(value)["last"].doubleValue, forCurrencyPair: currencyPair)
+                    TickerConfig.setPrice(JSON(value)["last"].doubleValue, for: currencyPair)
                 case .failure(let error):
                     print("Error retrieving prices for \(currencyPair): \(error)")
                 }

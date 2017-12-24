@@ -56,11 +56,11 @@ struct TrackingUtils {
     }
     
     static func didSelectCurrencyPair(_ currencyPair: CurrencyPair) {
-        log(.selectCurrencyPair, withAttributes: [TrackedEventAttributes.currencyPair.rawValue: currencyPair.code])
+        log(.selectCurrencyPair, withAttributes: [TrackedEventAttributes.currencyPair.rawValue: String(describing: currencyPair)])
     }
     
     static func didDeselectCurrencyPair(_ currencyPair: CurrencyPair) {
-        log(.deselectCurrencyPair, withAttributes: [TrackedEventAttributes.currencyPair.rawValue: currencyPair.code])
+        log(.deselectCurrencyPair, withAttributes: [TrackedEventAttributes.currencyPair.rawValue: String(describing: currencyPair)])
     }
     
 }
