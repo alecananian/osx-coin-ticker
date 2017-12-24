@@ -29,13 +29,14 @@ import Cocoa
 import Alamofire
 
 enum ExchangeSite: Int {
+    case binance = 200
     case bitstamp = 210
     case coincheck = 235
     case gdax = 240
     case korbit = 245
     case kraken = 250
     
-    static let allValues = [bitstamp, coincheck, gdax, korbit, kraken]
+    static let allValues = [binance, bitstamp, coincheck, gdax, korbit, kraken]
     
     var index: Int {
         return self.rawValue
@@ -43,6 +44,7 @@ enum ExchangeSite: Int {
     
     var displayName: String {
         switch self {
+        case .binance: return "Binance"
         case .bitstamp: return "Bitstamp"
         case .coincheck: return "Coincheck"
         case .gdax: return "GDAX"
@@ -73,6 +75,7 @@ class Exchange {
     
     static func build(fromSite site: ExchangeSite, delegate: ExchangeDelegate) -> Exchange {
         switch site {
+        case .binance: return BinanceExchange(delegate: delegate)
         case .bitstamp: return BitstampExchange(delegate: delegate)
         case .coincheck: return CoincheckExchange(delegate: delegate)
         case .gdax: return GDAXExchange(delegate: delegate)
