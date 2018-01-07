@@ -11,11 +11,15 @@
 "currency.rub.title" = "RUB (Russian Ruble)";
 
 "currency.ada.title" = "ADA (Cardano)";
+"currency.adx.title" = "ADX (AdEx)";
 "currency.aion.title" = "AION (Aion)";
+"currency.ark.title" = "ARK (Ark)";
+"currency.bat.title" = "BAT (Basic Attention Token)";
 "currency.btc.title" = "BTC (Bitcoin)";
 "currency.bch.title" = "BCH (Bitcoin Cash)";
 "currency.bnb.title" = "BNB (Binance Coin)";
 "currency.bnt.title" = "BNT (Bancor)";
+"currency.bqx.title" = "BQX (Bitquence)";
 "currency.eos.title" = "EOS (Eos Coin)";
 "currency.eth.title" = "ETH (Ethereum)";
 "currency.ltc.title" = "LTC (Litecoin)";

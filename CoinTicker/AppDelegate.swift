@@ -231,7 +231,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             })
             
             var iconImage: NSImage? = nil
-            if self.currentExchange.selectedCurrencyPairs.count == 1 {
+            if self.currentExchange.isSingleCurrencyPairSelected || self.currentExchange.isSingleBaseCurrencySelected {
                 iconImage = self.currentExchange.selectedCurrencyPairs.first!.baseCurrency.iconImage
             } else {
                 iconImage = NSImage(named: NSImage.Name(rawValue: "CTLogo"))
@@ -258,7 +258,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     priceString = NSLocalizedString("menu.label.loading", comment: "Label displayed when network requests are loading")
                 }
                 
-                if self.currentExchange.selectedCurrencyPairs.count == 1 {
+                if self.currentExchange.isSingleCurrencyPairSelected || self.currentExchange.isSingleBaseCurrencySelected {
                     return priceString
                 }
                 
