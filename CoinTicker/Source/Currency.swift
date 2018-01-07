@@ -32,18 +32,20 @@ enum Currency: Int, Codable {
     case cad, cny, eur, gbp, jpy, krw, rub, usd
     
     // Crypto
-    case ada, adx, aion, ark, bat, btc, bch, bnb, bnt, bqx, dash, eos, etc, eth, gno, hsr,
-        icn, lrc, ltc, mco, mln, nav, nebl, neo, nmc, nvc, omg, ppc, qtum, rep, snt, usdt,
-        waves, wtc, xdg, xlm, xmr, xrp, zec
+    case ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, eos, etc, eth,
+        fun, gno, gxs, hsr, icn, kmd, knc, lrc, lsk, ltc, mana, mco, mln, mtl, nav, nebl,
+        neo, nmc, nvc, omg, ppc, ppt, qtum, rdn, rep, salt, sngls, snt, storj, strat, sub,
+        trx, usdt, ven, waves, wtc, xdg, xlm, xmr, xrp, xvg, xzc, zec
     
     private static let AllPhysical = [
         cad, cny, eur, gbp, jpy, krw, rub, usd
     ]
     
     private static let AllCrypto = [
-        ada, adx, aion, ark, bat, btc, bch, bnb, bnt, bqx, dash, eos, etc, eth, gno, hsr,
-        icn, lrc, ltc, mco, mln, nav, nebl, neo, nmc, nvc, omg, ppc, qtum, rep, snt, usdt,
-        waves, wtc, xdg, xlm, xmr, xrp, zec
+        ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, eos, etc, eth,
+        fun, gno, gxs, hsr, icn, kmd, knc, lrc, lsk, ltc, mana, mco, mln, mtl, nav, nebl,
+        neo, nmc, nvc, omg, ppc, ppt, qtum, rdn, rep, salt, sngls, snt, storj, strat, sub,
+        trx, usdt, ven, waves, wtc, xdg, xlm, xmr, xrp, xvg, xzc, zec
     ]
     
     private static let AllValues = AllCrypto + AllPhysical
