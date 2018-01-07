@@ -65,12 +65,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         // Listen to network reachability status
         reachabilityManager.listenerQueue = DispatchQueue(label: "cointicker.reachability", qos: .utility, attributes: [.concurrent])
-        reachabilityManager.listener = { [unowned self] status in
+        reachabilityManager.listener = { [weak self] status in
             if status == .reachable(.ethernetOrWiFi) || status == .reachable(.wwan) {
-                self.currentExchange?.load()
+                self?.currentExchange?.load()
             } else {
-                self.currentExchange?.stop()
-                self.updateMenuWithOfflineText()
+                self?.currentExchange?.stop()
+                self?.updateMenuWithOfflineText()
             }
         }
         
@@ -210,7 +210,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             var menuItemMap = [Currency: NSMenuItem]()
             let indexOffset = self.mainMenu.index(of: self.currencyStartSeparator)
-            self.currentExchange.availableCurrencyPairs.forEach({ (currencyPair) in
+            self.currentExchange.availableCurrencyPairs.forEach({ currencyPair in
                 let baseCurrency = currencyPair.baseCurrency
                 let quoteCurrency = currencyPair.quoteCurrency
                 var menuItem: NSMenuItem
@@ -245,7 +245,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     fileprivate func updatePrices() {
         DispatchQueue.main.async {
-            let priceStrings = self.currentExchange.selectedCurrencyPairs.flatMap { (currencyPair) in
+            let priceStrings = self.currentExchange.selectedCurrencyPairs.flatMap { currencyPair in
                 let price = self.currentExchange.price(for: currencyPair)
                 var priceString: String
                 if price > 0 {

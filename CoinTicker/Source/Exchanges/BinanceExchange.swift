@@ -25,7 +25,6 @@
 //
 
 import Foundation
-import Alamofire
 import SocketIO
 import SwiftyJSON
 
@@ -46,11 +45,13 @@ class BinanceExchange: Exchange {
     
     override func load() {
         super.load()
-        requestAPI(Constants.ProductListAPIPath) { [unowned self] (result) in
-            let availableCurrencyPairs = result["symbols"].arrayValue.flatMap({ (result) in
+        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
+            let availableCurrencyPairs = result.json["symbols"].arrayValue.flatMap({ result in
                 return CurrencyPair(baseCurrency: result["baseAsset"].string, quoteCurrency: result["quoteAsset"].string, customCode: result["symbol"].string)
             })
-            self.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+        }.catch { error in
+            print("Error fetching Binance products: \(error)")
         }
     }
     
@@ -64,7 +65,7 @@ class BinanceExchange: Exchange {
             let currencyPairCodes: [String] = selectedCurrencyPairs.flatMap({ "\($0.customCode.lowercased())@aggTrade" })
             let socket = WebSocket(url: URL(string: String(format: Constants.WebSocketPathFormat, currencyPairCodes.joined(separator: "/")))!)
             
-            socket.onText = { [weak self] (text: String) in
+            socket.onText = { [weak self] text in
                 if let strongSelf = self {
                     let result = JSON(parseJSON: text)["data"]
                     if let currencyPair = strongSelf.availableCurrencyPairs.first(where: { $0.customCode == result["s"].stringValue }) {
@@ -84,15 +85,17 @@ class BinanceExchange: Exchange {
                 apiPath = Constants.FullTickerAPIPath
             }
             
-            requestAPI(apiPath) { [weak self] (result) in
-                let results = result.array ?? [result]
-                results.forEach({ (result) in
+            requestAPI(apiPath).then { [weak self] result -> Void in
+                let results = result.json.array ?? [result.json]
+                results.forEach({ result in
                     if let currencyPair = self?.selectedCurrencyPair(customCode: result["symbol"].stringValue) {
                         self?.setPrice(result["price"].doubleValue, forCurrencyPair: currencyPair)
                     }
                 })
                 
                 self?.onFetchComplete()
+            }.catch { error in
+                print("Error fetching Binance ticker: \(error)")
             }
         }
     }

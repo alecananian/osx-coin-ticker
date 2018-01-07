@@ -25,7 +25,6 @@
 //
 
 import Foundation
-import Alamofire
 import SwiftyJSON
 
 class CoincheckExchange: Exchange {
@@ -45,9 +44,11 @@ class CoincheckExchange: Exchange {
     
     override internal func fetch() {
         let currencyPair = availableCurrencyPairs.first!
-        requestAPI(Constants.TickerAPIPath) { [weak self] (result) in
-            self?.setPrice(result["last"].doubleValue, forCurrencyPair: currencyPair)
+        requestAPI(Constants.TickerAPIPath).then { [weak self] result -> Void in
+            self?.setPrice(result.json["last"].doubleValue, forCurrencyPair: currencyPair)
             self?.onFetchComplete()
+        }.catch { error in
+            print("Error fetching Coincheck ticker: \(error)")
         }
     }
 

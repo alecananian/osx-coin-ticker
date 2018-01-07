@@ -27,6 +27,7 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import PromiseKit
 
 class KorbitExchange: Exchange {
     
@@ -42,6 +43,7 @@ class KorbitExchange: Exchange {
         super.load()
         onLoaded(availableCurrencyPairs: [
             CurrencyPair(baseCurrency: .btc, quoteCurrency: .krw, customCode: "btc_krw"),
+            CurrencyPair(baseCurrency: .bch, quoteCurrency: .krw, customCode: "bch_krw"),
             CurrencyPair(baseCurrency: .eth, quoteCurrency: .krw, customCode: "eth_krw"),
             CurrencyPair(baseCurrency: .etc, quoteCurrency: .krw, customCode: "etc_krw"),
             CurrencyPair(baseCurrency: .xrp, quoteCurrency: .krw, customCode: "xrp_krw")
@@ -49,14 +51,24 @@ class KorbitExchange: Exchange {
     }
     
     override internal func fetch() {
-        selectedCurrencyPairs.forEach({ (currencyPair) in
+        when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let productId = currencyPair.customCode
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
-            requestAPI(apiRequestPath) { [weak self] (result) in
-                self?.setPrice(result["last"].doubleValue, forCurrencyPair: currencyPair)
-                self?.onFetchComplete()
-            }
-        })
+            return requestAPI(apiRequestPath, for: currencyPair)
+        })).then { [weak self] results -> Void in
+            results.forEach({ result in
+                switch result {
+                case .fulfilled(let value):
+                    if let currencyPair = value.representedObject as? CurrencyPair {
+                        let price = value.json["last"].doubleValue
+                        self?.setPrice(price, forCurrencyPair: currencyPair)
+                    }
+                default: break
+                }
+            })
+            
+            self?.onFetchComplete()
+        }.always {}
     }
 
 }

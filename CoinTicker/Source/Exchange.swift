@@ -28,6 +28,7 @@ import Foundation
 import Cocoa
 import Alamofire
 import SwiftyJSON
+import PromiseKit
 
 enum ExchangeSite: Int, Codable {
     case binance = 200
@@ -54,11 +55,15 @@ protocol ExchangeDelegate {
     func exchangeDidUpdatePrices(_ exchange: Exchange)
 }
 
+struct ExchangeAPIResponse {
+    var representedObject: Any?
+    var json: JSON
+}
+
 class Exchange {
     
     internal var site: ExchangeSite
     internal var delegate: ExchangeDelegate?
-    private var apiRequests = [DataRequest]()
     private var requestTimer: Timer?
     var updateInterval = TickerConfig.defaultUpdateInterval
     var availableCurrencyPairs = [CurrencyPair]()
@@ -66,13 +71,13 @@ class Exchange {
     private var currencyPrices = [CurrencyPair: Double]()
     
     private let apiResponseSerializer = DataRequest.jsonResponseSerializer()
-    private var apiResponseQueue: DispatchQueue {
-        return DispatchQueue(label: "cointicker.\(site.rawValue)-api", qos: .utility, attributes: [.concurrent])
-    }
+    private lazy var apiResponseQueue: DispatchQueue = { [unowned self] in
+        return DispatchQueue(label: "cointicker.\(self.site.rawValue)-api", qos: .utility, attributes: [.concurrent])
+    }()
     
-    internal var socketResponseQueue: DispatchQueue {
-        return DispatchQueue(label: "cointicker.\(site.rawValue)-socket", qos: .utility, attributes: [.concurrent])
-    }
+    internal lazy var socketResponseQueue: DispatchQueue = { [unowned self] in
+        return DispatchQueue(label: "cointicker.\(self.site.rawValue)-socket", qos: .utility, attributes: [.concurrent])
+    }()
     
     internal var isUpdatingInRealTime: Bool {
         return updateInterval == TickerConfig.Constants.RealTimeUpdateInterval
@@ -179,9 +184,11 @@ class Exchange {
     }
     
     internal func stop() {
-        apiRequests.forEach({ $0.cancel() })
         requestTimer?.invalidate()
         requestTimer = nil
+        Alamofire.SessionManager.default.session.getTasksWithCompletionHandler({ dataTasks, _, _ in
+            dataTasks.forEach({ $0.cancel() })
+        })
     }
     
     func reset() {
@@ -206,15 +213,18 @@ class Exchange {
     }
     
     // MARK: API Helpers
-    internal func requestAPI(_ apiPath: String, success: @escaping (JSON) -> Void) {
-        apiRequests.append(Alamofire.request(apiPath).response(queue: apiResponseQueue, responseSerializer: apiResponseSerializer) { (response) in
-            switch response.result {
-            case .success(let value):
-                success(JSON(value))
-            case .failure(let error):
-                print("Error retrieving currency pairs: \(error)")
+    internal func requestAPI(_ apiPath: String, for representedObject: Any? = nil) -> Promise<ExchangeAPIResponse> {
+        return Promise { fulfill, reject in
+            Alamofire.request(apiPath).response(queue: apiResponseQueue, responseSerializer: apiResponseSerializer) { response in
+                switch response.result {
+                case .success(let value):
+                    fulfill(ExchangeAPIResponse(representedObject: representedObject, json: JSON(value)))
+                case .failure(let error):
+                    print("Error in API request: \(apiPath) \(error)")
+                    reject(error)
+                }
             }
-        })
+        }
     }
 
 }

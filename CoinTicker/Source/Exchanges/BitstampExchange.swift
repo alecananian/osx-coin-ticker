@@ -25,9 +25,9 @@
 //
 
 import Foundation
-import Alamofire
 import SocketIO
 import SwiftyJSON
+import PromiseKit
 
 class BitstampExchange: Exchange {
     
@@ -45,8 +45,8 @@ class BitstampExchange: Exchange {
     
     override func load() {
         super.load()
-        requestAPI(Constants.ProductListAPIPath) { [unowned self] (result) in
-            let availableCurrencyPairs = result.arrayValue.flatMap({ (result) -> CurrencyPair? in
+        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
+            let availableCurrencyPairs = result.json.arrayValue.flatMap({ result -> CurrencyPair? in
                 let currencyCodes = result["name"].stringValue.split(separator: "/")
                 guard currencyCodes.count == 2, let baseCurrency = currencyCodes.first, let quoteCurrency = currencyCodes.last else {
                     return nil
@@ -59,7 +59,9 @@ class BitstampExchange: Exchange {
                 
                 return (currencyPair.baseCurrency.isCrypto ? currencyPair : nil)
             })
-            self.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+        }.catch { error in
+            print("Error fetching Bitstamp products: \(error)")
         }
     }
     
@@ -73,7 +75,7 @@ class BitstampExchange: Exchange {
             sockets?.forEach({ $0.disconnect() })
             sockets = [WebSocket]()
             
-            selectedCurrencyPairs.forEach({ (currencyPair) in
+            selectedCurrencyPairs.forEach({ currencyPair in
                 let productId = currencyPair.customCode
                 let socket = WebSocket(url: Constants.WebSocketURL)
                 socket.callbackQueue = socketResponseQueue
@@ -95,7 +97,7 @@ class BitstampExchange: Exchange {
                     }
                 }
                 
-                socket.onText = { [weak self] (text: String) in
+                socket.onText = { [weak self] text in
                     if let strongSelf = self {
                         var result = JSON(parseJSON: text)
                         if result["event"] == "trade" {
@@ -110,14 +112,24 @@ class BitstampExchange: Exchange {
                 sockets!.append(socket)
             })
         } else {
-            selectedCurrencyPairs.forEach({ (currencyPair) in
+            when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
                 let productId = currencyPair.customCode
                 let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
-                requestAPI(apiRequestPath) { [weak self] (result) in
-                    self?.setPrice(result["last"].doubleValue, forCurrencyPair: currencyPair)
-                    self?.onFetchComplete()
-                }
-            })
+                return requestAPI(apiRequestPath, for: currencyPair)
+            })).then { [weak self] results -> Void in
+                results.forEach({ result in
+                    switch result {
+                    case .fulfilled(let value):
+                        if let currencyPair = value.representedObject as? CurrencyPair {
+                            let price = value.json["last"].doubleValue
+                            self?.setPrice(price, forCurrencyPair: currencyPair)
+                        }
+                    default: break
+                    }
+                })
+                
+                self?.onFetchComplete()
+            }.always {}
         }
     }
 

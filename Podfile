@@ -6,6 +6,7 @@ target 'CoinTicker' do
   pod 'Alamofire', '~> 4.0'
   pod 'Socket.IO-Client-Swift', '~> 10.0.0'
   pod 'SwiftyJSON', '~> 4.0'
+  pod 'PromiseKit', '~> 4.4'
   pod 'Fabric'
   pod 'Crashlytics'
 end

@@ -25,7 +25,6 @@
 //
 
 import Foundation
-import Alamofire
 import SwiftyJSON
 
 class KrakenExchange: Exchange {
@@ -41,8 +40,8 @@ class KrakenExchange: Exchange {
     
     override func load() {
         super.load()
-        requestAPI(Constants.ProductListAPIPath) { [unowned self] (result) in
-            let availableCurrencyPairs = result["result"].flatMap({ (data) -> CurrencyPair? in
+        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
+            let availableCurrencyPairs = result.json["result"].flatMap({ (data) -> CurrencyPair? in
                 let (productId, result) = data
                 guard !productId.contains(".d") else {
                     return nil
@@ -50,21 +49,25 @@ class KrakenExchange: Exchange {
                 
                 return CurrencyPair(baseCurrency: result["base"].string, quoteCurrency: result["quote"].string, customCode: productId)
             })
-            self.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+        }.catch { error in
+            print("Error fetching Kraken products: \(error)")
         }
     }
     
     override internal func fetch() {
         let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
         let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
-        requestAPI(apiPath) { [weak self] (result) in
-            for (productId, result) in result["result"] {
+        requestAPI(apiPath).then { [weak self] result -> Void in
+            for (productId, result) in result.json["result"] {
                 if let currencyPair = self?.selectedCurrencyPair(customCode: productId), let price = result["c"].array?.first?.doubleValue {
                     self?.setPrice(price, forCurrencyPair: currencyPair)
                 }
             }
             
             self?.onFetchComplete()
+        }.catch { error in
+            print("Error fetching Kraken ticker: \(error)")
         }
     }
 

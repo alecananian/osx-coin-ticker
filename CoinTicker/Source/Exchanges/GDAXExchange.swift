@@ -25,9 +25,9 @@
 //
 
 import Foundation
-import Alamofire
 import SocketIO
 import SwiftyJSON
+import PromiseKit
 
 class GDAXExchange: Exchange {
     
@@ -45,14 +45,16 @@ class GDAXExchange: Exchange {
     
     override func load() {
         super.load()
-        requestAPI(Constants.ProductListAPIPath) { [unowned self] (result) in
-            let availableCurrencyPairs = result.arrayValue.flatMap({ (result) -> CurrencyPair? in
+        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
+            let availableCurrencyPairs = result.json.arrayValue.flatMap({ result -> CurrencyPair? in
                 let baseCurrency = result["base_currency"].string
                 let quoteCurrency = result["quote_currency"].string
                 let customCode = result["id"].string
                 return CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode)
             })
-            self.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+        }.catch { error in
+            print("Error fetching GDAX products: \(error)")
         }
     }
     
@@ -79,7 +81,7 @@ class GDAXExchange: Exchange {
                 }
             }
             
-            socket.onText = { [weak self] (text: String) in
+            socket.onText = { [weak self] text in
                 if let strongSelf = self {
                     let json = JSON(parseJSON: text)
                     if json["type"].string == "ticker", let currencyPair = strongSelf.selectedCurrencyPair(customCode: json["product_id"].stringValue) {
@@ -92,12 +94,24 @@ class GDAXExchange: Exchange {
             socket.connect()
             self.socket = socket
         } else {
-            selectedCurrencyPairs.forEach({ (currencyPair) in
-                requestAPI(String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)) { [weak self] (result) in
-                    self?.setPrice(result["price"].doubleValue, forCurrencyPair: currencyPair)
-                    self?.onFetchComplete()
-                }
-            })
+            when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+                let productId = currencyPair.customCode
+                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
+                return requestAPI(apiRequestPath, for: currencyPair)
+            })).then { [weak self] results -> Void in
+                results.forEach({ result in
+                    switch result {
+                    case .fulfilled(let value):
+                        if let currencyPair = value.representedObject as? CurrencyPair {
+                            let price = value.json["price"].doubleValue
+                            self?.setPrice(price, forCurrencyPair: currencyPair)
+                        }
+                    default: break
+                    }
+                })
+                
+                self?.onFetchComplete()
+            }.always {}
         }
     }
 
