@@ -69,7 +69,7 @@ class BinanceExchange: Exchange {
                 if let strongSelf = self {
                     let result = JSON(parseJSON: text)["data"]
                     if let currencyPair = strongSelf.availableCurrencyPairs.first(where: { $0.customCode == result["s"].stringValue }) {
-                        strongSelf.setPrice(result["p"].doubleValue, forCurrencyPair: currencyPair)
+                        strongSelf.setPrice(result["p"].doubleValue, for: currencyPair)
                         strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                     }
                 }
@@ -88,8 +88,8 @@ class BinanceExchange: Exchange {
             requestAPI(apiPath).then { [weak self] result -> Void in
                 let results = result.json.array ?? [result.json]
                 results.forEach({ result in
-                    if let currencyPair = self?.selectedCurrencyPair(customCode: result["symbol"].stringValue) {
-                        self?.setPrice(result["price"].doubleValue, forCurrencyPair: currencyPair)
+                    if let currencyPair = self?.selectedCurrencyPair(withCustomCode: result["symbol"].stringValue) {
+                        self?.setPrice(result["price"].doubleValue, for: currencyPair)
                     }
                 })
                 

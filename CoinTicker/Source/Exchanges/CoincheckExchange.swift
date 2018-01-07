@@ -45,7 +45,7 @@ class CoincheckExchange: Exchange {
     override internal func fetch() {
         let currencyPair = availableCurrencyPairs.first!
         requestAPI(Constants.TickerAPIPath).then { [weak self] result -> Void in
-            self?.setPrice(result.json["last"].doubleValue, forCurrencyPair: currencyPair)
+            self?.setPrice(result.json["last"].doubleValue, for: currencyPair)
             self?.onFetchComplete()
         }.catch { error in
             print("Error fetching Coincheck ticker: \(error)")

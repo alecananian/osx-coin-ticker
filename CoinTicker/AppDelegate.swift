@@ -218,7 +218,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                     menuItem = savedMenuItem
                 } else {
                     menuItem = self.menuItem(forBaseCurrency: baseCurrency)
-                    menuItem.state = (self.currentExchange.isBaseCurrencySelected(baseCurrency) ? .on : .off)
+                    menuItem.state = (self.currentExchange.isCurrencyPairSelected(baseCurrency: baseCurrency) ? .on : .off)
                     menuItem.submenu = NSMenu()
                     menuItemMap[baseCurrency] = menuItem
                     self.currencyMenuItems.append(menuItem)

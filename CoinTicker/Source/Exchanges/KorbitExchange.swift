@@ -61,7 +61,7 @@ class KorbitExchange: Exchange {
                 case .fulfilled(let value):
                     if let currencyPair = value.representedObject as? CurrencyPair {
                         let price = value.json["last"].doubleValue
-                        self?.setPrice(price, forCurrencyPair: currencyPair)
+                        self?.setPrice(price, for: currencyPair)
                     }
                 default: break
                 }

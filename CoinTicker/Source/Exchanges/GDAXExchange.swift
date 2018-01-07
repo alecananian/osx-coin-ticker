@@ -84,8 +84,8 @@ class GDAXExchange: Exchange {
             socket.onText = { [weak self] text in
                 if let strongSelf = self {
                     let json = JSON(parseJSON: text)
-                    if json["type"].string == "ticker", let currencyPair = strongSelf.selectedCurrencyPair(customCode: json["product_id"].stringValue) {
-                        strongSelf.setPrice(json["price"].doubleValue, forCurrencyPair: currencyPair)
+                    if json["type"].string == "ticker", let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: json["product_id"].stringValue) {
+                        strongSelf.setPrice(json["price"].doubleValue, for: currencyPair)
                         strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                     }
                 }
@@ -104,7 +104,7 @@ class GDAXExchange: Exchange {
                     case .fulfilled(let value):
                         if let currencyPair = value.representedObject as? CurrencyPair {
                             let price = value.json["price"].doubleValue
-                            self?.setPrice(price, forCurrencyPair: currencyPair)
+                            self?.setPrice(price, for: currencyPair)
                         }
                     default: break
                     }

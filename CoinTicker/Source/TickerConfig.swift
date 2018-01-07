@@ -48,7 +48,7 @@ class TickerConfig {
         return exchange
     }
     
-    static var defaultExchangeSite: ExchangeSite {
+    private static var defaultExchangeSite: ExchangeSite {
         get {
             let index = UserDefaults.standard.integer(forKey: Keys.UserDefaultsExchangeSite)
             return ExchangeSite(rawValue: index) ?? .gdax
@@ -70,7 +70,7 @@ class TickerConfig {
         }
     }
     
-    static var defaultSelectedCurrencyPairs: [CurrencyPair]? {
+    private static var defaultSelectedCurrencyPairs: [CurrencyPair]? {
         get {
             if let data = UserDefaults.standard.object(forKey: Keys.UserDefaultsSelectedCurrencyPairs) as? Data {
                 do {

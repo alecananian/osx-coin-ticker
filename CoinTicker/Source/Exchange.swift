@@ -91,12 +91,6 @@ class Exchange {
         return (Set(selectedCurrencyPairs.flatMap({ $0.baseCurrency })).count == 1)
     }
     
-    enum CodingKeys: String, CodingKey {
-        case site
-        case availableCurrencyPairs
-        case selectedCurrencyPairs
-    }
-    
     // MARK: Initialization
     deinit {
         stop()
@@ -108,7 +102,11 @@ class Exchange {
     }
     
     // MARK: Currency Helpers
-    func toggleCurrencyPair(_ currencyPair: CurrencyPair) {
+    func toggleCurrencyPair(baseCurrency: Currency, quoteCurrency: Currency) {
+        guard let currencyPair = availableCurrencyPairs.first(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency }) else {
+            return
+        }
+        
         if let index = selectedCurrencyPairs.index(of: currencyPair) {
             if selectedCurrencyPairs.count > 0 {
                 selectedCurrencyPairs.remove(at: index)
@@ -121,27 +119,19 @@ class Exchange {
         }
     }
     
-    func toggleCurrencyPair(baseCurrency: Currency, quoteCurrency: Currency) {
-        guard let currencyPair = availableCurrencyPairs.first(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency }) else {
-            return
+    func isCurrencyPairSelected(baseCurrency: Currency, quoteCurrency: Currency? = nil) -> Bool {
+        if let quoteCurrency = quoteCurrency {
+            return selectedCurrencyPairs.contains(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency })
         }
         
-        toggleCurrencyPair(currencyPair)
-    }
-    
-    func isBaseCurrencySelected(_ baseCurrency: Currency) -> Bool {
         return selectedCurrencyPairs.contains(where: { $0.baseCurrency == baseCurrency })
     }
     
-    func isCurrencyPairSelected(baseCurrency: Currency, quoteCurrency: Currency) -> Bool {
-        return selectedCurrencyPairs.contains(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency })
-    }
-    
-    func selectedCurrencyPair(customCode: String) -> CurrencyPair? {
+    func selectedCurrencyPair(withCustomCode customCode: String) -> CurrencyPair? {
         return selectedCurrencyPairs.first(where: { $0.customCode == customCode })
     }
     
-    internal func setPrice(_ price: Double, forCurrencyPair currencyPair: CurrencyPair) {
+    internal func setPrice(_ price: Double, for currencyPair: CurrencyPair) {
         currencyPrices[currencyPair] = price
     }
     
