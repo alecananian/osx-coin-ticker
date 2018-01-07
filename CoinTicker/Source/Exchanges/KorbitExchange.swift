@@ -34,37 +34,29 @@ class KorbitExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.korbit.co.kr/v1/ticker?currency_pair=%@"
     }
     
-    init(delegate: ExchangeDelegate) {
+    init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .korbit, delegate: delegate)
     }
     
     override func load() {
         super.load()
-        availableCurrencyPairs = [
+        onLoaded(availableCurrencyPairs: [
             CurrencyPair(baseCurrency: .btc, quoteCurrency: .krw, customCode: "btc_krw"),
             CurrencyPair(baseCurrency: .eth, quoteCurrency: .krw, customCode: "eth_krw"),
             CurrencyPair(baseCurrency: .etc, quoteCurrency: .krw, customCode: "etc_krw"),
             CurrencyPair(baseCurrency: .xrp, quoteCurrency: .krw, customCode: "xrp_krw")
-        ]
-        delegate.exchange(self, didUpdateAvailableCurrencyPairs: availableCurrencyPairs)
-        fetch()
+        ])
     }
     
     override internal func fetch() {
-        TickerConfig.selectedCurrencyPairs.forEach({ (currencyPair) in
+        selectedCurrencyPairs.forEach({ (currencyPair) in
             let productId = currencyPair.customCode
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
-            apiRequests.append(Alamofire.request(apiRequestPath).response(queue: apiResponseQueue(label: productId), responseSerializer: apiResponseSerializer) { (response) in
-                switch response.result {
-                case .success(let value):
-                    TickerConfig.setPrice(JSON(value)["last"].doubleValue, for: currencyPair)
-                case .failure(let error):
-                    print("Error retrieving prices for \(currencyPair): \(error)")
-                }
-            })
+            requestAPI(apiRequestPath) { [weak self] (result) in
+                self?.setPrice(result["last"].doubleValue, forCurrencyPair: currencyPair)
+                self?.onFetchComplete()
+            }
         })
-        
-        startRequestTimer()
     }
 
 }

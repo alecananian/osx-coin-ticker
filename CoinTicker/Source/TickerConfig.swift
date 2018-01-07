@@ -26,14 +26,6 @@
 
 import Foundation
 
-protocol TickerConfigDelegate {
-    
-    func didSelectUpdateInterval()
-    func didUpdateSelectedCurrencyPairs()
-    func didUpdatePrices()
-    
-}
-
 class TickerConfig {
     
     private struct Keys {
@@ -42,122 +34,68 @@ class TickerConfig {
         static let UserDefaultsSelectedCurrencyPairs = "userDefaults.selectedCurrencyPairs"
     }
     
-    private struct Constants {
+    struct Constants {
         static let RealTimeUpdateInterval: Int = 5
+    }
+    
+    static var defaultExchange: Exchange {
+        let exchange = defaultExchangeSite.exchange()
+        exchange.updateInterval = defaultUpdateInterval
+        if let selectedCurrencyPairs = defaultSelectedCurrencyPairs {
+            exchange.selectedCurrencyPairs = selectedCurrencyPairs
+        }
+        
+        return exchange
     }
     
     static var defaultExchangeSite: ExchangeSite {
         get {
             let index = UserDefaults.standard.integer(forKey: Keys.UserDefaultsExchangeSite)
-            if let exchangeSite = ExchangeSite.build(fromIndex: index) {
-                return exchangeSite
-            }
-            
-            return .gdax
+            return ExchangeSite(rawValue: index) ?? .gdax
         }
         
         set {
-            UserDefaults.standard.set(newValue.index, forKey: Keys.UserDefaultsExchangeSite)
+            UserDefaults.standard.set(newValue.rawValue, forKey: Keys.UserDefaultsExchangeSite)
         }
     }
     
-    static var delegate: TickerConfigDelegate?
-    
-    private static var _selectedUpdateInterval: Int!
-    static var selectedUpdateInterval: Int {
-        if _selectedUpdateInterval == nil {
+    static var defaultUpdateInterval: Int {
+        get {
             let updateInterval = UserDefaults.standard.integer(forKey: Keys.UserDefaultsUpdateInterval)
-            _selectedUpdateInterval = (updateInterval > 0 ? updateInterval : Constants.RealTimeUpdateInterval)
-            delegate?.didSelectUpdateInterval()
+            return (updateInterval > 0 ? updateInterval : Constants.RealTimeUpdateInterval)
         }
         
-        return _selectedUpdateInterval
+        set {
+            UserDefaults.standard.set(newValue, forKey: Keys.UserDefaultsUpdateInterval)
+        }
     }
     
-    static func select(updateInterval: Int) {
-        _selectedUpdateInterval = updateInterval
-        save()
-        delegate?.didSelectUpdateInterval()
-        TrackingUtils.didSelectUpdateInterval(updateInterval)
-    }
-    
-    static var isRealTimeUpdateIntervalSelected: Bool {
-        return (selectedUpdateInterval == Constants.RealTimeUpdateInterval)
-    }
-    
-    private static var _selectedCurrencyPairs: [CurrencyPair]!
-    static var selectedCurrencyPairs: [CurrencyPair] {
-        if _selectedCurrencyPairs == nil {
-            do {
-                if let jsonData = UserDefaults.standard.object(forKey: Keys.UserDefaultsSelectedCurrencyPairs) as? Data {
-                    _selectedCurrencyPairs = try JSONDecoder().decode([CurrencyPair].self, from: jsonData)
+    static var defaultSelectedCurrencyPairs: [CurrencyPair]? {
+        get {
+            if let data = UserDefaults.standard.object(forKey: Keys.UserDefaultsSelectedCurrencyPairs) as? Data {
+                do {
+                    return try JSONDecoder().decode([CurrencyPair].self, from: data)
+                } catch {
+                    print("Error reading from UserDefaults: \(error)")
                 }
+            }
+            
+            return []
+        }
+        
+        set {
+            do {
+                UserDefaults.standard.set(try JSONEncoder().encode(newValue), forKey: Keys.UserDefaultsSelectedCurrencyPairs)
             } catch {
-                print("Error decoding UserDefaults: \(error)")
+                print("Error saving to UserDefaults: \(error)")
             }
-            
-            if _selectedCurrencyPairs == nil {
-                _selectedCurrencyPairs = [CurrencyPair]()
-            }
-            
-            delegate?.didUpdateSelectedCurrencyPairs()
-        }
-        
-        return _selectedCurrencyPairs
-    }
-    
-    static func toggle(currencyPair: CurrencyPair) {
-        if selectedCurrencyPairs.contains(currencyPair) {
-            if selectedCurrencyPairs.count > 1 {
-                deselect(currencyPair: currencyPair)
-            }
-        } else {
-            _selectedCurrencyPairs.append(currencyPair)
-            _selectedCurrencyPairs = _selectedCurrencyPairs.sorted()
-            save()
-            delegate?.didUpdateSelectedCurrencyPairs()
-            TrackingUtils.didSelectCurrencyPair(currencyPair)
         }
     }
     
-    static func deselect(currencyPair: CurrencyPair) {
-        if let index = _selectedCurrencyPairs.index(of: currencyPair) {
-            _selectedCurrencyPairs.remove(at: index)
-            save()
-            delegate?.didUpdateSelectedCurrencyPairs()
-            TrackingUtils.didDeselectCurrencyPair(currencyPair)
-        }
-    }
-    
-    private static var _currencyPairPrices = [CurrencyPair: Double]()
-    static func setPrice(_ price: Double, for currencyPair: CurrencyPair) {
-        _currencyPairPrices[currencyPair] = price
-        delegate?.didUpdatePrices()
-    }
-    
-    static func price(for currencyPair: CurrencyPair) -> Double {
-        guard let price = _currencyPairPrices[currencyPair] else {
-            return 0
-        }
-        
-        return price
-    }
-    
-    static func isWatching(baseCurrency: Currency) -> Bool {
-        return selectedCurrencyPairs.contains(where: { $0.baseCurrency == baseCurrency })
-    }
-    
-    static func isWatching(baseCurrency: Currency, quoteCurrency: Currency) -> Bool {
-        return selectedCurrencyPairs.contains(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency })
-    }
-    
-    static func save() {
-        do {
-            UserDefaults.standard.set(selectedUpdateInterval, forKey: Keys.UserDefaultsUpdateInterval)
-            UserDefaults.standard.set(try JSONEncoder().encode(selectedCurrencyPairs), forKey: Keys.UserDefaultsSelectedCurrencyPairs)
-        } catch {
-            print("Error saving to UserDefaults: \(error)")
-        }
+    static func save(_ defaultExchange: Exchange) {
+        defaultExchangeSite = defaultExchange.site
+        defaultUpdateInterval = defaultExchange.updateInterval
+        defaultSelectedCurrencyPairs = defaultExchange.selectedCurrencyPairs
     }
 
 }

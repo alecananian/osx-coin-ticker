@@ -40,29 +40,18 @@ class BinanceExchange: Exchange {
     
     private var socket: WebSocket?
     
-    init(delegate: ExchangeDelegate) {
-        super.init(site: .bitstamp, delegate: delegate)
+    init(delegate: ExchangeDelegate? = nil) {
+        super.init(site: .binance, delegate: delegate)
     }
     
     override func load() {
         super.load()
-        
-        apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue(label: "currencyPairs"), responseSerializer: apiResponseSerializer) { [unowned self] (response) in
-            switch response.result {
-            case .success(let value):
-                JSON(value)["symbols"].array?.forEach({ (result) in
-                    if let currencyPair = CurrencyPair(baseCurrency: result["baseAsset"].string, quoteCurrency: result["quoteAsset"].string, customCode: result["symbol"].string) {
-                        self.availableCurrencyPairs.append(currencyPair)
-                    }
-                })
-                
-                self.availableCurrencyPairs = self.availableCurrencyPairs.sorted()
-                self.delegate.exchange(self, didUpdateAvailableCurrencyPairs: self.availableCurrencyPairs)
-                self.fetch()
-            case .failure(let error):
-                print("Error retrieving currency pairs: \(error)")
-            }
-        })
+        requestAPI(Constants.ProductListAPIPath) { [unowned self] (result) in
+            let availableCurrencyPairs = result["symbols"].arrayValue.flatMap({ (result) in
+                return CurrencyPair(baseCurrency: result["baseAsset"].string, quoteCurrency: result["quoteAsset"].string, customCode: result["symbol"].string)
+            })
+            self.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+        }
     }
     
     override func stop() {
@@ -71,14 +60,17 @@ class BinanceExchange: Exchange {
     }
     
     override internal func fetch() {
-        if TickerConfig.isRealTimeUpdateIntervalSelected {
-            let currencyPairCodes: [String] = TickerConfig.selectedCurrencyPairs.flatMap({ "\($0.customCode.lowercased())@aggTrade" })
+        if isUpdatingInRealTime {
+            let currencyPairCodes: [String] = selectedCurrencyPairs.flatMap({ "\($0.customCode.lowercased())@aggTrade" })
             let socket = WebSocket(url: URL(string: String(format: Constants.WebSocketPathFormat, currencyPairCodes.joined(separator: "/")))!)
             
             socket.onText = { [weak self] (text: String) in
-                let json = JSON(parseJSON: text)["data"]
-                if let currencyPair = self?.availableCurrencyPairs.first(where: { $0.customCode == json["s"].stringValue }) {
-                    TickerConfig.setPrice(json["p"].doubleValue, for: currencyPair)
+                if let strongSelf = self {
+                    let result = JSON(parseJSON: text)["data"]
+                    if let currencyPair = strongSelf.availableCurrencyPairs.first(where: { $0.customCode == result["s"].stringValue }) {
+                        strongSelf.setPrice(result["p"].doubleValue, forCurrencyPair: currencyPair)
+                        strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
+                    }
                 }
             }
             
@@ -86,26 +78,22 @@ class BinanceExchange: Exchange {
             self.socket = socket
         } else {
             var apiPath: String = ""
-            if TickerConfig.selectedCurrencyPairs.count == 1, let currencyPair = TickerConfig.selectedCurrencyPairs.first {
+            if selectedCurrencyPairs.count == 1, let currencyPair = selectedCurrencyPairs.first {
                 apiPath = String(format: Constants.SingleTickerAPIPathFormat, currencyPair.customCode)
             } else {
                 apiPath = Constants.FullTickerAPIPath
             }
             
-            apiRequests.append(Alamofire.request(apiPath).response(queue: apiResponseQueue(label: "ticker"), responseSerializer: apiResponseSerializer) { [weak self] (response) in
-                switch response.result {
-                case .success(let value):
-                    let json = JSON(value)
-                    let results = json.array ?? [json]
-                    results.forEach({ (result) in
-                        if let currencyPair = self?.availableCurrencyPairs.first(where: { $0.customCode == result["symbol"].stringValue }) {
-                            TickerConfig.setPrice(result["price"].doubleValue, for: currencyPair)
-                        }
-                    })
-                case .failure(let error):
-                    print("Error retrieving prices: \(error)")
-                }
-            })
+            requestAPI(apiPath) { [weak self] (result) in
+                let results = result.array ?? [result]
+                results.forEach({ (result) in
+                    if let currencyPair = self?.availableCurrencyPair(customCode: result["symbol"].stringValue) {
+                        self?.setPrice(result["price"].doubleValue, forCurrencyPair: currencyPair)
+                    }
+                })
+                
+                self?.onFetchComplete()
+            }
         }
     }
     

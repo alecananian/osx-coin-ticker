@@ -27,8 +27,9 @@
 import Foundation
 import Cocoa
 import Alamofire
+import SwiftyJSON
 
-enum ExchangeSite: Int {
+enum ExchangeSite: Int, Codable {
     case binance = 200
     case bitstamp = 210
     case coincheck = 235
@@ -36,45 +37,8 @@ enum ExchangeSite: Int {
     case korbit = 245
     case kraken = 250
     
-    static let allValues = [binance, bitstamp, coincheck, gdax, korbit, kraken]
-    
-    var index: Int {
-        return self.rawValue
-    }
-    
-    var displayName: String {
+    func exchange(delegate: ExchangeDelegate? = nil) -> Exchange {
         switch self {
-        case .binance: return "Binance"
-        case .bitstamp: return "Bitstamp"
-        case .coincheck: return "Coincheck"
-        case .gdax: return "GDAX"
-        case .korbit: return "Korbit"
-        case .kraken: return "Kraken"
-        }
-    }
-    
-    static func build(fromIndex index: Int) -> ExchangeSite? {
-        return ExchangeSite(rawValue: index)
-    }
-}
-
-protocol ExchangeDelegate {
-    func exchange(_ exchange: Exchange, didUpdateAvailableCurrencyPairs availableCurrencyPairs: [CurrencyPair])
-}
-
-class Exchange {
-    
-    internal var site: ExchangeSite
-    internal var delegate: ExchangeDelegate
-    internal var apiRequests = [DataRequest]()
-    internal var requestTimer: Timer?
-    
-    internal let apiResponseSerializer = DataRequest.jsonResponseSerializer()
-    
-    var availableCurrencyPairs = [CurrencyPair]()
-    
-    static func build(fromSite site: ExchangeSite, delegate: ExchangeDelegate) -> Exchange {
-        switch site {
         case .binance: return BinanceExchange(delegate: delegate)
         case .bitstamp: return BitstampExchange(delegate: delegate)
         case .coincheck: return CoincheckExchange(delegate: delegate)
@@ -83,42 +47,135 @@ class Exchange {
         case .kraken: return KrakenExchange(delegate: delegate)
         }
     }
+}
+
+protocol ExchangeDelegate {
+    func exchange(_ exchange: Exchange, didUpdateAvailableCurrencyPairs availableCurrencyPairs: [CurrencyPair])
+    func exchangeDidUpdatePrices(_ exchange: Exchange)
+}
+
+class Exchange {
     
+    internal var site: ExchangeSite
+    internal var delegate: ExchangeDelegate?
+    private var apiRequests = [DataRequest]()
+    private var requestTimer: Timer?
+    var updateInterval = TickerConfig.defaultUpdateInterval
+    var availableCurrencyPairs = [CurrencyPair]()
+    var selectedCurrencyPairs = [CurrencyPair]()
+    private var currencyPrices = [CurrencyPair: Double]()
+    
+    private let apiResponseSerializer = DataRequest.jsonResponseSerializer()
+    private var apiResponseQueue: DispatchQueue {
+        return DispatchQueue(label: "cointicker.\(site.rawValue)-api", qos: .utility, attributes: [.concurrent])
+    }
+    
+    internal var socketResponseQueue: DispatchQueue {
+        return DispatchQueue(label: "cointicker.\(site.rawValue)-socket", qos: .utility, attributes: [.concurrent])
+    }
+    
+    internal var isUpdatingInRealTime: Bool {
+        return updateInterval == TickerConfig.Constants.RealTimeUpdateInterval
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case site
+        case availableCurrencyPairs
+        case selectedCurrencyPairs
+    }
+    
+    // MARK: Initialization
     deinit {
         stop()
     }
     
-    init(site: ExchangeSite, delegate: ExchangeDelegate) {
+    init(site: ExchangeSite, delegate: ExchangeDelegate? = nil) {
         self.site = site
         self.delegate = delegate
     }
     
-    internal func apiResponseQueue(label: String = "responseQueue") -> DispatchQueue {
-        return DispatchQueue(label: "cointicker.\(site.displayName)-api.\(label)", qos: .utility, attributes: [.concurrent])
+    // MARK: Currency Helpers
+    func toggleCurrencyPair(_ currencyPair: CurrencyPair) {
+        if let index = selectedCurrencyPairs.index(of: currencyPair) {
+            if selectedCurrencyPairs.count > 0 {
+                selectedCurrencyPairs.remove(at: index)
+                reset()
+            }
+        } else {
+            selectedCurrencyPairs.append(currencyPair)
+            selectedCurrencyPairs = selectedCurrencyPairs.sorted()
+            reset()
+        }
     }
     
-    internal func socketResponseQueue(label: String = "responseQueue") -> DispatchQueue {
-        return DispatchQueue(label: "cointicker.bitstamp-socket.\(label)", qos: .utility, attributes: [.concurrent])
-    }
-    
-    func availableCurrencyPair(baseCurrency: Currency?, quoteCurrency: Currency?) -> CurrencyPair? {
-        guard let baseCurrency = baseCurrency, let quoteCurrency = quoteCurrency else {
-            return nil
+    func toggleCurrencyPair(baseCurrency: Currency, quoteCurrency: Currency) {
+        guard let currencyPair = availableCurrencyPairs.first(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency }) else {
+            return
         }
         
-        return availableCurrencyPairs.first(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency })
+        toggleCurrencyPair(currencyPair)
+    }
+    
+    func isBaseCurrencySelected(_ baseCurrency: Currency) -> Bool {
+        return selectedCurrencyPairs.contains(where: { $0.baseCurrency == baseCurrency })
+    }
+    
+    func isCurrencyPairSelected(baseCurrency: Currency, quoteCurrency: Currency) -> Bool {
+        return selectedCurrencyPairs.contains(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency })
     }
     
     func availableCurrencyPair(customCode: String) -> CurrencyPair? {
         return availableCurrencyPairs.first(where: { $0.customCode == customCode })
     }
     
+    internal func setPrice(_ price: Double, forCurrencyPair currencyPair: CurrencyPair) {
+        currencyPrices[currencyPair] = price
+    }
+    
+    func price(for currencyPair: CurrencyPair) -> Double {
+        return currencyPrices[currencyPair] ?? 0
+    }
+    
+    // MARK: Exchange Request Lifecycle
     func load() {
         // Override
     }
     
+    func onLoaded(availableCurrencyPairs: [CurrencyPair]) {
+        self.availableCurrencyPairs = availableCurrencyPairs.sorted()
+        selectedCurrencyPairs = selectedCurrencyPairs.flatMap({ (currencyPair) -> CurrencyPair? in
+            if self.availableCurrencyPairs.contains(currencyPair) {
+                var newCurrencyPair = currencyPair
+                if let customCode = self.availableCurrencyPairs.first(where: { $0 == newCurrencyPair })?.customCode {
+                    newCurrencyPair.customCode = customCode
+                }
+                
+                return newCurrencyPair
+            }
+            
+            return nil
+        })
+        
+        if selectedCurrencyPairs.count == 0 {
+            let localCurrency = Currency.build(fromCode: Locale.current.currencyCode)
+            if let currencyPair = self.availableCurrencyPairs.first(where: { $0.quoteCurrency == localCurrency }) ??
+                self.availableCurrencyPairs.first(where: { $0.quoteCurrency == .usd }) ??
+                self.availableCurrencyPairs.first {
+                selectedCurrencyPairs.append(currencyPair)
+            }
+        }
+        
+        delegate?.exchange(self, didUpdateAvailableCurrencyPairs: self.availableCurrencyPairs)
+        fetch()
+    }
+    
     internal func fetch() {
         // Override
+    }
+    
+    internal func onFetchComplete() {
+        delegate?.exchangeDidUpdatePrices(self)
+        startRequestTimer()
     }
     
     internal func stop() {
@@ -132,9 +189,9 @@ class Exchange {
         fetch()
     }
     
-    internal func startRequestTimer() {
+    private func startRequestTimer() {
         DispatchQueue.main.async {
-            self.requestTimer = Timer.scheduledTimer(timeInterval: Double(TickerConfig.selectedUpdateInterval),
+            self.requestTimer = Timer.scheduledTimer(timeInterval: Double(self.updateInterval),
                                                      target: self,
                                                      selector: #selector(self.onRequestTimerFired(_:)),
                                                      userInfo: nil,
@@ -142,10 +199,22 @@ class Exchange {
         }
     }
     
-    @objc internal func onRequestTimerFired(_ timer: Timer) {
+    @objc private func onRequestTimerFired(_ timer: Timer) {
         requestTimer?.invalidate()
         requestTimer = nil
         fetch()
+    }
+    
+    // MARK: API Helpers
+    internal func requestAPI(_ apiPath: String, success: @escaping (JSON) -> Void) {
+        apiRequests.append(Alamofire.request(apiPath).response(queue: apiResponseQueue, responseSerializer: apiResponseSerializer) { (response) in
+            switch response.result {
+            case .success(let value):
+                success(JSON(value))
+            case .failure(let error):
+                print("Error retrieving currency pairs: \(error)")
+            }
+        })
     }
 
 }

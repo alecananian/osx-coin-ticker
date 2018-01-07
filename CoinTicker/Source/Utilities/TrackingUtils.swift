@@ -47,8 +47,8 @@ struct TrackingUtils {
         Answers.logCustomEvent(withName: event.rawValue, customAttributes: attributes)
     }
     
-    static func didSelectExchange(_ exchange: ExchangeSite) {
-        log(.selectExchange, withAttributes: [TrackedEventAttributes.exchange.rawValue: exchange.displayName])
+    static func didSelectExchange(_ exchangeName: String) {
+        log(.selectExchange, withAttributes: [TrackedEventAttributes.exchange.rawValue: exchangeName])
     }
     
     static func didSelectUpdateInterval(_ updateInterval: Int) {

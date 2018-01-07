@@ -76,27 +76,11 @@ extension CurrencyPair: Hashable {
 extension CurrencyPair: Equatable {
     
     static func <(lhs: CurrencyPair, rhs: CurrencyPair) -> Bool {
-        if lhs.baseCurrency.isBitcoin && !rhs.baseCurrency.isBitcoin {
-            return true
-        }
-        
-        if !lhs.baseCurrency.isBitcoin && rhs.baseCurrency.isBitcoin {
-            return false
-        }
-        
-        if lhs.baseCurrency.isBitcoinCash && !rhs.baseCurrency.isBitcoin && !rhs.baseCurrency.isBitcoinCash {
-            return true
-        }
-        
         if lhs.baseCurrency == rhs.baseCurrency {
-            if lhs.quoteCurrency.isBitcoin && !rhs.quoteCurrency.isBitcoin {
-                return true
-            }
-            
-            return lhs.quoteCurrency.code < lhs.quoteCurrency.code
+            return lhs.quoteCurrency < rhs.quoteCurrency
         }
         
-        return lhs.baseCurrency.code < rhs.baseCurrency.code
+        return lhs.baseCurrency < rhs.baseCurrency
     }
     
     static func == (lhs: CurrencyPair, rhs: CurrencyPair) -> Bool {

@@ -34,29 +34,21 @@ class CoincheckExchange: Exchange {
         static let TickerAPIPath = "https://coincheck.com/api/ticker"
     }
     
-    init(delegate: ExchangeDelegate) {
+    init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .coincheck, delegate: delegate)
     }
     
     override func load() {
         super.load()
-        availableCurrencyPairs = [CurrencyPair(baseCurrency: .btc, quoteCurrency: .jpy)]
-        delegate.exchange(self, didUpdateAvailableCurrencyPairs: availableCurrencyPairs)
-        fetch()
+        onLoaded(availableCurrencyPairs: [CurrencyPair(baseCurrency: .btc, quoteCurrency: .jpy)])
     }
     
     override internal func fetch() {
         let currencyPair = availableCurrencyPairs.first!
-        apiRequests.append(Alamofire.request(Constants.TickerAPIPath).response(queue: apiResponseQueue(label: currencyPair.customCode), responseSerializer: apiResponseSerializer) { [weak self] (response) in
-            switch response.result {
-            case .success(let value):
-                TickerConfig.setPrice(JSON(value)["last"].doubleValue, for: currencyPair)
-            case .failure(let error):
-                print("Error retrieving prices for \(currencyPair): \(error)")
-            }
-            
-            self?.startRequestTimer()
-        })
+        requestAPI(Constants.TickerAPIPath) { [weak self] (result) in
+            self?.setPrice(result["last"].doubleValue, forCurrencyPair: currencyPair)
+            self?.onFetchComplete()
+        }
     }
 
 }

@@ -35,47 +35,37 @@ class KrakenExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.kraken.com/0/public/Ticker?pair=%@"
     }
     
-    init(delegate: ExchangeDelegate) {
+    init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .kraken, delegate: delegate)
     }
     
     override func load() {
         super.load()
-        apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue(label: "currencyPairs"), responseSerializer: apiResponseSerializer) { [unowned self] (response) in
-            switch response.result {
-            case .success(let value):
-                for (productId, result) in JSON(value)["result"] {
-                    if !productId.contains(".d"), let currencyPair = CurrencyPair(baseCurrency: result["base"].string, quoteCurrency: result["quote"].string, customCode: productId) {
-                        self.availableCurrencyPairs.append(currencyPair)
-                    }
+        requestAPI(Constants.ProductListAPIPath) { [unowned self] (result) in
+            let availableCurrencyPairs = result["result"].flatMap({ (data) -> CurrencyPair? in
+                let (productId, result) = data
+                guard !productId.contains(".d") else {
+                    return nil
                 }
                 
-                self.availableCurrencyPairs = self.availableCurrencyPairs.sorted()
-                self.delegate.exchange(self, didUpdateAvailableCurrencyPairs: self.availableCurrencyPairs)
-                self.fetch()
-            case .failure(let error):
-                print("Error retrieving currency pairs: \(error)")
-            }
-        })
+                return CurrencyPair(baseCurrency: result["base"].string, quoteCurrency: result["quote"].string, customCode: productId)
+            })
+            self.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+        }
     }
     
     override internal func fetch() {
-        let productIds: [String] = TickerConfig.selectedCurrencyPairs.flatMap({ $0.customCode })
+        let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
         let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
-        apiRequests.append(Alamofire.request(apiPath).response(queue: apiResponseQueue(label: "ticker"), responseSerializer: apiResponseSerializer) { [weak self] (response) in
-            switch response.result {
-            case .success(let value):
-                for (productId, result) in JSON(value)["result"] {
-                    if let currencyPair = self?.availableCurrencyPair(customCode: productId), let price = result["c"].array?.first?.doubleValue {
-                        TickerConfig.setPrice(price, for: currencyPair)
-                    }
+        requestAPI(apiPath) { [weak self] (result) in
+            for (productId, result) in result["result"] {
+                if let currencyPair = self?.availableCurrencyPair(customCode: productId), let price = result["c"].array?.first?.doubleValue {
+                    self?.setPrice(price, forCurrencyPair: currencyPair)
                 }
-            case .failure(let error):
-                print("Error retrieving prices: \(error)")
             }
             
-            self?.startRequestTimer()
-        })
+            self?.onFetchComplete()
+        }
     }
 
 }
