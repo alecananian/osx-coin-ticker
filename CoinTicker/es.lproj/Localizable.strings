@@ -2,34 +2,9 @@
 "menu.label.offline" = "Sin conexión";
 
 "currency.usd.title" = "USD (Dólar estadounidense)";
-"currency.eur.title" = "EUR (Euro)";
 "currency.gbp.title" = "GBP (Libra esterlina)";
 "currency.cad.title" = "CAD (Dólar canadiense)";
 "currency.cny.title" = "CNY (Yuan chino)";
 "currency.jpy.title" = "JPY (Yen japonés)";
 "currency.krw.title" = "KRW (Won surcoreano)";
-"currency.rur.title" = "RUR (Rublo ruso)";
 "currency.rub.title" = "RUB (Rublo ruso)";
-
-"currency.btc.title" = "BTC (Bitcoin)";
-"currency.xbt.title" = "XBT (Bitcoin)";
-"currency.bcc.title" = "BCC (Bitcoin Cash)";
-"currency.bch.title" = "BCH (Bitcoin Cash)";
-"currency.eos.title" = "EOS (Eos Coin)";
-"currency.eth.title" = "ETH (Ethereum)";
-"currency.ltc.title" = "LTC (Litecoin)";
-"currency.rep.title" = "REP (Augur)";
-"currency.dash.title" = "DASH (Dash)";
-"currency.xdg.title" = "XDG (Dogecoin)";
-"currency.etc.title" = "ETC (Ethereum Classic)";
-"currency.gno.title" = "GNO (Gnosis)";
-"currency.icn.title" = "ICN (Iconomi)";
-"currency.mln.title" = "MLN (Melon)";
-"currency.xmr.title" = "XMR (Monero)";
-"currency.nmc.title" = "NMC (Namecoin)";
-"currency.nvc.title" = "NVC (Novacoin)";
-"currency.ppc.title" = "PPC (Peercoin)";
-"currency.xrp.title" = "XRP (Ripple)";
-"currency.xlm.title" = "XLM (Stellar Lumens)";
-"currency.usdt.title" = "USDT (Tether)";
-"currency.zec.title" = "ZEC (Zcash)";

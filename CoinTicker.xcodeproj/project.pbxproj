@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4A02161E067CD0EBA5985D5D /* Pods_CoinTicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4313FAA3E2256C8A5D25C1F /* Pods_CoinTicker.framework */; };
 		700DF5E11EFF8E5700B53BDE /* KorbitExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700DF5E01EFF8E5100B53BDE /* KorbitExchange.swift */; };
+		701CDD562001798900A8D74C /* LocalizedStringWithFallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDD552001798900A8D74C /* LocalizedStringWithFallback.swift */; };
 		703581D21EDE5477003FDF3E /* GDAXExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D11EDE5477003FDF3E /* GDAXExchange.swift */; };
 		703581D41EDE57F8003FDF3E /* TickerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D31EDE57F8003FDF3E /* TickerConfig.swift */; };
 		703581D61EDE580B003FDF3E /* Exchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D51EDE580B003FDF3E /* Exchange.swift */; };
@@ -67,6 +68,7 @@
 		70155C5A1EF729460037A819 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
 		70155C5B1EF72AC60037A819 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Main.strings; sourceTree = "<group>"; };
 		70155C5C1EF72AC70037A819 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
+		701CDD552001798900A8D74C /* LocalizedStringWithFallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedStringWithFallback.swift; sourceTree = "<group>"; };
 		703533711EDFDC1700CACC78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		703581D11EDE5477003FDF3E /* GDAXExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDAXExchange.swift; sourceTree = "<group>"; };
 		703581D31EDE57F8003FDF3E /* TickerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickerConfig.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				70AE284A1F2520FC0082BDD2 /* TrackingUtils.swift */,
+				701CDD552001798900A8D74C /* LocalizedStringWithFallback.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 				70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */,
 				700DF5E11EFF8E5700B53BDE /* KorbitExchange.swift in Sources */,
 				703581D61EDE580B003FDF3E /* Exchange.swift in Sources */,
+				701CDD562001798900A8D74C /* LocalizedStringWithFallback.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,13 +8,12 @@
 "currency.cny.title" = "CNY (Chinese Yuan)";
 "currency.jpy.title" = "JPY (Japanese Yen)";
 "currency.krw.title" = "KRW (South Korean Won)";
-"currency.rur.title" = "RUR (Russian Ruble)";
 "currency.rub.title" = "RUB (Russian Ruble)";
 
 "currency.btc.title" = "BTC (Bitcoin)";
-"currency.xbt.title" = "XBT (Bitcoin)";
-"currency.bcc.title" = "BCC (Bitcoin Cash)";
 "currency.bch.title" = "BCH (Bitcoin Cash)";
+"currency.bnb.title" = "BNB (Binance Coin)";
+"currency.bnt.title" = "BNT (Bancor)";
 "currency.eos.title" = "EOS (Eos Coin)";
 "currency.eth.title" = "ETH (Ethereum)";
 "currency.ltc.title" = "LTC (Litecoin)";
@@ -23,13 +22,21 @@
 "currency.xdg.title" = "XDG (Dogecoin)";
 "currency.etc.title" = "ETC (Ethereum Classic)";
 "currency.gno.title" = "GNO (Gnosis)";
+"currency.hsr.title" = "HSR (Hshare)";
 "currency.icn.title" = "ICN (Iconomi)";
+"currency.lrc.title" = "LRC (Loopring)";
 "currency.mln.title" = "MLN (Melon)";
+"currency.mco.title" = "MCO (Monaco)";
 "currency.xmr.title" = "XMR (Monero)";
 "currency.nmc.title" = "NMC (Namecoin)";
+"currency.neo.title" = "NEO (AntShares)";
 "currency.nvc.title" = "NVC (Novacoin)";
+"currency.omg.title" = "OMG (OmiseGO)";
 "currency.ppc.title" = "PPC (Peercoin)";
+"currency.qtum.title" = "QTUM (Qtum)";
 "currency.xrp.title" = "XRP (Ripple)";
+"currency.snt.title" = "SNT (Status)";
 "currency.xlm.title" = "XLM (Stellar Lumens)";
 "currency.usdt.title" = "USDT (Tether)";
+"currency.wtc.title" = "WTC (Walton)";
 "currency.zec.title" = "ZEC (Zcash)";

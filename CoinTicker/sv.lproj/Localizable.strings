@@ -1,35 +1,9 @@
 "menu.label.loading" = "Läser in...";
-"menu.label.offline" = "Offline";
 
 "currency.usd.title" = "USD (USA-dollar)";
-"currency.eur.title" = "EUR (Euro)";
 "currency.gbp.title" = "GBP (Brittiskt pund)";
 "currency.cad.title" = "CAD (Kanadensisk dollar)";
 "currency.cny.title" = "CNY (Kinesisk yuan renminbi)";
 "currency.jpy.title" = "JPY (Japansk yen)";
 "currency.krw.title" = "KRW (Sydkoreansk won)";
-"currency.rur.title" = "RUR (Rysk rubel)";
 "currency.rub.title" = "RUB (Rysk rubel)";
-
-"currency.btc.title" = "BTC (Bitcoin)";
-"currency.xbt.title" = "XBT (Bitcoin)";
-"currency.bcc.title" = "BCC (Bitcoin Cash)";
-"currency.bch.title" = "BCH (Bitcoin Cash)";
-"currency.eos.title" = "EOS (Eos Coin)";
-"currency.eth.title" = "ETH (Ethereum)";
-"currency.ltc.title" = "LTC (Litecoin)";
-"currency.rep.title" = "REP (Augur)";
-"currency.dash.title" = "DASH (Dash)";
-"currency.xdg.title" = "XDG (Dogecoin)";
-"currency.etc.title" = "ETC (Ethereum Classic)";
-"currency.gno.title" = "GNO (Gnosis)";
-"currency.icn.title" = "ICN (Iconomi)";
-"currency.mln.title" = "MLN (Melon)";
-"currency.xmr.title" = "XMR (Monero)";
-"currency.nmc.title" = "NMC (Namecoin)";
-"currency.nvc.title" = "NVC (Novacoin)";
-"currency.ppc.title" = "PPC (Peercoin)";
-"currency.xrp.title" = "XRP (Ripple)";
-"currency.xlm.title" = "XLM (Stellar Lumens)";
-"currency.usdt.title" = "USDT (Tether)";
-"currency.zec.title" = "ZEC (Zcash)";

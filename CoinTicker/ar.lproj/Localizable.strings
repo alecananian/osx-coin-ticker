@@ -8,12 +8,9 @@
 "currency.cny.title" = "اليوان الرينمنبي الصيني (CNY)";
 "currency.jpy.title" = "الين الياباني (JPY)";
 "currency.krw.title" = "وون كوري جنوبي (KRW)";
-"currency.rur.title" = "الروبل الروسي (RUR)";
 "currency.rub.title" = "الروبل الروسي (RUB)";
 
 "currency.btc.title" = "بيتكوين (BTC)";
-"currency.xbt.title" = "بيتكوين (XBT)";
-"currency.bcc.title" = "(BCC) Bitcoin Cash";
 "currency.bch.title" = "(BCH) Bitcoin Cash";
 "currency.eos.title" = "(EOS) Eos Coin";
 "currency.eth.title" = "(ETH) Ethereum";
