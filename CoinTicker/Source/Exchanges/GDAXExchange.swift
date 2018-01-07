@@ -82,7 +82,7 @@ class GDAXExchange: Exchange {
             socket.onText = { [weak self] (text: String) in
                 if let strongSelf = self {
                     let json = JSON(parseJSON: text)
-                    if json["type"].string == "ticker", let currencyPair = strongSelf.availableCurrencyPair(customCode: json["product_id"].stringValue) {
+                    if json["type"].string == "ticker", let currencyPair = strongSelf.selectedCurrencyPair(customCode: json["product_id"].stringValue) {
                         strongSelf.setPrice(json["price"].doubleValue, forCurrencyPair: currencyPair)
                         strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                     }

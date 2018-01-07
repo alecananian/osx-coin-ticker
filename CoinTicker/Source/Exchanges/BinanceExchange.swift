@@ -87,7 +87,7 @@ class BinanceExchange: Exchange {
             requestAPI(apiPath) { [weak self] (result) in
                 let results = result.array ?? [result]
                 results.forEach({ (result) in
-                    if let currencyPair = self?.availableCurrencyPair(customCode: result["symbol"].stringValue) {
+                    if let currencyPair = self?.selectedCurrencyPair(customCode: result["symbol"].stringValue) {
                         self?.setPrice(result["price"].doubleValue, forCurrencyPair: currencyPair)
                     }
                 })

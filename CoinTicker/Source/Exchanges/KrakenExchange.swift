@@ -59,7 +59,7 @@ class KrakenExchange: Exchange {
         let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
         requestAPI(apiPath) { [weak self] (result) in
             for (productId, result) in result["result"] {
-                if let currencyPair = self?.availableCurrencyPair(customCode: productId), let price = result["c"].array?.first?.doubleValue {
+                if let currencyPair = self?.selectedCurrencyPair(customCode: productId), let price = result["c"].array?.first?.doubleValue {
                     self?.setPrice(price, forCurrencyPair: currencyPair)
                 }
             }

@@ -124,8 +124,8 @@ class Exchange {
         return selectedCurrencyPairs.contains(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency })
     }
     
-    func availableCurrencyPair(customCode: String) -> CurrencyPair? {
-        return availableCurrencyPairs.first(where: { $0.customCode == customCode })
+    func selectedCurrencyPair(customCode: String) -> CurrencyPair? {
+        return selectedCurrencyPairs.first(where: { $0.customCode == customCode })
     }
     
     internal func setPrice(_ price: Double, forCurrencyPair currencyPair: CurrencyPair) {

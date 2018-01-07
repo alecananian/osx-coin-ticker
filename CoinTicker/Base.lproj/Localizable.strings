@@ -10,6 +10,8 @@
 "currency.krw.title" = "KRW (South Korean Won)";
 "currency.rub.title" = "RUB (Russian Ruble)";
 
+"currency.ada.title" = "ADA (Cardano)";
+"currency.aion.title" = "AION (Aion)";
 "currency.btc.title" = "BTC (Bitcoin)";
 "currency.bch.title" = "BCH (Bitcoin Cash)";
 "currency.bnb.title" = "BNB (Binance Coin)";
@@ -28,6 +30,8 @@
 "currency.mln.title" = "MLN (Melon)";
 "currency.mco.title" = "MCO (Monaco)";
 "currency.xmr.title" = "XMR (Monero)";
+"currency.nav.title" = "NAV (Nav Coin)";
+"currency.nebl.title" = "NEBL (Neblio)";
 "currency.nmc.title" = "NMC (Namecoin)";
 "currency.neo.title" = "NEO (AntShares)";
 "currency.nvc.title" = "NVC (Novacoin)";
@@ -38,5 +42,6 @@
 "currency.snt.title" = "SNT (Status)";
 "currency.xlm.title" = "XLM (Stellar Lumens)";
 "currency.usdt.title" = "USDT (Tether)";
+"currency.waves.title" = "WAVES (Waves)";
 "currency.wtc.title" = "WTC (Walton)";
 "currency.zec.title" = "ZEC (Zcash)";
