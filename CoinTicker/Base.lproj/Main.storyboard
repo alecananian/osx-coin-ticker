@@ -49,6 +49,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="pcG-RS-VGl"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="Coinone" tag="237" id="So7-Vt-2Q9">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="Mkp-jD-qet"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="GDAX" tag="240" id="deQ-Xh-l5A">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>

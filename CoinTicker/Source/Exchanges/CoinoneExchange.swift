@@ -1,9 +1,9 @@
 //
-//  KorbitExchange.swift
+//  CoinoneExchange.swift
 //  CoinTicker
 //
-//  Created by Alec Ananian on 6/24/17.
-//  Copyright © 2017 Alec Ananian.
+//  Created by Alec Ananian on 1/7/18.
+//  Copyright © 2018 Alec Ananian.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -28,24 +28,28 @@ import Foundation
 import SwiftyJSON
 import PromiseKit
 
-class KorbitExchange: Exchange {
+class CoinoneExchange: Exchange {
     
     private struct Constants {
-        static let TickerAPIPathFormat = "https://api.korbit.co.kr/v1/ticker?currency_pair=%@"
+        static let TickerAPIPathFormat = "https://api.coinone.co.kr/ticker/?currency=%@"
     }
     
     init(delegate: ExchangeDelegate? = nil) {
-        super.init(site: .korbit, delegate: delegate)
+        super.init(site: .coinone, delegate: delegate)
     }
     
     override func load() {
         super.load()
         onLoaded(availableCurrencyPairs: [
-            CurrencyPair(baseCurrency: .btc, quoteCurrency: .krw, customCode: "btc_krw"),
-            CurrencyPair(baseCurrency: .bch, quoteCurrency: .krw, customCode: "bch_krw"),
-            CurrencyPair(baseCurrency: .eth, quoteCurrency: .krw, customCode: "eth_krw"),
-            CurrencyPair(baseCurrency: .etc, quoteCurrency: .krw, customCode: "etc_krw"),
-            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .krw, customCode: "xrp_krw")
+            CurrencyPair(baseCurrency: .btc, quoteCurrency: .krw, customCode: "btc"),
+            CurrencyPair(baseCurrency: .bch, quoteCurrency: .krw, customCode: "bch"),
+            CurrencyPair(baseCurrency: .btg, quoteCurrency: .krw, customCode: "btg"),
+            CurrencyPair(baseCurrency: .eth, quoteCurrency: .krw, customCode: "eth"),
+            CurrencyPair(baseCurrency: .etc, quoteCurrency: .krw, customCode: "etc"),
+            CurrencyPair(baseCurrency: .iota, quoteCurrency: .krw, customCode: "iota"),
+            CurrencyPair(baseCurrency: .ltc, quoteCurrency: .krw, customCode: "ltc"),
+            CurrencyPair(baseCurrency: .qtum, quoteCurrency: .krw, customCode: "qtum"),
+            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .krw, customCode: "xrp")
         ])
     }
     
@@ -68,5 +72,5 @@ class KorbitExchange: Exchange {
             self?.onFetchComplete()
         }.always {}
     }
-
+    
 }

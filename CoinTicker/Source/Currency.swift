@@ -33,10 +33,10 @@ enum Currency: Int, Codable {
     
     // Crypto
     case ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, dgb, doge,
-        eos, etc, eth, fun, gno, gxs, hsr, icn, kmd, knc, lrc, lsk, ltc, mana, mco, mln,
-        mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qtum, rdn, rep, salt, sc, sngls,
-        snt, storj, strat, sub, trx, usdt, ven, waves, wtc, xem, xlm, xmr, xrp, xvg, xzc,
-        zec
+        eos, etc, eth, fun, gno, gxs, hsr, icn, iota, kmd, knc, lrc, lsk, ltc, mana, mco,
+        mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qtum, rdn, rep, salt, sc,
+        sngls, snt, storj, strat, sub, trx, usdt, ven, waves, wtc, xem, xlm, xmr, xrp, xvg,
+        xzc, zec
     
     private static let AllPhysical = [
         cad, cny, eur, gbp, jpy, krw, rub, usd
@@ -44,10 +44,10 @@ enum Currency: Int, Codable {
     
     private static let AllCrypto = [
         ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, dgb, doge,
-        eos, etc, eth, fun, gno, gxs, hsr, icn, kmd, knc, lrc, lsk, ltc, mana, mco, mln,
-        mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qtum, rdn, rep, salt, sc, sngls,
-        snt, storj, strat, sub, trx, usdt, ven, waves, wtc, xem, xlm, xmr, xrp, xvg, xzc,
-        zec
+        eos, etc, eth, fun, gno, gxs, hsr, icn, iota, kmd, knc, lrc, lsk, ltc, mana, mco,
+        mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qtum, rdn, rep, salt, sc,
+        sngls, snt, storj, strat, sub, trx, usdt, ven, waves, wtc, xem, xlm, xmr, xrp, xvg,
+        xzc, zec
     ]
     
     private static let AllValues = AllCrypto + AllPhysical
@@ -70,7 +70,10 @@ enum Currency: Int, Codable {
         case .ltc: return "Ł"
         case .nmc: return "ℕ"
         case .ppc: return "Ᵽ"
+        case .rep: return "Ɍ"
         case .xmr: return "ɱ"
+        case .xrp: return "Ʀ"
+        case .zec: return "ⓩ"
         default: return (isCrypto ? code : nil)
         }
     }
