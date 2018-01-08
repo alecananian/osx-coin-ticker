@@ -25,6 +25,7 @@
 "currency.dgb.title" = "DGB (Digibyte)";
 "currency.eos.title" = "EOS (Eos Coin)";
 "currency.eth.title" = "ETH (Ethereum)";
+"currency.etp.title" = "ETP (Metaverse)";
 "currency.fun.title" = "FUN (FunFair)";
 "currency.ltc.title" = "LTC (Litecoin)";
 "currency.rep.title" = "REP (Augur)";
@@ -32,6 +33,7 @@
 "currency.doge.title" = "DOGE (Dogecoin)";
 "currency.etc.title" = "ETC (Ethereum Classic)";
 "currency.gno.title" = "GNO (Gnosis)";
+"currency.gnt.title" = "GNT (Golem)";
 "currency.gxs.title" = "GXS (GXShares)";
 "currency.hsr.title" = "HSR (Hshare)";
 "currency.icn.title" = "ICN (Iconomi)";
@@ -54,8 +56,10 @@
 "currency.ppc.title" = "PPC (Peercoin)";
 "currency.ppt.title" = "PPT (Populous)";
 "currency.rdn.title" = "Raiden Network Token (RDN)";
+"currency.qash.title" = "QASH";
 "currency.qtum.title" = "QTUM (Qtum)";
 "currency.salt.title" = "SALT";
+"currency.san.title" = "SAN (Santiment Network Token)";
 "currency.sc.title" = "SC (Siacoin)";
 "currency.sngls.title" = "SNGLS (SingularDTV)";
 "currency.snt.title" = "SNT (Status)";

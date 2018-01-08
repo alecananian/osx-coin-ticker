@@ -33,8 +33,8 @@ enum Currency: Int, Codable {
     
     // Crypto
     case ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, dgb, doge,
-        eos, etc, eth, fun, gno, gxs, hsr, icn, iota, kmd, knc, lrc, lsk, ltc, mana, mco,
-        mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qtum, rdn, rep, salt, sc,
+        eos, etc, eth, etp, fun, gno, gnt, gxs, hsr, icn, iota, kmd, knc, lrc, lsk, ltc, mana, mco,
+        mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qash, qtum, rdn, rep, salt, san, sc,
         sngls, snt, storj, strat, sub, trx, usdt, ven, waves, wtc, xem, xlm, xmr, xrp, xvg,
         xzc, zec
     

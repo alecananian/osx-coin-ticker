@@ -31,6 +31,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="rww-wG-xh7"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="Bitfinex" tag="205" id="jVf-dv-I03">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="NXD-vF-TMb"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="Bitstamp" tag="210" id="Tbe-f7-Epu">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
