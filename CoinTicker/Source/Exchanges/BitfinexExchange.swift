@@ -124,7 +124,7 @@ class BitfinexExchange: Exchange {
                 
                 self?.onFetchComplete()
             }.catch { error in
-                print("Error fetching Kraken ticker: \(error)")
+                print("Error fetching Bitfinex ticker: \(error)")
             }
         }
     }
