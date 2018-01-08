@@ -33,6 +33,7 @@ import PromiseKit
 enum ExchangeSite: Int, Codable {
     case binance = 200
     case bitstamp = 210
+    case bittrex = 225
     case coincheck = 235
     case gdax = 240
     case korbit = 245
@@ -42,6 +43,7 @@ enum ExchangeSite: Int, Codable {
         switch self {
         case .binance: return BinanceExchange(delegate: delegate)
         case .bitstamp: return BitstampExchange(delegate: delegate)
+        case .bittrex: return BittrexExchange(delegate: delegate)
         case .coincheck: return CoincheckExchange(delegate: delegate)
         case .gdax: return GDAXExchange(delegate: delegate)
         case .korbit: return KorbitExchange(delegate: delegate)
@@ -76,7 +78,7 @@ class Exchange {
     }()
     
     internal lazy var socketResponseQueue: DispatchQueue = { [unowned self] in
-        return DispatchQueue(label: "cointicker.\(self.site.rawValue)-socket", qos: .utility, attributes: [.concurrent])
+        return DispatchQueue(label: "cointicker.\(self.site.rawValue)-socket")
     }()
     
     internal var isUpdatingInRealTime: Bool {

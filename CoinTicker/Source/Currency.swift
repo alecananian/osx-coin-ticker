@@ -32,20 +32,22 @@ enum Currency: Int, Codable {
     case cad, cny, eur, gbp, jpy, krw, rub, usd
     
     // Crypto
-    case ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, eos, etc, eth,
-        fun, gno, gxs, hsr, icn, kmd, knc, lrc, lsk, ltc, mana, mco, mln, mtl, nav, nebl,
-        neo, nmc, nvc, omg, ppc, ppt, qtum, rdn, rep, salt, sngls, snt, storj, strat, sub,
-        trx, usdt, ven, waves, wtc, xdg, xlm, xmr, xrp, xvg, xzc, zec
+    case ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, dgb, doge,
+        eos, etc, eth, fun, gno, gxs, hsr, icn, kmd, knc, lrc, lsk, ltc, mana, mco, mln,
+        mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qtum, rdn, rep, salt, sc, sngls,
+        snt, storj, strat, sub, trx, usdt, ven, waves, wtc, xem, xlm, xmr, xrp, xvg, xzc,
+        zec
     
     private static let AllPhysical = [
         cad, cny, eur, gbp, jpy, krw, rub, usd
     ]
     
     private static let AllCrypto = [
-        ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, eos, etc, eth,
-        fun, gno, gxs, hsr, icn, kmd, knc, lrc, lsk, ltc, mana, mco, mln, mtl, nav, nebl,
-        neo, nmc, nvc, omg, ppc, ppt, qtum, rdn, rep, salt, sngls, snt, storj, strat, sub,
-        trx, usdt, ven, waves, wtc, xdg, xlm, xmr, xrp, xvg, xzc, zec
+        ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, dgb, doge,
+        eos, etc, eth, fun, gno, gxs, hsr, icn, kmd, knc, lrc, lsk, ltc, mana, mco, mln,
+        mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qtum, rdn, rep, salt, sc, sngls,
+        snt, storj, strat, sub, trx, usdt, ven, waves, wtc, xem, xlm, xmr, xrp, xvg, xzc,
+        zec
     ]
     
     private static let AllValues = AllCrypto + AllPhysical
@@ -62,12 +64,12 @@ enum Currency: Int, Codable {
         switch self {
         case .rub: return "₽"
         case .btc, .bch: return "₿"
+        case .doge: return "Ð"
+        case .etc: return "⟠"
         case .eth: return "Ξ"
         case .ltc: return "Ł"
-        case .etc: return "⟠"
         case .nmc: return "ℕ"
         case .ppc: return "Ᵽ"
-        case .xdg: return "Ð"
         case .xmr: return "ɱ"
         default: return (isCrypto ? code : nil)
         }
@@ -112,9 +114,10 @@ enum Currency: Int, Codable {
         
         // Group certain codes
         switch normalizedCode {
-        case "XBT": return .btc
         case "BCC": return .bch
         case "RUR": return .rub
+        case "XBT": return .btc
+        case "XDG": return .doge
         default: return nil
         }
     }

@@ -12,10 +12,10 @@
 
 "currency.btc.title" = "BCH (비트코인 캐시)";
 "currency.btc.title" = "BTC (비트코인)";
+"currency.doge.title" = "DOGE (도지코인)";
+"currency.etc.title" = "ETC (이더리움 클래식)";
 "currency.eth.title" = "ETH (이더리움)";
 "currency.ltc.title" = "LTC (라이트코인)";
-"currency.xdg.title" = "XDG (도지코인)";
-"currency.etc.title" = "ETC (이더리움 클래식)";
 "currency.nmc.title" = "NMC (네임코인)";
 "currency.ppc.title" = "PPC (피어코인)";
 "currency.xrp.title" = "XRP (리플)";

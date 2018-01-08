@@ -1,9 +1,9 @@
 //
-//  KorbitExchange.swift
+//  BittrexExchange.swift
 //  CoinTicker
 //
-//  Created by Alec Ananian on 6/24/17.
-//  Copyright © 2017 Alec Ananian.
+//  Created by Alec Ananian on 1/7/18.
+//  Copyright © 2018 Alec Ananian.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -25,29 +25,33 @@
 //
 
 import Foundation
-import Alamofire
 import SwiftyJSON
 import PromiseKit
 
-class KorbitExchange: Exchange {
+class BittrexExchange: Exchange {
     
     private struct Constants {
-        static let TickerAPIPathFormat = "https://api.korbit.co.kr/v1/ticker?currency_pair=%@"
+        static let ProductListAPIPath = "https://bittrex.com/api/v1.1/public/getmarkets"
+        static let TickerAPIPathFormat = "https://bittrex.com/api/v1.1/public/getticker?market=%@"
     }
     
     init(delegate: ExchangeDelegate? = nil) {
-        super.init(site: .korbit, delegate: delegate)
+        super.init(site: .bittrex, delegate: delegate)
     }
     
     override func load() {
         super.load()
-        onLoaded(availableCurrencyPairs: [
-            CurrencyPair(baseCurrency: .btc, quoteCurrency: .krw, customCode: "btc_krw"),
-            CurrencyPair(baseCurrency: .bch, quoteCurrency: .krw, customCode: "bch_krw"),
-            CurrencyPair(baseCurrency: .eth, quoteCurrency: .krw, customCode: "eth_krw"),
-            CurrencyPair(baseCurrency: .etc, quoteCurrency: .krw, customCode: "etc_krw"),
-            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .krw, customCode: "xrp_krw")
-        ])
+        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
+            let availableCurrencyPairs = result.json["result"].arrayValue.flatMap({ result -> CurrencyPair? in
+                let baseCurrency = result["MarketCurrency"].string
+                let quoteCurrency = result["BaseCurrency"].string
+                let customCode = result["MarketName"].string
+                return CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode)
+            })
+            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+            }.catch { error in
+                print("Error fetching Bittrex products: \(error)")
+        }
     }
     
     override internal func fetch() {
@@ -59,7 +63,7 @@ class KorbitExchange: Exchange {
                 switch result {
                 case .fulfilled(let value):
                     if let currencyPair = value.representedObject as? CurrencyPair {
-                        let price = value.json["last"].doubleValue
+                        let price = value.json["result"]["Last"].doubleValue
                         self?.setPrice(price, for: currencyPair)
                     }
                 default: break
@@ -69,5 +73,6 @@ class KorbitExchange: Exchange {
             self?.onFetchComplete()
         }.always {}
     }
-
+    
 }
+

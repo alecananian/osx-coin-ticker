@@ -12,8 +12,8 @@
 
 "currency.bch.title" = "BCH (ビットコインキャッシュ)";
 "currency.btc.title" = "BTC (ビットコイン)";
+"currency.doge.title" = "DOGE (ドージコイン)";
 "currency.eth.title" = "ETH (イーサリアム)";
 "currency.ltc.title" = "LTC (ライトコイン)";
-"currency.xdg.title" = "XDG (ドージコイン)";
 "currency.nmc.title" = "NMC (ネームコイン)";
 "currency.ppc.title" = "PPC (ピアコイン)";

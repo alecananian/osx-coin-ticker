@@ -17,7 +17,7 @@
 "currency.ltc.title" = "(LTC) Litecoin";
 "currency.rep.title" = "(REP) Augur";
 "currency.dash.title" = "DASH (Dash)";
-"currency.xdg.title" = "(XDG) Dogecoin";
+"currency.doge.title" = "(DOGE) Dogecoin";
 "currency.etc.title" = "(ETC) Ethereum Classic";
 "currency.gno.title" = "(GNO) Gnosis";
 "currency.icn.title" = "(ICN) Iconomi";

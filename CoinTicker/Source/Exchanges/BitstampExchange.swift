@@ -113,8 +113,7 @@ class BitstampExchange: Exchange {
             })
         } else {
             when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
-                let productId = currencyPair.customCode
-                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, productId)
+                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
                 return requestAPI(apiRequestPath, for: currencyPair)
             })).then { [weak self] results -> Void in
                 results.forEach({ result in
