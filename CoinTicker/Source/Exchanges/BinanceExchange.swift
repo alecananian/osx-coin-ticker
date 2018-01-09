@@ -25,7 +25,7 @@
 //
 
 import Foundation
-import SocketIO
+import Starscream
 import SwiftyJSON
 
 class BinanceExchange: Exchange {
