@@ -30,14 +30,15 @@ import Crashlytics
 enum TrackedEvent: String {
     case selectExchange = "Select Exchange"
     case selectUpdateInterval = "Select Update Interval"
-    case selectBaseCurrency = "Select Base Currency"
-    case selectQuoteCurrency = "Select Quote Currency"
+    case selectCurrencyPair = "Select Currency Pair"
+    case deselectCurrencyPair = "Deselect Currency Pair"
 }
 
 enum TrackedEventAttributes: String {
     case exchange = "Exchange"
     case updateInterval = "Update Interval"
     case currency = "Currency"
+    case currencyPair = "Currency Pair"
 }
 
 struct TrackingUtils {
@@ -46,20 +47,20 @@ struct TrackingUtils {
         Answers.logCustomEvent(withName: event.rawValue, customAttributes: attributes)
     }
     
-    static func didSelectExchange(_ exchange: ExchangeSite) {
-        log(.selectExchange, withAttributes: [TrackedEventAttributes.exchange.rawValue: exchange.displayName])
+    static func didSelectExchange(_ exchangeName: String) {
+        log(.selectExchange, withAttributes: [TrackedEventAttributes.exchange.rawValue: exchangeName])
     }
     
     static func didSelectUpdateInterval(_ updateInterval: Int) {
         log(.selectUpdateInterval, withAttributes: [TrackedEventAttributes.updateInterval.rawValue: updateInterval])
     }
     
-    static func didSelectBaseCurrency(_ currency: Currency) {
-        log(.selectBaseCurrency, withAttributes: [TrackedEventAttributes.currency.rawValue: currency.code])
+    static func didSelectCurrencyPair(_ currencyPair: CurrencyPair) {
+        log(.selectCurrencyPair, withAttributes: [TrackedEventAttributes.currencyPair.rawValue: String(describing: currencyPair)])
     }
     
-    static func didSelectQuoteCurrency(_ currency: Currency) {
-        log(.selectQuoteCurrency, withAttributes: [TrackedEventAttributes.currency.rawValue: currency.code])
+    static func didDeselectCurrencyPair(_ currencyPair: CurrencyPair) {
+        log(.deselectCurrencyPair, withAttributes: [TrackedEventAttributes.currencyPair.rawValue: String(describing: currencyPair)])
     }
     
 }

@@ -25,7 +25,8 @@
 //
 
 import Foundation
-import Alamofire
+import SwiftyJSON
+import PromiseKit
 
 class KorbitExchange: Exchange {
     
@@ -33,43 +34,39 @@ class KorbitExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.korbit.co.kr/v1/ticker?currency_pair=%@"
     }
     
-    private let apiResponseQueue = DispatchQueue(label: "cointicker.korbit-api", qos: .utility, attributes: [.concurrent])
-    
-    init(delegate: ExchangeDelegate) {
+    init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .korbit, delegate: delegate)
     }
     
-    override func start() {
-        super.start()
-        
-        currencyMatrix = [
-            .btc: [.krw],
-            .eth: [.krw],
-            .etc: [.krw],
-            .xrp: [.krw]
-        ]
-        
-        delegate.exchange(self, didLoadCurrencyMatrix: currencyMatrix!)
-        fetchPrice()
+    override func load() {
+        super.load()
+        onLoaded(availableCurrencyPairs: [
+            CurrencyPair(baseCurrency: .btc, quoteCurrency: .krw, customCode: "btc_krw"),
+            CurrencyPair(baseCurrency: .bch, quoteCurrency: .krw, customCode: "bch_krw"),
+            CurrencyPair(baseCurrency: .eth, quoteCurrency: .krw, customCode: "eth_krw"),
+            CurrencyPair(baseCurrency: .etc, quoteCurrency: .krw, customCode: "etc_krw"),
+            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .krw, customCode: "xrp_krw")
+        ])
     }
     
-    override func stop() {
-        super.stop()
-        
-        requestTimer?.invalidate()
-        requestTimer = nil
-    }
-    
-    override internal func fetchPrice() {
-        let productId = "\(baseCurrency.code)_\(quoteCurrency.code)".lowercased()
-        
-        apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let priceString = (response.result.value as? JSONContainer)?["last"] as? String, let price = Double(priceString) {
-                self.delegate.exchange(self, didUpdatePrice: price)
-            }
+    override internal func fetch() {
+        when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+            let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
+            return requestAPI(apiRequestPath, for: currencyPair)
+        })).then { [weak self] results -> Void in
+            results.forEach({ result in
+                switch result {
+                case .fulfilled(let value):
+                    if let currencyPair = value.representedObject as? CurrencyPair {
+                        let price = value.json["last"].doubleValue
+                        self?.setPrice(price, for: currencyPair)
+                    }
+                default: break
+                }
+            })
             
-            self.startRequestTimer()
-        })
+            self?.onFetchComplete()
+        }.always {}
     }
 
 }

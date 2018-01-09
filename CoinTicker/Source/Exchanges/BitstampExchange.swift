@@ -25,100 +25,110 @@
 //
 
 import Foundation
-import Alamofire
 import SocketIO
+import SwiftyJSON
+import PromiseKit
 
 class BitstampExchange: Exchange {
     
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://ws.pusherapp.com/app/de504dc5763aeef9ff52?protocol=7")!
+        static let ProductListAPIPath = "https://www.bitstamp.net/api/v2/trading-pairs-info/"
         static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%@/"
     }
     
-    private let webSocketQueue = DispatchQueue(label: "cointicker.bitstamp-socket", qos: .utility, attributes: [.concurrent])
-    private let apiResponseQueue = DispatchQueue(label: "cointicker.bitstamp-api", qos: .utility, attributes: [.concurrent])
-    private var socket = WebSocket(url: Constants.WebSocketURL)
+    private var sockets: [WebSocket]?
     
-    init(delegate: ExchangeDelegate) {
+    init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .bitstamp, delegate: delegate)
-        
-        socket.callbackQueue = webSocketQueue
     }
     
-    override func start() {
-        super.start()
-        
-        currencyMatrix = [
-            .btc: [.usd, .eur],
-            .xrp: [.usd, .eur, .btc]
-        ]
-        delegate.exchange(self, didLoadCurrencyMatrix: currencyMatrix!)
-        
-        fetchPrice()
+    override func load() {
+        super.load()
+        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
+            let availableCurrencyPairs = result.json.arrayValue.flatMap({ result -> CurrencyPair? in
+                let currencyCodes = result["name"].stringValue.split(separator: "/")
+                guard currencyCodes.count == 2, let baseCurrency = currencyCodes.first, let quoteCurrency = currencyCodes.last else {
+                    return nil
+                }
+                
+                let customCode = result["url_symbol"].string
+                guard let currencyPair = CurrencyPair(baseCurrency: String(baseCurrency), quoteCurrency: String(quoteCurrency), customCode: customCode) else {
+                    return nil
+                }
+                
+                return (currencyPair.baseCurrency.isCrypto ? currencyPair : nil)
+            })
+            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+        }.catch { error in
+            print("Error fetching Bitstamp products: \(error)")
+        }
     }
     
     override func stop() {
         super.stop()
-        
-        socket.disconnect()
+        sockets?.forEach({ $0.disconnect() })
     }
     
-    override internal func fetchPrice() {
-        let productId = "\(baseCurrency.code)\(quoteCurrency.code)".lowercased()
-        
-        apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let priceString = (response.result.value as? JSONContainer)?["last"] as? String, let price = Double(priceString) {
-                self.delegate.exchange(self, didUpdatePrice: price)
-            }
+    override internal func fetch() {
+        if isUpdatingInRealTime {
+            sockets?.forEach({ $0.disconnect() })
+            sockets = [WebSocket]()
             
-            if TickerConfig.updateInterval != TickerConfig.RealTimeUpdateInterval {
-                self.startRequestTimer()
-            }
-        })
-        
-        if TickerConfig.updateInterval == TickerConfig.RealTimeUpdateInterval {
-            socket.onConnect = { [unowned self] in
-                var channelName = "live_trades"
-                if productId != "btcusd" {
-                    channelName += "_\(productId)"
-                }
-                
-                let eventParams: [String: Any] = [
-                    "event": "pusher:subscribe",
-                    "data": [
-                        "channel": channelName
-                    ]
-                ]
-                
-                do {
-                    let eventJSON = try JSONSerialization.data(withJSONObject: eventParams, options: [])
-                    if let eventString = String(data: eventJSON, encoding: .utf8) {
-                        self.socket.write(string: eventString)
+            selectedCurrencyPairs.forEach({ currencyPair in
+                let productId = currencyPair.customCode
+                let socket = WebSocket(url: Constants.WebSocketURL)
+                socket.callbackQueue = socketResponseQueue
+                socket.onConnect = {
+                    var channelName = "live_trades"
+                    if currencyPair.baseCurrency != .btc || currencyPair.quoteCurrency != .usd {
+                        channelName += "_\(productId)"
                     }
-                } catch {
-                    print(error)
+                    
+                    let json = JSON([
+                        "event": "pusher:subscribe",
+                        "data": [
+                            "channel": channelName
+                        ]
+                    ])
+                    
+                    if let string = json.rawString() {
+                        socket.write(string: string)
+                    }
                 }
-            } as (() -> Void)
-            
-            socket.onText = { [unowned self] (text: String) in
-                if let responseData = text.data(using: .utf8, allowLossyConversion: false) {
-                    do {
-                        if let responseJSON = try JSONSerialization.jsonObject(with: responseData, options: .mutableContainers) as? JSONContainer {
-                            if let type = responseJSON["event"] as? String, type == "trade" {
-                                if let data = (responseJSON["data"] as? String)?.data(using: .utf8), let subResponseJSON = try JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? JSONContainer {
-                                    if let priceNumber = subResponseJSON["price"] as? NSNumber {
-                                        self.delegate.exchange(self, didUpdatePrice: priceNumber.doubleValue)
-                                    }
-                                }
-                            }
+                
+                socket.onText = { [weak self] text in
+                    if let strongSelf = self {
+                        var result = JSON(parseJSON: text)
+                        if result["event"] == "trade" {
+                            result = JSON(parseJSON: result["data"].stringValue)
+                            strongSelf.setPrice(result["price"].doubleValue, for: currencyPair)
+                            strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                         }
-                    } catch {
-                        print(error)
                     }
                 }
-            }
-            
-            socket.connect()
+                
+                socket.connect()
+                sockets!.append(socket)
+            })
+        } else {
+            when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
+                return requestAPI(apiRequestPath, for: currencyPair)
+            })).then { [weak self] results -> Void in
+                results.forEach({ result in
+                    switch result {
+                    case .fulfilled(let value):
+                        if let currencyPair = value.representedObject as? CurrencyPair {
+                            let price = value.json["last"].doubleValue
+                            self?.setPrice(price, for: currencyPair)
+                        }
+                    default: break
+                    }
+                })
+                
+                self?.onFetchComplete()
+            }.always {}
         }
     }
 

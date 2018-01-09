@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "EOS_small.png",
+      "filename" : "EOS.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "EOS_small@2x.png",
+      "filename" : "EOS@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "EOS_small@3x.png",
+      "filename" : "EOS@3x.png",
       "scale" : "3x"
     }
   ],

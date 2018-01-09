@@ -31,71 +31,71 @@ class TickerConfig {
     private struct Keys {
         static let UserDefaultsExchangeSite = "userDefaults.exchangeSite"
         static let UserDefaultsUpdateInterval = "userDefaults.updateInterval"
-        static let UserDefaultsBaseCurrency = "userDefaults.baseCurrency"
-        static let UserDefaultsQuoteCurrency = "userDefaults.quoteCurrency"
+        static let UserDefaultsSelectedCurrencyPairs = "userDefaults.selectedCurrencyPairs"
     }
     
-    static let RealTimeUpdateInterval: Int = 5
+    struct Constants {
+        static let RealTimeUpdateInterval: Int = 5
+    }
     
-    static var updateInterval: Int {
-        get {
-            let updateInterval = UserDefaults.standard.integer(forKey: Keys.UserDefaultsUpdateInterval)
-            return (updateInterval > 0 ? updateInterval : RealTimeUpdateInterval)
+    static var defaultExchange: Exchange {
+        let exchange = defaultExchangeSite.exchange()
+        exchange.updateInterval = defaultUpdateInterval
+        if let selectedCurrencyPairs = defaultSelectedCurrencyPairs {
+            exchange.selectedCurrencyPairs = selectedCurrencyPairs
         }
         
-        set {
-            let updateInterval = (newValue > 0 ? newValue : RealTimeUpdateInterval)
-            UserDefaults.standard.set(updateInterval, forKey: Keys.UserDefaultsUpdateInterval)
-        }
+        return exchange
     }
     
-    static var defaultExchangeSite: ExchangeSite {
+    private static var defaultExchangeSite: ExchangeSite {
         get {
             let index = UserDefaults.standard.integer(forKey: Keys.UserDefaultsExchangeSite)
-            if let exchangeSite = ExchangeSite.build(fromIndex: index) {
-                return exchangeSite
-            }
-            
-            return .gdax
+            return ExchangeSite(rawValue: index) ?? .gdax
         }
         
         set {
-            UserDefaults.standard.set(newValue.index, forKey: Keys.UserDefaultsExchangeSite)
+            UserDefaults.standard.set(newValue.rawValue, forKey: Keys.UserDefaultsExchangeSite)
         }
     }
     
-    static var defaultBaseCurrency: Currency {
+    static var defaultUpdateInterval: Int {
         get {
-            let index = UserDefaults.standard.integer(forKey: Keys.UserDefaultsBaseCurrency)
-            if let currency = Currency.build(fromIndex: index) {
-                return currency
-            }
-            
-            return .btc
+            let updateInterval = UserDefaults.standard.integer(forKey: Keys.UserDefaultsUpdateInterval)
+            return (updateInterval > 0 ? updateInterval : Constants.RealTimeUpdateInterval)
         }
         
         set {
-            UserDefaults.standard.set(newValue.index, forKey: Keys.UserDefaultsBaseCurrency)
+            UserDefaults.standard.set(newValue, forKey: Keys.UserDefaultsUpdateInterval)
         }
     }
     
-    static var defaultQuoteCurrency: Currency {
+    private static var defaultSelectedCurrencyPairs: [CurrencyPair]? {
         get {
-            let index = UserDefaults.standard.integer(forKey: Keys.UserDefaultsQuoteCurrency)
-            if let currency = Currency.build(fromIndex: index) {
-                return currency
+            if let data = UserDefaults.standard.object(forKey: Keys.UserDefaultsSelectedCurrencyPairs) as? Data {
+                do {
+                    return try JSONDecoder().decode([CurrencyPair].self, from: data)
+                } catch {
+                    print("Error reading from UserDefaults: \(error)")
+                }
             }
             
-            if let currency = Currency.build(fromLocale: Locale.current) {
-                return currency
-            }
-            
-            return .usd
+            return []
         }
         
         set {
-            UserDefaults.standard.set(newValue.index, forKey: Keys.UserDefaultsQuoteCurrency)
+            do {
+                UserDefaults.standard.set(try JSONEncoder().encode(newValue), forKey: Keys.UserDefaultsSelectedCurrencyPairs)
+            } catch {
+                print("Error saving to UserDefaults: \(error)")
+            }
         }
+    }
+    
+    static func save(_ defaultExchange: Exchange) {
+        defaultExchangeSite = defaultExchange.site
+        defaultUpdateInterval = defaultExchange.updateInterval
+        defaultSelectedCurrencyPairs = defaultExchange.selectedCurrencyPairs
     }
 
 }

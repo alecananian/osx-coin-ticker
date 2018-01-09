@@ -25,7 +25,7 @@
 //
 
 import Foundation
-import Alamofire
+import SwiftyJSON
 
 class CoincheckExchange: Exchange {
     
@@ -33,35 +33,23 @@ class CoincheckExchange: Exchange {
         static let TickerAPIPath = "https://coincheck.com/api/ticker"
     }
     
-    private let apiResponseQueue = DispatchQueue(label: "cointicker.coincheck-api", qos: .utility, attributes: [.concurrent])
-    
-    init(delegate: ExchangeDelegate) {
+    init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .coincheck, delegate: delegate)
     }
     
-    override func start() {
-        super.start()
-        
-        currencyMatrix = [.btc: [.jpy]]
-        delegate.exchange(self, didLoadCurrencyMatrix: currencyMatrix!)
-        fetchPrice()
+    override func load() {
+        super.load()
+        onLoaded(availableCurrencyPairs: [CurrencyPair(baseCurrency: .btc, quoteCurrency: .jpy)])
     }
     
-    override func stop() {
-        super.stop()
-        
-        requestTimer?.invalidate()
-        requestTimer = nil
-    }
-    
-    override internal func fetchPrice() {
-        apiRequests.append(Alamofire.request(Constants.TickerAPIPath).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let price = (response.result.value as? JSONContainer)?["last"] as? Double {
-                self.delegate.exchange(self, didUpdatePrice: price)
-            }
-            
-            self.startRequestTimer()
-        })
+    override internal func fetch() {
+        let currencyPair = availableCurrencyPairs.first!
+        requestAPI(Constants.TickerAPIPath).then { [weak self] result -> Void in
+            self?.setPrice(result.json["last"].doubleValue, for: currencyPair)
+            self?.onFetchComplete()
+        }.catch { error in
+            print("Error fetching Coincheck ticker: \(error)")
+        }
     }
 
 }

@@ -25,7 +25,7 @@
 //
 
 import Foundation
-import Alamofire
+import SwiftyJSON
 
 class KrakenExchange: Exchange {
     
@@ -34,46 +34,41 @@ class KrakenExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.kraken.com/0/public/Ticker?pair=%@"
     }
     
-    private let apiResponseQueue = DispatchQueue(label: "cointicker.kraken-api", qos: .utility, attributes: [.concurrent])
-    
-    init(delegate: ExchangeDelegate) {
+    init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .kraken, delegate: delegate)
     }
     
-    override func start() {
-        super.start()
-        
-        apiRequests.append(Alamofire.request(Constants.ProductListAPIPath).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let currencyPairs = (response.result.value as? JSONContainer)?["result"] as? JSONContainer {
-                var currencyMatrix = CurrencyMatrix()
-                for (currencyPairString, currencyPairData) in currencyPairs {
-                    if !currencyPairString.contains(".d"), let currencyPairData = currencyPairData as? JSONContainer {
-                        if let baseCurrencyCode = currencyPairData["base"] as? String, let baseCurrency = Currency.build(fromCode: baseCurrencyCode), let quoteCurrencyCode = currencyPairData["quote"] as? String, let quoteCurrency = Currency.build(fromCode: quoteCurrencyCode) {
-                            currencyMatrix[baseCurrency, default: [Currency]()].append(quoteCurrency)
-                        }
-                    }
+    override func load() {
+        super.load()
+        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
+            let availableCurrencyPairs = result.json["result"].flatMap({ (data) -> CurrencyPair? in
+                let (productId, result) = data
+                guard !productId.contains(".d") else {
+                    return nil
                 }
                 
-                self.currencyMatrix = currencyMatrix
-                self.delegate.exchange(self, didLoadCurrencyMatrix: currencyMatrix)
-                
-                self.fetchPrice()
-            }
-        })
+                return CurrencyPair(baseCurrency: result["base"].string, quoteCurrency: result["quote"].string, customCode: productId)
+            })
+            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
+        }.catch { error in
+            print("Error fetching Kraken products: \(error)")
+        }
     }
     
-    override internal func fetchPrice() {
-        let productId = "\(baseCurrency.code)\(quoteCurrency.code)".uppercased()
-        
-        apiRequests.append(Alamofire.request(String(format: Constants.TickerAPIPathFormat, productId)).response(queue: apiResponseQueue, responseSerializer: DataRequest.jsonResponseSerializer()) { [unowned self] (response) in
-            if let result = (response.result.value as? JSONContainer)?["result"] as? JSONContainer, let currencyPairCode = result.keys.first, let currencyPairData = result[currencyPairCode] as? JSONContainer {
-                if let priceString = (currencyPairData["c"] as? [String])?.first, let price = Double(priceString) {
-                    self.delegate.exchange(self, didUpdatePrice: price)
+    override internal func fetch() {
+        let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
+        let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
+        requestAPI(apiPath).then { [weak self] result -> Void in
+            for (productId, result) in result.json["result"] {
+                if let currencyPair = self?.selectedCurrencyPair(withCustomCode: productId), let price = result["c"].array?.first?.doubleValue {
+                    self?.setPrice(price, for: currencyPair)
                 }
             }
             
-            self.startRequestTimer()
-        })
+            self?.onFetchComplete()
+        }.catch { error in
+            print("Error fetching Kraken ticker: \(error)")
+        }
     }
 
 }
