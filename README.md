@@ -87,7 +87,7 @@ After downloading or forking the repository, open `CoinTicker.xcworkspace` in Xc
     pod install
 
 ## Download
-[![Download on the Mac App Store](https://devimages.apple.com.edgekey.net/app-store/marketing/guidelines/mac/images/badge-download-on-the-mac-app-store.svg)](https://itunes.apple.com/us/app/cointicker-bitcoin-and-ethereum-ticker/id1247300730)
+[![Download on the Mac App Store](https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-mac-app-store.svg)](https://itunes.apple.com/us/app/cointicker-bitcoin-and-ethereum-ticker/id1247300730)
 
 ## Acknowledgements
 - Various cryptocurrency icons provided by [cryptocurrency-icons](https://github.com/cjdowner/cryptocurrency-icons) by [cjdowner](https://github.com/cjdowner) and [cryptocoins](https://github.com/allienworks/cryptocoins) by [allienworks](https://github.com/allienworks)
