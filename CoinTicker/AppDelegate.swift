@@ -243,21 +243,60 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    private func stringForPrice(_ price: Double, in quoteCurrency: Currency) -> String {
+        guard price > 0 else {
+            return NSLocalizedString("menu.label.loading", comment: "Label displayed when network requests are loading")
+        }
+        
+        self.currencyFormatter.numberStyle = .currency
+        self.currencyFormatter.currencyCode = quoteCurrency.code
+        if let symbol = quoteCurrency.symbol {
+            self.currencyFormatter.currencySymbol = "\(symbol) "
+        } else {
+            self.currencyFormatter.currencySymbol = nil
+        }
+        
+        var numFractionDigits = 0
+        if price < 0.001 {
+            // Convert to satoshi if dealing with a small Bitcoin value
+            if quoteCurrency.isBitcoin {
+                // ex: 5,910 sat
+                self.currencyFormatter.currencyCode = ""
+                self.currencyFormatter.currencySymbol = ""
+                self.currencyFormatter.minimumFractionDigits = 0
+                self.currencyFormatter.maximumFractionDigits = 0
+                return "\(self.currencyFormatter.string(for: price * 1e8)!) sat"
+            } else {
+                // ex: 0.0007330
+                numFractionDigits = 7
+            }
+        } else if price < 0.01 {
+            // ex: 0.009789
+            numFractionDigits = 6
+        } else if price < 0.1 {
+            // ex: 0.04500
+            numFractionDigits = 5
+        } else if price < 1 {
+            // ex: 0.1720
+            numFractionDigits = 4
+        } else if price < 10 {
+            // ex: 9.506
+            numFractionDigits = 3
+        } else {
+            // ex: 14,560.00
+            numFractionDigits = 2
+        }
+        
+        self.currencyFormatter.minimumFractionDigits = numFractionDigits
+        self.currencyFormatter.maximumFractionDigits = numFractionDigits
+        return self.currencyFormatter.string(for: price)!
+    }
+    
     fileprivate func updatePrices() {
         DispatchQueue.main.async {
             let priceStrings = self.currentExchange.selectedCurrencyPairs.flatMap { currencyPair in
                 let price = self.currentExchange.price(for: currencyPair)
-                var priceString: String
-                if price > 0 {
-                    self.currencyFormatter.numberStyle = .currency
-                    self.currencyFormatter.currencyCode = currencyPair.quoteCurrency.code
-                    self.currencyFormatter.currencySymbol = currencyPair.quoteCurrency.symbol
-                    self.currencyFormatter.maximumFractionDigits = (price < 1 ? 5 : 2)
-                    priceString = self.currencyFormatter.string(for: price)!
-                } else {
-                    priceString = NSLocalizedString("menu.label.loading", comment: "Label displayed when network requests are loading")
-                }
-                
+                let priceString = self.stringForPrice(price, in: currencyPair.quoteCurrency)
                 if self.currentExchange.isSingleCurrencyPairSelected || self.currentExchange.isSingleBaseCurrencySelected {
                     return priceString
                 }

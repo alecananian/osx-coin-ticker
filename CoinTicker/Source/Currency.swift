@@ -90,7 +90,7 @@ enum Currency: Int, Codable {
         return Currency.AllCrypto.contains(self)
     }
     
-    private var isBitcoin: Bool {
+    var isBitcoin: Bool {
         return (self == .btc)
     }
     
