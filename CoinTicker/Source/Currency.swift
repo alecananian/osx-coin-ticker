@@ -32,22 +32,22 @@ enum Currency: Int, Codable {
     case cad, cny, eur, gbp, jpy, krw, rub, usd
     
     // Crypto
-    case ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, dgb, doge,
-        eos, etc, eth, etp, fun, gno, gnt, gxs, hsr, icn, iota, kmd, knc, lrc, lsk, ltc, mana, mco,
-        mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qash, qtum, rdn, rep, salt, san, sc,
-        sngls, snt, storj, strat, sub, trx, usdt, ven, waves, wtc, xem, xlm, xmr, xrp, xvg,
-        xzc, zec
+    case ada, adx, aion, amp, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts, cvc,
+        dash, dcr, dgb, doge, emc2, eos, etc, eth, etp, fct, fun, game, gno, gnt, gxs, hsr, icn, iota,
+        kmd, knc, lrc, lsk, ltc, maid, mana, mco, mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg,
+        pot, ppc, ppt, qash, qtum, rdn, rep, ric, salt, san, sc, sngls, snt, steem, storj, strat, sub,
+        trx, usdt, ven, vtc, waves, wtc, xcp, xem, xlm, xmr, xrp, xvg, xzc, zec
     
     private static let AllPhysical = [
         cad, cny, eur, gbp, jpy, krw, rub, usd
     ]
     
     private static let AllCrypto = [
-        ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, dgb, doge,
-        eos, etc, eth, fun, gno, gxs, hsr, icn, iota, kmd, knc, lrc, lsk, ltc, mana, mco,
-        mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qtum, rdn, rep, salt, sc,
-        sngls, snt, storj, strat, sub, trx, usdt, ven, waves, wtc, xem, xlm, xmr, xrp, xvg,
-        xzc, zec
+        ada, adx, aion, amp, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts, cvc,
+        dash, dcr, dgb, doge, emc2, eos, etc, eth, etp, fct, fun, game, gno, gnt, gxs, hsr, icn, iota,
+        kmd, knc, lrc, lsk, ltc, maid, mana, mco, mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg,
+        pot, ppc, ppt, qash, qtum, rdn, rep, ric, salt, san, sc, sngls, snt, steem, storj, strat, sub,
+        trx, usdt, ven, vtc, waves, wtc, xcp, xem, xlm, xmr, xrp, xvg, xzc, zec
     ]
     
     private static let AllValues = AllCrypto + AllPhysical

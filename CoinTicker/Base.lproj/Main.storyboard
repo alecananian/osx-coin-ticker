@@ -79,6 +79,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="P21-ms-0JY"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="Poloniex" tag="300" id="Fwf-4X-da0">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="USk-V9-VLU"/>
+                                        </connections>
+                                    </menuItem>
                                 </items>
                                 <accessibility identifier="exchangeSubMenu"/>
                             </menu>
