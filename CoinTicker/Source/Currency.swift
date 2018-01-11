@@ -119,8 +119,12 @@ enum Currency: Int, Codable {
         
         // Group certain codes
         switch normalizedCode {
-        case "BCC": return .bch
         case "RUR": return .rub
+        case "BCC": return .bch
+        case "DSH": return .dash
+        case "IOT": return .iota
+        case "QSH": return .qash
+        case "QTM": return .qtum
         case "XBT": return .btc
         case "XDG": return .doge
         default:
