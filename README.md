@@ -120,4 +120,4 @@ After downloading or forking the repository, open `CoinTicker.xcworkspace` in Xc
 ## Acknowledgements
 - Various cryptocurrency icons provided by [cryptocurrency-icons](https://github.com/cjdowner/cryptocurrency-icons) by [cjdowner](https://github.com/cjdowner) and [cryptocoins](https://github.com/allienworks/cryptocoins) by [allienworks](https://github.com/allienworks)
 - Country flag icons designed by [Freepik](https://www.flaticon.com/authors/freepik) from [Flaticon](https://www.flaticon.com/packs/countrys-flags)
-- Software dependencies: [Alamofire](https://github.com/Alamofire/Alamofire) and [Socket.IO-Client-Swift](https://github.com/socketio/socket.io-client-swift)
+- Software dependencies: [Alamofire](https://github.com/Alamofire/Alamofire), [PromiseKit](https://github.com/mxcl/PromiseKit) [Starscream](https://github.com/daltoniam/Starscream) and [SwiftyJSON](https://github.com/SwiftyJSON/SwiftyJSON)
