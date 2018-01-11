@@ -69,6 +69,7 @@
 "currency.nvc.title" = "NVC (Novacoin)";
 "currency.nxt.title" = "NXT (Nxt)";
 "currency.omg.title" = "OMG (OmiseGO)";
+"currency.pay.title" = "PAY (TenX)";
 "currency.poe.title" = "POE (Po.et)";
 "currency.pot.title" = "POT (PotCoin)";
 "currency.powr.title" = "POWR (Power Ledger)";
@@ -96,6 +97,7 @@
 "currency.ven.title" = "VEN (VeChain)";
 "currency.vtc.title" = "VTC (Vertcoin)";
 "currency.waves.title" = "WAVES (Waves)";
+"currency.wax.title" = "WAX";
 "currency.wtc.title" = "WTC (Walton)";
 "currency.xcp.title" = "XCP (Counterparty)";
 "currency.xem.title" = "XEM (NewEconomyMovement)";

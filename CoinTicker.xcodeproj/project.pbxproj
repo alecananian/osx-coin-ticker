@@ -14,6 +14,7 @@
 		701CDD5A2002F31700A8D74C /* CoinoneExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDD592002F31700A8D74C /* CoinoneExchange.swift */; };
 		701CDD5C2003027D00A8D74C /* BitfinexExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDD5B2003027D00A8D74C /* BitfinexExchange.swift */; };
 		701CDD5E2005D25300A8D74C /* PoloniexExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDD5D2005D25300A8D74C /* PoloniexExchange.swift */; };
+		701CDD622007146B00A8D74C /* HuobiExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDD612007146B00A8D74C /* HuobiExchange.swift */; };
 		703581D21EDE5477003FDF3E /* GDAXExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D11EDE5477003FDF3E /* GDAXExchange.swift */; };
 		703581D41EDE57F8003FDF3E /* TickerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D31EDE57F8003FDF3E /* TickerConfig.swift */; };
 		703581D61EDE580B003FDF3E /* Exchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D51EDE580B003FDF3E /* Exchange.swift */; };
@@ -77,6 +78,7 @@
 		701CDD592002F31700A8D74C /* CoinoneExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinoneExchange.swift; sourceTree = "<group>"; };
 		701CDD5B2003027D00A8D74C /* BitfinexExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitfinexExchange.swift; sourceTree = "<group>"; };
 		701CDD5D2005D25300A8D74C /* PoloniexExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoloniexExchange.swift; sourceTree = "<group>"; };
+		701CDD612007146B00A8D74C /* HuobiExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HuobiExchange.swift; sourceTree = "<group>"; };
 		703533711EDFDC1700CACC78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		703581D11EDE5477003FDF3E /* GDAXExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDAXExchange.swift; sourceTree = "<group>"; };
 		703581D31EDE57F8003FDF3E /* TickerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickerConfig.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */,
 				701CDD592002F31700A8D74C /* CoinoneExchange.swift */,
 				703581D11EDE5477003FDF3E /* GDAXExchange.swift */,
+				701CDD612007146B00A8D74C /* HuobiExchange.swift */,
 				700DF5E01EFF8E5100B53BDE /* KorbitExchange.swift */,
 				70C19EA01EEA310700B668AB /* KrakenExchange.swift */,
 				701CDD5D2005D25300A8D74C /* PoloniexExchange.swift */,
@@ -397,6 +400,7 @@
 			files = (
 				70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */,
 				703581D21EDE5477003FDF3E /* GDAXExchange.swift in Sources */,
+				701CDD622007146B00A8D74C /* HuobiExchange.swift in Sources */,
 				704462C51FC1FE5400AB2A88 /* CurrencyPair.swift in Sources */,
 				703581DA1EDFD1A7003FDF3E /* Currency.swift in Sources */,
 				703581D41EDE57F8003FDF3E /* TickerConfig.swift in Sources */,

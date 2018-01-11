@@ -35,9 +35,9 @@ enum Currency: Int, Codable {
     case ada, adx, aion, amp, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts,
         cvc, dash, dcr, dgb, dgd, doge, elf, emc2, eng, eos, etc, eth, etp, evx, fct, fun,
         game, gas, gno, gnt, gxs, hsr, icn, icx, iota, kmd, knc, lrc, lsk, ltc,
-        maid, mana, mco, mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, poe, pot, powr, ppc, ppt,
+        maid, mana, mco, mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, pay, poe, pot, powr, ppc, ppt,
         qash, qsp, qtum, rcn, rdn, rep, req, ric, salt, san, sc, sngls, snt, steem, storj, strat, sub,
-        trx, usdt, ven, vtc, waves, wtc, xcp, xem, xlm, xmr, xrp, xvg, xzc, zec, zrx
+        trx, usdt, ven, vtc, waves, wax, wtc, xcp, xem, xlm, xmr, xrp, xvg, xzc, zec, zrx
     
     private static let AllPhysical = [
         cad, cny, eur, gbp, jpy, krw, rub, usd
@@ -47,9 +47,9 @@ enum Currency: Int, Codable {
         ada, adx, aion, amp, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts,
         cvc, dash, dcr, dgb, dgd, doge, elf, emc2, eng, eos, etc, eth, etp, evx, fct, fun,
         game, gas, gno, gnt, gxs, hsr, icn, icx, iota, kmd, knc, lrc, lsk, ltc,
-        maid, mana, mco, mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, poe, pot, powr, ppc, ppt,
+        maid, mana, mco, mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, pay, poe, pot, powr, ppc, ppt,
         qash, qsp, qtum, rcn, rdn, rep, req, ric, salt, san, sc, sngls, snt, steem, storj, strat, sub,
-        trx, usdt, ven, vtc, waves, wtc, xcp, xem, xlm, xmr, xrp, xvg, xzc, zec, zrx
+        trx, usdt, ven, vtc, waves, wax, wtc, xcp, xem, xlm, xmr, xrp, xvg, xzc, zec, zrx
     ]
     
     private static let AllValues = AllCrypto + AllPhysical
@@ -128,7 +128,9 @@ enum Currency: Int, Codable {
         case "XBT": return .btc
         case "XDG": return .doge
         default:
+            #if DEBUG
             print("Encountered unknown currency code: \(code!)")
+            #endif
             return nil
         }
     }

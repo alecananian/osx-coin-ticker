@@ -9,8 +9,10 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - [Coincheck](https://coincheck.com)
 - [Coinone](https://coinone.co.kr)
 - [GDAX](https://www.gdax.com)
+- [Huobi.pro](https://www.huobi.pro)
 - [Korbit](https://www.korbit.co.kr)
 - [Kraken](https://www.kraken.com)
+- [Poloniex](https://poloniex.com)
 
 **Supported cryptocurrencies:**
 - Bitcoin (BTC / XBT)
@@ -98,6 +100,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - Stratis (STRAT)
 - Substratum (SUB)
 - Synereo (AMP)
+- TenX (PAY)
 - Tether (USDT)
 - Tron (TRX)
 - VeChain (VEN)
@@ -105,6 +108,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - Vertcoin (VTC)
 - Walton (WTC)
 - Waves (WAVES)
+- WAX
 - ZCoin (XZC)
 - Zcash (ZEC)
 - 0x (ZRX)
