@@ -25,9 +25,8 @@
 //
 
 import Foundation
-import SocketIO
+import Starscream
 import SwiftyJSON
-import PromiseKit
 
 class BitfinexExchange: Exchange {
     

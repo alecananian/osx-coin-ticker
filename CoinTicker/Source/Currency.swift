@@ -32,22 +32,24 @@ enum Currency: Int, Codable {
     case cad, cny, eur, gbp, jpy, krw, rub, usd
     
     // Crypto
-    case ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, dgb, doge,
-        eos, etc, eth, etp, fun, gno, gnt, gxs, hsr, icn, iota, kmd, knc, lrc, lsk, ltc, mana, mco,
-        mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qash, qtum, rdn, rep, salt, san, sc,
-        sngls, snt, storj, strat, sub, trx, usdt, ven, waves, wtc, xem, xlm, xmr, xrp, xvg,
-        xzc, zec
+    case ada, adx, aion, amp, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts,
+        cvc, dash, dcr, dgb, dgd, doge, elf, emc2, eng, eos, etc, eth, etp, evx, fct, fun,
+        game, gas, gno, gnt, gxs, hsr, icn, icx, iota, kmd, knc, lrc, lsk, ltc,
+        maid, mana, mco, mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, poe, pot, powr, ppc, ppt,
+        qash, qsp, qtum, rcn, rdn, rep, req, ric, salt, san, sc, sngls, snt, steem, storj, strat, sub,
+        trx, usdt, ven, vtc, waves, wtc, xcp, xem, xlm, xmr, xrp, xvg, xzc, zec, zrx
     
     private static let AllPhysical = [
         cad, cny, eur, gbp, jpy, krw, rub, usd
     ]
     
     private static let AllCrypto = [
-        ada, adx, aion, ark, bat, bch, bnb, bnt, bqx, btc, btg, bts, dash, dgb, doge,
-        eos, etc, eth, fun, gno, gxs, hsr, icn, iota, kmd, knc, lrc, lsk, ltc, mana, mco,
-        mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, ppc, ppt, qtum, rdn, rep, salt, sc,
-        sngls, snt, storj, strat, sub, trx, usdt, ven, waves, wtc, xem, xlm, xmr, xrp, xvg,
-        xzc, zec
+        ada, adx, aion, amp, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts,
+        cvc, dash, dcr, dgb, dgd, doge, elf, emc2, eng, eos, etc, eth, etp, evx, fct, fun,
+        game, gas, gno, gnt, gxs, hsr, icn, icx, iota, kmd, knc, lrc, lsk, ltc,
+        maid, mana, mco, mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, poe, pot, powr, ppc, ppt,
+        qash, qsp, qtum, rcn, rdn, rep, req, ric, salt, san, sc, sngls, snt, steem, storj, strat, sub,
+        trx, usdt, ven, vtc, waves, wtc, xcp, xem, xlm, xmr, xrp, xvg, xzc, zec, zrx
     ]
     
     private static let AllValues = AllCrypto + AllPhysical
@@ -90,7 +92,7 @@ enum Currency: Int, Codable {
         return Currency.AllCrypto.contains(self)
     }
     
-    private var isBitcoin: Bool {
+    var isBitcoin: Bool {
         return (self == .btc)
     }
     
@@ -117,11 +119,17 @@ enum Currency: Int, Codable {
         
         // Group certain codes
         switch normalizedCode {
-        case "BCC": return .bch
         case "RUR": return .rub
+        case "BCC": return .bch
+        case "DSH": return .dash
+        case "IOT": return .iota
+        case "QSH": return .qash
+        case "QTM": return .qtum
         case "XBT": return .btc
         case "XDG": return .doge
-        default: return nil
+        default:
+            print("Encountered unknown currency code: \(code!)")
+            return nil
         }
     }
     

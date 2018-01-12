@@ -13,6 +13,7 @@
 		701CDD582002EA0300A8D74C /* BittrexExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDD572002EA0300A8D74C /* BittrexExchange.swift */; };
 		701CDD5A2002F31700A8D74C /* CoinoneExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDD592002F31700A8D74C /* CoinoneExchange.swift */; };
 		701CDD5C2003027D00A8D74C /* BitfinexExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDD5B2003027D00A8D74C /* BitfinexExchange.swift */; };
+		701CDD5E2005D25300A8D74C /* PoloniexExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701CDD5D2005D25300A8D74C /* PoloniexExchange.swift */; };
 		703581D21EDE5477003FDF3E /* GDAXExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D11EDE5477003FDF3E /* GDAXExchange.swift */; };
 		703581D41EDE57F8003FDF3E /* TickerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D31EDE57F8003FDF3E /* TickerConfig.swift */; };
 		703581D61EDE580B003FDF3E /* Exchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 703581D51EDE580B003FDF3E /* Exchange.swift */; };
@@ -75,6 +76,7 @@
 		701CDD572002EA0300A8D74C /* BittrexExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BittrexExchange.swift; sourceTree = "<group>"; };
 		701CDD592002F31700A8D74C /* CoinoneExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinoneExchange.swift; sourceTree = "<group>"; };
 		701CDD5B2003027D00A8D74C /* BitfinexExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitfinexExchange.swift; sourceTree = "<group>"; };
+		701CDD5D2005D25300A8D74C /* PoloniexExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoloniexExchange.swift; sourceTree = "<group>"; };
 		703533711EDFDC1700CACC78 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		703581D11EDE5477003FDF3E /* GDAXExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GDAXExchange.swift; sourceTree = "<group>"; };
 		703581D31EDE57F8003FDF3E /* TickerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TickerConfig.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				703581D11EDE5477003FDF3E /* GDAXExchange.swift */,
 				700DF5E01EFF8E5100B53BDE /* KorbitExchange.swift */,
 				70C19EA01EEA310700B668AB /* KrakenExchange.swift */,
+				701CDD5D2005D25300A8D74C /* PoloniexExchange.swift */,
 			);
 			path = Exchanges;
 			sourceTree = "<group>";
@@ -339,14 +342,14 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
-				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
+				"${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Starscream.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -403,6 +406,7 @@
 				70AE284B1F25214D0082BDD2 /* TrackingUtils.swift in Sources */,
 				704AB31D1FEF18D700AFAF42 /* BinanceExchange.swift in Sources */,
 				703581D81EDFC2EC003FDF3E /* BitstampExchange.swift in Sources */,
+				701CDD5E2005D25300A8D74C /* PoloniexExchange.swift in Sources */,
 				70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */,
 				700DF5E11EFF8E5700B53BDE /* KorbitExchange.swift in Sources */,
 				701CDD5C2003027D00A8D74C /* BitfinexExchange.swift in Sources */,
