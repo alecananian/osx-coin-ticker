@@ -37,7 +37,7 @@ class BitstampExchange: Exchange {
         static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%@/"
     }
     
-    private var sockets: [WebSocket]?
+    private var socket: WebSocket?
     
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .bitstamp, delegate: delegate)
@@ -67,22 +67,19 @@ class BitstampExchange: Exchange {
     
     override func stop() {
         super.stop()
-        sockets?.forEach({ $0.disconnect() })
+        socket?.disconnect()
     }
     
     override internal func fetch() {
         if isUpdatingInRealTime {
-            sockets?.forEach({ $0.disconnect() })
-            sockets = [WebSocket]()
+            let socket = WebSocket(url: Constants.WebSocketURL)
+            socket.callbackQueue = socketResponseQueue
             
-            selectedCurrencyPairs.forEach({ currencyPair in
-                let productId = currencyPair.customCode
-                let socket = WebSocket(url: Constants.WebSocketURL)
-                socket.callbackQueue = socketResponseQueue
-                socket.onConnect = {
+            socket.onConnect = { [weak self] in
+                self?.selectedCurrencyPairs.forEach({ currencyPair in
                     var channelName = "live_trades"
                     if currencyPair.baseCurrency != .btc || currencyPair.quoteCurrency != .usd {
-                        channelName += "_\(productId)"
+                        channelName += "_\(currencyPair.customCode)"
                     }
                     
                     let json = JSON([
@@ -95,22 +92,25 @@ class BitstampExchange: Exchange {
                     if let string = json.rawString() {
                         socket.write(string: string)
                     }
-                }
-                
-                socket.onText = { [weak self] text in
-                    if let strongSelf = self {
-                        var result = JSON(parseJSON: text)
-                        if result["event"] == "trade" {
-                            result = JSON(parseJSON: result["data"].stringValue)
-                            strongSelf.setPrice(result["price"].doubleValue, for: currencyPair)
+                })
+            }
+            
+            socket.onText = { [weak self] text in
+                if let strongSelf = self {
+                    let result = JSON(parseJSON: text)
+                    if result["event"] == "trade" {
+                        let productId = result["channel"].stringValue.replacingOccurrences(of: "live_trades_", with: "")
+                        if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: (productId == "live_trades" ? "btcusd" : productId)) {
+                            let data = JSON(parseJSON: result["data"].stringValue)
+                            strongSelf.setPrice(data["price"].doubleValue, for: currencyPair)
                             strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                         }
                     }
                 }
-                
-                socket.connect()
-                sockets!.append(socket)
-            })
+            }
+            
+            socket.connect()
+            self.socket = socket
         } else {
             when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
                 let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
