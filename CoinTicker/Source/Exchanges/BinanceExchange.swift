@@ -61,6 +61,32 @@ class BinanceExchange: Exchange {
     }
     
     override internal func fetch() {
+        let apiPath: String
+        if isSingleCurrencyPairSelected, let currencyPair = selectedCurrencyPairs.first {
+            apiPath = String(format: Constants.SingleTickerAPIPathFormat, currencyPair.customCode)
+        } else {
+            apiPath = Constants.FullTickerAPIPath
+        }
+        
+        requestAPI(apiPath).then { [weak self] result -> Void in
+            if let strongSelf = self {
+                let results = result.json.array ?? [result.json]
+                results.forEach({ result in
+                    if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: result["symbol"].stringValue) {
+                        strongSelf.setPrice(result["price"].doubleValue, for: currencyPair)
+                    }
+                })
+                
+                if strongSelf.isUpdatingInRealTime {
+                    strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
+                } else {
+                    strongSelf.onFetchComplete()
+                }
+            }
+        }.catch { error in
+            print("Error fetching Binance ticker: \(error)")
+        }
+        
         if isUpdatingInRealTime {
             let currencyPairCodes: [String] = selectedCurrencyPairs.flatMap({ "\($0.customCode.lowercased())@aggTrade" })
             let socket = WebSocket(url: URL(string: String(format: Constants.WebSocketPathFormat, currencyPairCodes.joined(separator: "/")))!)
@@ -77,26 +103,6 @@ class BinanceExchange: Exchange {
             
             socket.connect()
             self.socket = socket
-        } else {
-            var apiPath: String = ""
-            if isSingleCurrencyPairSelected, let currencyPair = selectedCurrencyPairs.first {
-                apiPath = String(format: Constants.SingleTickerAPIPathFormat, currencyPair.customCode)
-            } else {
-                apiPath = Constants.FullTickerAPIPath
-            }
-            
-            requestAPI(apiPath).then { [weak self] result -> Void in
-                let results = result.json.array ?? [result.json]
-                results.forEach({ result in
-                    if let currencyPair = self?.selectedCurrencyPair(withCustomCode: result["symbol"].stringValue) {
-                        self?.setPrice(result["price"].doubleValue, for: currencyPair)
-                    }
-                })
-                
-                self?.onFetchComplete()
-            }.catch { error in
-                print("Error fetching Binance ticker: \(error)")
-            }
         }
     }
     
