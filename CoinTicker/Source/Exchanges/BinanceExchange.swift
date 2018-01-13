@@ -88,14 +88,14 @@ class BinanceExchange: Exchange {
         }
         
         if isUpdatingInRealTime {
-            let currencyPairCodes: [String] = selectedCurrencyPairs.flatMap({ "\($0.customCode.lowercased())@aggTrade" })
+            let currencyPairCodes: [String] = selectedCurrencyPairs.flatMap({ "\($0.customCode.lowercased())@ticker" })
             let socket = WebSocket(url: URL(string: String(format: Constants.WebSocketPathFormat, currencyPairCodes.joined(separator: "/")))!)
             
             socket.onText = { [weak self] text in
                 if let strongSelf = self {
                     let result = JSON(parseJSON: text)["data"]
                     if let currencyPair = strongSelf.availableCurrencyPairs.first(where: { $0.customCode == result["s"].stringValue }) {
-                        strongSelf.setPrice(result["p"].doubleValue, for: currencyPair)
+                        strongSelf.setPrice(result["c"].doubleValue, for: currencyPair)
                         strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                     }
                 }
