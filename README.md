@@ -4,6 +4,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 **Available exchanges:**
 - [Binance](https://www.binance.com)
 - [Bitfinex](https://www.bitfinex.com)
+- [Bithumb](https://bithumb.com)
 - [Bitstamp](https://www.bitstamp.net)
 - [Bittrex](https://bittrex.com)
 - [Coincheck](https://coincheck.com)
@@ -12,6 +13,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - [Huobi.pro](https://www.huobi.pro)
 - [Korbit](https://www.korbit.co.kr)
 - [Kraken](https://www.kraken.com)
+- [OKEx](https://okex.com)
 - [Poloniex](https://poloniex.com)
 
 **Supported cryptocurrencies:**
@@ -19,6 +21,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - Bitcoin Cash (BCH / BCC)
 - Ethereum (ETH)
 - Litecoin (LTC)
+- Achain (ACT)
 - AdEx (ADX)
 - aelf (ELF)
 - Aion (AION)
@@ -49,7 +52,9 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - Eos Coin (EOS)
 - Ethereum Classic (ETC)
 - Everex (EVX)
+- Exchange Union (XUC)
 - Factom (FCT)
+- FairCoin (FAIR)
 - FunFair (FUN)
 - GXShares (GXS)
 - GameCredits (GAME)

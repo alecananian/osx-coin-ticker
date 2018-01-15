@@ -91,6 +91,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="P21-ms-0JY"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="OKEx" tag="275" id="7LC-YN-Ox5">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="imW-3c-KFh"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="Poloniex" tag="300" id="Fwf-4X-da0">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>

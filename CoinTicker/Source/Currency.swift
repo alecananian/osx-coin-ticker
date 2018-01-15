@@ -32,12 +32,12 @@ enum Currency: Int, Codable {
     case cad, cny, eur, gbp, jpy, krw, rub, usd
     
     // Crypto
-    case ada, adx, aion, amp, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts,
-        cvc, dash, dcr, dgb, dgd, doge, elf, emc2, eng, eos, etc, eth, etp, evx, fct, fun,
+    case act, da, adx, aion, amp, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts,
+        cvc, dash, dcr, dgb, dgd, doge, elf, emc2, eng, eos, etc, eth, etp, evx, fair, fct, fun,
         game, gas, gno, gnt, gxs, hsr, icn, icx, iota, kmd, knc, lrc, lsk, ltc,
         maid, mana, mco, mln, mtl, nav, nebl, neo, nmc, nvc, nxt, omg, pay, poe, pot, powr, ppc, ppt,
         qash, qsp, qtum, rcn, rdn, rep, req, ric, salt, san, sc, sngls, snt, steem, storj, strat, sub,
-        trx, usdt, ven, vtc, waves, wax, wtc, xcp, xem, xlm, xmr, xrp, xvg, xzc, zec, zrx
+        trx, usdt, ven, vtc, waves, wax, wtc, xcp, xem, xlm, xmr, xrp, xuc, xvg, xzc, zec, zrx
     
     private static let AllPhysical = [
         cad, cny, eur, gbp, jpy, krw, rub, usd

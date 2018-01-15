@@ -10,6 +10,7 @@
 "currency.krw.title" = "KRW (South Korean Won)";
 "currency.rub.title" = "RUB (Russian Ruble)";
 
+"currency.act.title" = "ACT (Achain)";
 "currency.ada.title" = "ADA (Cardano)";
 "currency.adx.title" = "ADX (AdEx)";
 "currency.aion.title" = "AION (Aion)";
@@ -41,6 +42,7 @@
 "currency.eth.title" = "ETH (Ethereum)";
 "currency.etp.title" = "ETP (Metaverse)";
 "currency.evx.title" = "EVX (Everex)";
+"currency.fair.title" = "FAIR (FairCoin)";
 "currency.fct.title" = "FCT (Factom)";
 "currency.fun.title" = "FUN (FunFair)";
 "currency.game.title" = "GAME (GameCredits)";
@@ -104,6 +106,7 @@
 "currency.xlm.title" = "XLM (Stellar Lumens)";
 "currency.xmr.title" = "XMR (Monero)";
 "currency.xrp.title" = "XRP (Ripple)";
+"currency.xuc.title" = "XUC (Exchange Union)";
 "currency.xvg.title" = "XVG (Verge)";
 "currency.xzc.title" = "XZC (ZCoin)";
 "currency.zec.title" = "ZEC (Zcash)";
