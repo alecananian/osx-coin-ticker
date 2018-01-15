@@ -93,10 +93,6 @@ class Exchange {
         return updateInterval == TickerConfig.Constants.RealTimeUpdateInterval
     }
     
-    var isSingleCurrencyPairSelected: Bool {
-        return (selectedCurrencyPairs.count == 1)
-    }
-    
     var isSingleBaseCurrencySelected: Bool {
         return (Set(selectedCurrencyPairs.flatMap({ $0.baseCurrency })).count == 1)
     }

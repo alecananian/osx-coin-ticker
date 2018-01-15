@@ -62,7 +62,7 @@ class BinanceExchange: Exchange {
     
     override internal func fetch() {
         let apiPath: String
-        if isSingleCurrencyPairSelected, let currencyPair = selectedCurrencyPairs.first {
+        if selectedCurrencyPairs.count == 1, let currencyPair = selectedCurrencyPairs.first {
             apiPath = String(format: Constants.SingleTickerAPIPathFormat, currencyPair.customCode)
         } else {
             apiPath = Constants.FullTickerAPIPath

@@ -67,7 +67,7 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="F1P-aa-4dD"/>
                                         </connections>
                                     </menuItem>
-                                    <menuItem title="Huobi" tag="243" id="7sG-AA-ZZk">
+                                    <menuItem title="Huobi Pro" tag="243" id="7sG-AA-ZZk">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="T2J-aS-6yB"/>

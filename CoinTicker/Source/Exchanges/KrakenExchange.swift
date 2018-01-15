@@ -41,7 +41,7 @@ class KrakenExchange: Exchange {
     override func load() {
         super.load()
         requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["result"].flatMap({ (data) -> CurrencyPair? in
+            let availableCurrencyPairs = result.json["result"].flatMap({ data -> CurrencyPair? in
                 let (productId, result) = data
                 guard !productId.contains(".d") else {
                     return nil

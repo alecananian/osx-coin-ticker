@@ -32,11 +32,11 @@ import Crashlytics
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 
-    @IBOutlet fileprivate var mainMenu: NSMenu!
-    @IBOutlet private var exchangeMenuItem: NSMenuItem!
-    @IBOutlet fileprivate var updateIntervalMenuItem: NSMenuItem!
-    @IBOutlet private var currencyStartSeparator: NSMenuItem!
-    @IBOutlet private var quitMenuItem: NSMenuItem!
+    @IBOutlet private weak var mainMenu: NSMenu!
+    @IBOutlet private weak var exchangeMenuItem: NSMenuItem!
+    @IBOutlet private weak var updateIntervalMenuItem: NSMenuItem!
+    @IBOutlet private weak var currencyStartSeparator: NSMenuItem!
+    @IBOutlet private weak var quitMenuItem: NSMenuItem!
     private var currencyMenuItems = [NSMenuItem]()
     private var currencyFormatter = NumberFormatter()
     
@@ -51,9 +51,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         UserDefaults.standard.register(defaults: ["NSApplicationCrashOnExceptions": true])
         if let resourceURL = Bundle.main.url(forResource: "fabric", withExtension: "apikey") {
             do {
-                var apiKey = try String.init(contentsOf: resourceURL, encoding: .utf8)
-                apiKey = apiKey.trimmingCharacters(in: .whitespacesAndNewlines)
-                Crashlytics.start(withAPIKey: apiKey)
+                let apiKey = try String.init(contentsOf: resourceURL, encoding: .utf8)
+                Crashlytics.start(withAPIKey: apiKey.trimmingCharacters(in: .whitespacesAndNewlines))
             } catch {
                 print("Error loading Fabric API key: \(error)")
             }
@@ -208,21 +207,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.currencyMenuItems.forEach({ self.mainMenu.removeItem($0) })
             self.currencyMenuItems.removeAll()
             
-            var menuItemMap = [Currency: NSMenuItem]()
             let indexOffset = self.mainMenu.index(of: self.currencyStartSeparator)
-            self.currentExchange.availableCurrencyPairs.forEach({ currencyPair in
+            _ = self.currentExchange.availableCurrencyPairs.reduce(into: [Currency: NSMenuItem](), { dict, currencyPair in
                 let baseCurrency = currencyPair.baseCurrency
                 let quoteCurrency = currencyPair.quoteCurrency
-                var menuItem: NSMenuItem
-                if let savedMenuItem = menuItemMap[baseCurrency] {
+                let menuItem: NSMenuItem
+                if let savedMenuItem = dict[baseCurrency] {
                     menuItem = savedMenuItem
                 } else {
                     menuItem = self.menuItem(forBaseCurrency: baseCurrency)
                     menuItem.state = (self.currentExchange.isCurrencyPairSelected(baseCurrency: baseCurrency) ? .on : .off)
                     menuItem.submenu = NSMenu()
-                    menuItemMap[baseCurrency] = menuItem
+                    dict[baseCurrency] = menuItem
                     self.currencyMenuItems.append(menuItem)
-                    self.mainMenu.insertItem(menuItem, at: menuItemMap.count + indexOffset)
+                    self.mainMenu.insertItem(menuItem, at: dict.count + indexOffset)
                 }
                 
                 let submenuItem = self.menuItem(forQuoteCurrency: quoteCurrency)
@@ -230,14 +228,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 menuItem.submenu!.addItem(submenuItem)
             })
             
-            var iconImage: NSImage? = nil
-            if self.currentExchange.isSingleCurrencyPairSelected || self.currentExchange.isSingleBaseCurrencySelected {
-                iconImage = self.currentExchange.selectedCurrencyPairs.first!.baseCurrency.iconImage
+            let iconImage: NSImage
+            if self.currentExchange.isSingleBaseCurrencySelected, let image = self.currentExchange.selectedCurrencyPairs.first!.baseCurrency.iconImage {
+                iconImage = image
             } else {
-                iconImage = NSImage(named: NSImage.Name(rawValue: "CTLogo"))
+                iconImage = NSImage(named: NSImage.Name(rawValue: "CTLogo"))!
             }
             
-            iconImage?.isTemplate = true
+            iconImage.isTemplate = true
             self.statusItem.image = iconImage
             self.updatePrices()
         }
@@ -256,7 +254,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.currencyFormatter.currencySymbol = nil
         }
         
-        var numFractionDigits = 0
+        let numFractionDigits: Int
         if price < 0.001 {
             // Convert to satoshi if dealing with a small Bitcoin value
             if quoteCurrency.isBitcoin {
@@ -297,7 +295,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let priceStrings = self.currentExchange.selectedCurrencyPairs.flatMap { currencyPair in
                 let price = self.currentExchange.price(for: currencyPair)
                 let priceString = self.stringForPrice(price, in: currencyPair.quoteCurrency)
-                if self.currentExchange.isSingleCurrencyPairSelected || self.currentExchange.isSingleBaseCurrencySelected {
+                if self.currentExchange.isSingleBaseCurrencySelected {
                     return priceString
                 }
                 
