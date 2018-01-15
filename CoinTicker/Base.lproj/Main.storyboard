@@ -37,6 +37,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="NXD-vF-TMb"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="Bithumb" tag="207" id="zhy-Te-VdY">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="bXC-mn-5EW"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="Bitstamp" tag="210" id="Tbe-f7-Epu">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>

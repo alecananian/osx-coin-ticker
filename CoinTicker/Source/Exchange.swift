@@ -33,6 +33,7 @@ import PromiseKit
 enum ExchangeSite: Int, Codable {
     case binance = 200
     case bitfinex = 205
+    case bithumb = 207
     case bitstamp = 210
     case bittrex = 225
     case coincheck = 235
@@ -47,6 +48,7 @@ enum ExchangeSite: Int, Codable {
         switch self {
         case .binance: return BinanceExchange(delegate: delegate)
         case .bitfinex: return BitfinexExchange(delegate: delegate)
+        case .bithumb: return BithumbExchange(delegate: delegate)
         case .bitstamp: return BitstampExchange(delegate: delegate)
         case .bittrex: return BittrexExchange(delegate: delegate)
         case .coincheck: return CoincheckExchange(delegate: delegate)
