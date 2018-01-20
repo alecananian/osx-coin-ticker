@@ -67,6 +67,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="F1P-aa-4dD"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="Huobi" tag="243" id="7sG-AA-ZZk">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="T2J-aS-6yB"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="Korbit" tag="245" id="Sg8-ZZ-6gG">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>

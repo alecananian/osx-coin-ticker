@@ -38,6 +38,7 @@ enum ExchangeSite: Int, Codable {
     case coincheck = 235
     case coinone = 237
     case gdax = 240
+    case huobi = 243
     case korbit = 245
     case kraken = 250
     case poloniex = 300
@@ -51,6 +52,7 @@ enum ExchangeSite: Int, Codable {
         case .coincheck: return CoincheckExchange(delegate: delegate)
         case .coinone: return CoinoneExchange(delegate: delegate)
         case .gdax: return GDAXExchange(delegate: delegate)
+        case .huobi: return HuobiExchange(delegate: delegate)
         case .korbit: return KorbitExchange(delegate: delegate)
         case .kraken: return KrakenExchange(delegate: delegate)
         case .poloniex: return PoloniexExchange(delegate: delegate)
@@ -154,13 +156,13 @@ class Exchange {
     
     func onLoaded(availableCurrencyPairs: [CurrencyPair]) {
         self.availableCurrencyPairs = availableCurrencyPairs.sorted()
-        selectedCurrencyPairs = selectedCurrencyPairs.flatMap({ (currencyPair) -> CurrencyPair? in
-            if self.availableCurrencyPairs.contains(currencyPair) {
-                var newCurrencyPair = currencyPair
-                if let customCode = self.availableCurrencyPairs.first(where: { $0 == newCurrencyPair })?.customCode {
-                    newCurrencyPair.customCode = customCode
-                }
-                
+        selectedCurrencyPairs = selectedCurrencyPairs.flatMap({ currencyPair -> CurrencyPair? in
+            if let newCurrencyPair = self.availableCurrencyPairs.first(where: { $0 == currencyPair }) {
+                return newCurrencyPair
+            }
+            
+            // Keep pair selected if new exchange has USDT instead of USD or vice versa
+            if currencyPair.quoteCurrency == .usdt || currencyPair.quoteCurrency == .usd, let newCurrencyPair = self.availableCurrencyPairs.first(where: { $0.baseCurrency == currencyPair.baseCurrency && ($0.quoteCurrency == .usd || $0.quoteCurrency == .usdt) }) {
                 return newCurrencyPair
             }
             
