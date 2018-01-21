@@ -122,7 +122,7 @@ class Exchange {
                 selectedCurrencyPairs.remove(at: index)
                 reset()
             }
-        } else {
+        } else if selectedCurrencyPairs.count < 5 {
             selectedCurrencyPairs.append(currencyPair)
             selectedCurrencyPairs = selectedCurrencyPairs.sorted()
             reset()
