@@ -37,6 +37,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="NXD-vF-TMb"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="Bithumb" tag="207" id="zhy-Te-VdY">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="bXC-mn-5EW"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="Bitstamp" tag="210" id="Tbe-f7-Epu">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
@@ -67,7 +73,7 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="F1P-aa-4dD"/>
                                         </connections>
                                     </menuItem>
-                                    <menuItem title="Huobi" tag="243" id="7sG-AA-ZZk">
+                                    <menuItem title="Huobi Pro" tag="243" id="7sG-AA-ZZk">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="T2J-aS-6yB"/>
@@ -83,6 +89,12 @@
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="P21-ms-0JY"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="OKEx" tag="275" id="7LC-YN-Ox5">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="imW-3c-KFh"/>
                                         </connections>
                                     </menuItem>
                                     <menuItem title="Poloniex" tag="300" id="Fwf-4X-da0">

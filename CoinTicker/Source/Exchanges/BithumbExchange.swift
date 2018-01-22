@@ -1,9 +1,9 @@
 //
-//  KrakenExchange.swift
+//  BithumbExchange.swift
 //  CoinTicker
 //
-//  Created by Alec Ananian on 6/08/17.
-//  Copyright © 2017 Alec Ananian.
+//  Created by Alec Ananian on 1/14/18.
+//  Copyright © 2018 Alec Ananian.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -27,48 +27,42 @@
 import Foundation
 import SwiftyJSON
 
-class KrakenExchange: Exchange {
+class BithumbExchange: Exchange {
     
     private struct Constants {
-        static let ProductListAPIPath = "https://api.kraken.com/0/public/AssetPairs"
-        static let TickerAPIPathFormat = "https://api.kraken.com/0/public/Ticker?pair=%@"
+        static let FullTickerAPIPath = "https://api.bithumb.com/public/ticker/ALL"
     }
     
     init(delegate: ExchangeDelegate? = nil) {
-        super.init(site: .kraken, delegate: delegate)
+        super.init(site: .bithumb, delegate: delegate)
     }
     
     override func load() {
         super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["result"].flatMap({ data -> CurrencyPair? in
-                let (productId, result) = data
-                guard !productId.contains(".d") else {
-                    return nil
-                }
-                
-                return CurrencyPair(baseCurrency: result["base"].string, quoteCurrency: result["quote"].string, customCode: productId)
+        requestAPI(Constants.FullTickerAPIPath).then { [weak self] result -> Void in
+            let availableCurrencyPairs = result.json["data"].flatMap({ data -> CurrencyPair? in
+                let productId = data.0
+                return CurrencyPair(baseCurrency: productId, quoteCurrency: Currency.krw.code, customCode: productId)
             })
             self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
         }.catch { error in
-            print("Error fetching Kraken products: \(error)")
+            print("Error fetching Bithumb products: \(error)")
         }
     }
     
     override internal func fetch() {
-        let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
-        let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
-        requestAPI(apiPath).then { [weak self] result -> Void in
-            for (productId, result) in result.json["result"] {
-                if let currencyPair = self?.selectedCurrencyPair(withCustomCode: productId), let price = result["c"].array?.first?.doubleValue {
-                    self?.setPrice(price, for: currencyPair)
+        requestAPI(Constants.FullTickerAPIPath).then { [weak self] result -> Void in
+            result.json["data"].forEach({ data in
+                let (productId, info) = data
+                if let currencyPair = self?.selectedCurrencyPair(withCustomCode: productId) {
+                    self?.setPrice(info["closing_price"].doubleValue, for: currencyPair)
                 }
-            }
+            })
             
             self?.onFetchComplete()
         }.catch { error in
-            print("Error fetching Kraken ticker: \(error)")
+            print("Error fetching Bithumb ticker: \(error)")
         }
     }
-
+    
 }

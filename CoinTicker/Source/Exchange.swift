@@ -33,6 +33,7 @@ import PromiseKit
 enum ExchangeSite: Int, Codable {
     case binance = 200
     case bitfinex = 205
+    case bithumb = 207
     case bitstamp = 210
     case bittrex = 225
     case coincheck = 235
@@ -41,12 +42,14 @@ enum ExchangeSite: Int, Codable {
     case huobi = 243
     case korbit = 245
     case kraken = 250
+    case okex = 275
     case poloniex = 300
     
     func exchange(delegate: ExchangeDelegate? = nil) -> Exchange {
         switch self {
         case .binance: return BinanceExchange(delegate: delegate)
         case .bitfinex: return BitfinexExchange(delegate: delegate)
+        case .bithumb: return BithumbExchange(delegate: delegate)
         case .bitstamp: return BitstampExchange(delegate: delegate)
         case .bittrex: return BittrexExchange(delegate: delegate)
         case .coincheck: return CoincheckExchange(delegate: delegate)
@@ -55,6 +58,7 @@ enum ExchangeSite: Int, Codable {
         case .huobi: return HuobiExchange(delegate: delegate)
         case .korbit: return KorbitExchange(delegate: delegate)
         case .kraken: return KrakenExchange(delegate: delegate)
+        case .okex: return OKExExchange(delegate: delegate)
         case .poloniex: return PoloniexExchange(delegate: delegate)
         }
     }
@@ -93,10 +97,6 @@ class Exchange {
         return updateInterval == TickerConfig.Constants.RealTimeUpdateInterval
     }
     
-    var isSingleCurrencyPairSelected: Bool {
-        return (selectedCurrencyPairs.count == 1)
-    }
-    
     var isSingleBaseCurrencySelected: Bool {
         return (Set(selectedCurrencyPairs.flatMap({ $0.baseCurrency })).count == 1)
     }
@@ -122,7 +122,7 @@ class Exchange {
                 selectedCurrencyPairs.remove(at: index)
                 reset()
             }
-        } else {
+        } else if selectedCurrencyPairs.count < 5 {
             selectedCurrencyPairs.append(currencyPair)
             selectedCurrencyPairs = selectedCurrencyPairs.sorted()
             reset()

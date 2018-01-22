@@ -1,9 +1,9 @@
 //
-//  KrakenExchange.swift
+//  OKExExchange.swift
 //  CoinTicker
 //
-//  Created by Alec Ananian on 6/08/17.
-//  Copyright © 2017 Alec Ananian.
+//  Created by Alec Ananian on 1/15/18.
+//  Copyright © 2018 Alec Ananian.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -26,49 +26,56 @@
 
 import Foundation
 import SwiftyJSON
+import PromiseKit
 
-class KrakenExchange: Exchange {
+class OKExExchange: Exchange {
     
     private struct Constants {
-        static let ProductListAPIPath = "https://api.kraken.com/0/public/AssetPairs"
-        static let TickerAPIPathFormat = "https://api.kraken.com/0/public/Ticker?pair=%@"
+        static let ProductListAPIPath = "https://www.okex.com/v2/markets/products"
+        static let TickerAPIPathFormat = "https://www.okex.com/v2/markets/%@/ticker"
     }
     
     init(delegate: ExchangeDelegate? = nil) {
-        super.init(site: .kraken, delegate: delegate)
+        super.init(site: .okex, delegate: delegate)
     }
     
     override func load() {
         super.load()
         requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["result"].flatMap({ data -> CurrencyPair? in
-                let (productId, result) = data
-                guard !productId.contains(".d") else {
+            let availableCurrencyPairs = result.json["data"].arrayValue.flatMap({ result -> CurrencyPair? in
+                let customCode = result["symbol"].stringValue
+                let symbolParts = customCode.components(separatedBy: "_")
+                guard symbolParts.count == 2 else {
                     return nil
                 }
                 
-                return CurrencyPair(baseCurrency: result["base"].string, quoteCurrency: result["quote"].string, customCode: productId)
+                return CurrencyPair(baseCurrency: symbolParts.first, quoteCurrency: symbolParts.last, customCode: customCode)
             })
             self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
         }.catch { error in
-            print("Error fetching Kraken products: \(error)")
+            print("Error fetching OKEx products: \(error)")
         }
     }
     
     override internal func fetch() {
-        let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
-        let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
-        requestAPI(apiPath).then { [weak self] result -> Void in
-            for (productId, result) in result.json["result"] {
-                if let currencyPair = self?.selectedCurrencyPair(withCustomCode: productId), let price = result["c"].array?.first?.doubleValue {
-                    self?.setPrice(price, for: currencyPair)
+        when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+            let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
+            return requestAPI(apiRequestPath, for: currencyPair)
+        })).then { [weak self] results -> Void in
+            results.forEach({ result in
+                switch result {
+                case .fulfilled(let value):
+                    if let currencyPair = value.representedObject as? CurrencyPair {
+                        let price = value.json["data"]["last"].doubleValue
+                        self?.setPrice(price, for: currencyPair)
+                    }
+                default: break
                 }
-            }
+            })
             
             self?.onFetchComplete()
-        }.catch { error in
-            print("Error fetching Kraken ticker: \(error)")
-        }
+        }.always {}
     }
-
+    
 }
+
