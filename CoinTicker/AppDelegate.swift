@@ -166,7 +166,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let baseCurrency = menuItem.parent?.representedObject as? Currency, let quoteCurrency = menuItem.representedObject as? Currency {
             // Reset exchange fetching
             currentExchange.toggleCurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency)
-            currentExchange.reset()
             
             // Update menus
             updateMenuItems()
