@@ -15,6 +15,7 @@
                         <outlet property="exchangeMenuItem" destination="5Er-8L-qOO" id="blb-hw-lEA"/>
                         <outlet property="mainMenu" destination="vYf-vh-d69" id="rvF-sV-ypa"/>
                         <outlet property="quitMenuItem" destination="aEa-aJ-8Ch" id="Zct-AC-IIh"/>
+                        <outlet property="showIconMenuItem" destination="OiI-ij-mGF" id="csu-Nd-NEV"/>
                         <outlet property="updateIntervalMenuItem" destination="lbB-L9-6x8" id="W1b-AO-D4g"/>
                     </connections>
                 </customObject>
@@ -67,7 +68,7 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="Mkp-jD-qet"/>
                                         </connections>
                                     </menuItem>
-                                    <menuItem title="GDAX" tag="240" id="deQ-Xh-l5A">
+                                    <menuItem title="GDAX" state="on" tag="240" id="deQ-Xh-l5A">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="F1P-aa-4dD"/>
@@ -112,7 +113,7 @@
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <menu key="submenu" title="Update Interval" id="CVu-iO-yB7" userLabel="Update Interval Sub Menu">
                                 <items>
-                                    <menuItem title="Real-Time" tag="5" id="iQK-Z7-1Fe">
+                                    <menuItem title="Real-Time" state="on" tag="5" id="iQK-Z7-1Fe">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <accessibility identifier="realTimeMenuItem"/>
                                         <connections>
@@ -165,7 +166,22 @@
                         <menuItem isSeparatorItem="YES" id="kz9-oF-43U" userLabel="Currency End Separator">
                             <accessibility identifier="currencyEndSeparator"/>
                         </menuItem>
-                        <menuItem title="Quit" keyEquivalent="q" id="aEa-aJ-8Ch">
+                        <menuItem title="Options" id="ye1-ef-Ui6">
+                            <modifierMask key="keyEquivalentModifierMask"/>
+                            <menu key="submenu" title="Options" id="GJN-LJ-KkF">
+                                <items>
+                                    <menuItem title="Show Icon" state="on" id="OiI-ij-mGF">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onToggleShowIconWithSender:" target="Voe-Tx-rLC" id="i8i-q3-NMs"/>
+                                        </connections>
+                                    </menuItem>
+                                </items>
+                            </menu>
+                        </menuItem>
+                        <menuItem isSeparatorItem="YES" id="7b9-mn-HmY"/>
+                        <menuItem title="Quit" id="aEa-aJ-8Ch">
+                            <modifierMask key="keyEquivalentModifierMask"/>
                             <accessibility identifier="quitMenuItem"/>
                             <connections>
                                 <action selector="onQuitWithSender:" target="Voe-Tx-rLC" id="KhP-PC-8lw"/>

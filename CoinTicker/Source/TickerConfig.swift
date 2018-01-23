@@ -31,6 +31,7 @@ class TickerConfig {
     private struct Keys {
         static let UserDefaultsExchangeSite = "userDefaults.exchangeSite"
         static let UserDefaultsUpdateInterval = "userDefaults.updateInterval"
+        static let UserDefaultsShowIcon = "userDefaults.showIcon"
         static let UserDefaultsSelectedCurrencyPairs = "userDefaults.selectedCurrencyPairs"
     }
     
@@ -67,6 +68,20 @@ class TickerConfig {
         
         set {
             UserDefaults.standard.set(newValue, forKey: Keys.UserDefaultsUpdateInterval)
+        }
+    }
+    
+    static var showsIcon: Bool {
+        get {
+            guard UserDefaults.standard.value(forKey: Keys.UserDefaultsShowIcon) != nil else {
+                return true
+            }
+            
+            return UserDefaults.standard.bool(forKey: Keys.UserDefaultsShowIcon)
+        }
+        
+        set {
+            UserDefaults.standard.set(newValue, forKey: Keys.UserDefaultsShowIcon)
         }
     }
     

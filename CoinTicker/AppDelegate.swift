@@ -36,6 +36,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet private weak var exchangeMenuItem: NSMenuItem!
     @IBOutlet private weak var updateIntervalMenuItem: NSMenuItem!
     @IBOutlet private weak var currencyStartSeparator: NSMenuItem!
+    @IBOutlet private weak var showIconMenuItem: NSMenuItem!
     @IBOutlet private weak var quitMenuItem: NSMenuItem!
     private var currencyMenuItems = [NSMenuItem]()
     private var currencyFormatter = NumberFormatter()
@@ -81,6 +82,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         currentExchange.delegate = self
         exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == currentExchange.site.rawValue ? .on : .off) })
         updateIntervalMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == currentExchange.updateInterval ? .on : .off )})
+        showIconMenuItem.state = (TickerConfig.showsIcon ? .on : .off)
         
         // Listen for network status
         reachabilityManager.startListening()
@@ -175,6 +177,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    @IBAction private func onToggleShowIcon(sender: AnyObject) {
+        let shouldShowMenuIcon = !TickerConfig.showsIcon
+        showIconMenuItem.state = (shouldShowMenuIcon ? .on : .off)
+        TickerConfig.showsIcon = shouldShowMenuIcon
+        
+        updateMenuIcon()
+        updatePrices()
+    }
+    
     @IBAction private func onQuit(sender: AnyObject) {
         NSApplication.shared.terminate(self)
     }
@@ -227,6 +238,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 menuItem.submenu!.addItem(submenuItem)
             })
             
+            self.updateMenuIcon()
+            self.updatePrices()
+        }
+    }
+    
+    private func updateMenuIcon() {
+        if TickerConfig.showsIcon {
             let iconImage: NSImage
             if self.currentExchange.isSingleBaseCurrencySelected, let image = self.currentExchange.selectedCurrencyPairs.first!.baseCurrency.iconImage {
                 iconImage = image
@@ -236,7 +254,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             
             iconImage.isTemplate = true
             self.statusItem.image = iconImage
-            self.updatePrices()
+        } else {
+            self.statusItem.image = nil
         }
     }
     
@@ -294,7 +313,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             let priceStrings = self.currentExchange.selectedCurrencyPairs.flatMap { currencyPair in
                 let price = self.currentExchange.price(for: currencyPair)
                 let priceString = self.stringForPrice(price, in: currencyPair.quoteCurrency)
-                if self.currentExchange.isSingleBaseCurrencySelected {
+                if self.currentExchange.isSingleBaseCurrencySelected && TickerConfig.showsIcon {
                     return priceString
                 }
                 
