@@ -26,6 +26,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - aelf (ELF)
 - Aion (AION)
 - AntShares (NEO)
+- AppCoins (APPC)
 - Ardor (ARDR)
 - Ark (ARK)
 - Augur (REP)

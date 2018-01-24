@@ -32,7 +32,7 @@ enum Currency: Int, Codable {
     case cad, cny, eur, gbp, jpy, krw, rub, usd
     
     // Crypto
-    case act, ada, adx, aion, amp, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts,
+    case act, ada, adx, aion, amp, appc, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts,
         cnd, cvc, dash, dcr, dgb, dgd, doge, edo, elf, emc2, eng, eos, etc, eth, etp, evx, fair, fct, fun,
         game, gas, gno, gnt, gxs, hsr, icn, icx, iota, kcash, kmd, knc, link, lrc, lsk, ltc,
         maid, mana, mco, mkr, mln, mtl, nas, nav, nebl, neo, nmc, nvc, nxt, omg, pay, poe, pot, powr, ppc, ppt,
@@ -44,7 +44,7 @@ enum Currency: Int, Codable {
     ]
     
     private static let AllCrypto = [
-        act, ada, adx, aion, amp, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts,
+        act, ada, adx, aion, amp, appc, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts,
         cnd, cvc, dash, dcr, dgb, dgd, doge, edo, elf, emc2, eng, eos, etc, eth, etp, evx, fair, fct, fun,
         game, gas, gno, gnt, gxs, hsr, icn, icx, iota, kcash, kmd, knc, link, lrc, lsk, ltc,
         maid, mana, mco, mkr, mln, mtl, nas, nav, nebl, neo, nmc, nvc, nxt, omg, pay, poe, pot, powr, ppc, ppt,
