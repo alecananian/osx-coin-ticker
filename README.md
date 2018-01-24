@@ -49,6 +49,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - Digibyte (DGB)
 - DigixDAO (DGD)
 - Dogecoin (DOGE)
+- Eidoo (EDO)
 - Einsteinium (EMC2)
 - Enigma (ENG)
 - Eos Coin (EOS)
