@@ -87,6 +87,7 @@
 "currency.rep.title" = "REP (Augur)";
 "currency.req.title" = "REQ (Request Network)";
 "currency.ric.title" = "RIC (Riecoin)";
+"currency.rlc.title" = "RLC (iExec RLC)";
 "currency.salt.title" = "SALT";
 "currency.san.title" = "SAN (Santiment Network Token)";
 "currency.sc.title" = "SC (Siacoin)";
