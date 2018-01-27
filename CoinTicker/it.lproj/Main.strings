@@ -1,12 +1,5 @@
-
-/* Class = "NSMenu"; title = "Exchange"; ObjectID = "fga-XW-why"; */
-"fga-XW-why.title" = "Borsa";
-
 /* Class = "NSMenuItem"; title = "Exchange"; ObjectID = "5Er-8L-qOO"; */
 "5Er-8L-qOO.title" = "Borsa";
-
-/* Class = "NSMenu"; title = "Update Interval"; ObjectID = "CVu-iO-yB7"; */
-"CVu-iO-yB7.title" = "Intervallo aggiornamento";
 
 /* Class = "NSMenuItem"; title = "Update Interval"; ObjectID = "lbB-L9-6x8"; */
 "lbB-L9-6x8.title" = "Intervallo aggiornamento";
@@ -28,6 +21,12 @@
 
 /* Class = "NSMenuItem"; title = "30 minutes"; ObjectID = "iCj-ws-s49"; */
 "iCj-ws-s49.title" = "30 minuti";
+
+/* Class = "NSMenu"; title = "Options"; ObjectID = "GJN-LJ-KkF"; */
+"GJN-LJ-KkF.title" = "Opzioni";
+
+/* Class = "NSMenuItem"; title = "Show Icon"; ObjectID = "OiI-ij-mGF"; */
+"OiI-ij-mGF.title" = "Mostra icona";
 
 /* Class = "NSMenuItem"; title = "Quit"; ObjectID = "aEa-aJ-8Ch"; */
 "aEa-aJ-8Ch.title" = "Esci";

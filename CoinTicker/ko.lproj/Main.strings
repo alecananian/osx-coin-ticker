@@ -1,12 +1,5 @@
-
-/* Class = "NSMenu"; title = "Exchange"; ObjectID = "fga-XW-why"; */
-"fga-XW-why.title" = "거래소";
-
 /* Class = "NSMenuItem"; title = "Exchange"; ObjectID = "5Er-8L-qOO"; */
 "5Er-8L-qOO.title" = "거래소";
-
-/* Class = "NSMenu"; title = "Update Interval"; ObjectID = "CVu-iO-yB7"; */
-"CVu-iO-yB7.title" = "업데이트 간격";
 
 /* Class = "NSMenuItem"; title = "Update Interval"; ObjectID = "lbB-L9-6x8"; */
 "lbB-L9-6x8.title" = "업데이트 간격";
@@ -28,6 +21,12 @@
 
 /* Class = "NSMenuItem"; title = "30 minutes"; ObjectID = "iCj-ws-s49"; */
 "iCj-ws-s49.title" = "30 분";
+
+/* Class = "NSMenu"; title = "Options"; ObjectID = "GJN-LJ-KkF"; */
+"GJN-LJ-KkF.title" = "옵션";
+
+/* Class = "NSMenuItem"; title = "Show Icon"; ObjectID = "OiI-ij-mGF"; */
+"OiI-ij-mGF.title" = "아이콘 표시";
 
 /* Class = "NSMenuItem"; title = "Quit"; ObjectID = "aEa-aJ-8Ch"; */
 "aEa-aJ-8Ch.title" = "끝내기";
