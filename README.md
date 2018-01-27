@@ -30,7 +30,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - Ardor (ARDR)
 - Ark (ARK)
 - Augur (REP)
-- Bancor (BTN)
+- Bancor (BNT)
 - Basic Attention Token (BAT)
 - Binance Coin (BNB)
 - Bitcoin Gold (BTG)
@@ -67,6 +67,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - Golem (GNT)
 - Hshare (HSR)
 - ICON (ICX)
+- IOTA
 - Iconomi (ICN)
 - iExec RLC (RLC)
 - Kcash (KCASH)
