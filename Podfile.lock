@@ -1,8 +1,13 @@
 PODS:
   - Alamofire (4.6.0)
-  - Crashlytics (3.9.3):
-    - Fabric (~> 1.7.2)
-  - Fabric (1.7.2)
+  - AppCenter (1.2.0):
+    - AppCenter/Analytics (= 1.2.0)
+    - AppCenter/Crashes (= 1.2.0)
+  - AppCenter/Analytics (1.2.0):
+    - AppCenter/Core
+  - AppCenter/Core (1.2.0)
+  - AppCenter/Crashes (1.2.0):
+    - AppCenter/Core
   - PromiseKit (4.4.0):
     - PromiseKit/Foundation (= 4.4.0)
     - PromiseKit/QuartzCore (= 4.4.0)
@@ -19,20 +24,18 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.0)
-  - Crashlytics
-  - Fabric
+  - AppCenter
   - PromiseKit (~> 4.4)
   - Starscream (~> 3.0.3)
   - SwiftyJSON (~> 4.0)
 
 SPEC CHECKSUMS:
   Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
-  Crashlytics: dbb07d01876c171c5ccbdf7826410380189e452c
-  Fabric: 9cd6a848efcf1b8b07497e0b6a2e7d336353ba15
+  AppCenter: d0b68b2a7a87ac0aed78e66f36d87fd321d0a29c
   PromiseKit: ecf5fe92275d57ee77c9ede858af47a162e9b97e
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
 
-PODFILE CHECKSUM: 9e2b7d0642951d4edc4245cf6feea87b2aed8270
+PODFILE CHECKSUM: 563efec62eb90b459eb68c25d386968e77185d88
 
 COCOAPODS: 1.4.0
