@@ -98,6 +98,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="imW-3c-KFh"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="Paribu" tag="290" id="T6N-10-8Mm" userLabel="Paribu">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="p1q-gv-5yc"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="Poloniex" tag="300" id="Fwf-4X-da0">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>

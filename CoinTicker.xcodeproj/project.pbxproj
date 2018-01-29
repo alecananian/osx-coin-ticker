@@ -32,6 +32,7 @@
 		70AE284E1F2524E30082BDD2 /* fabric.apikey in Resources */ = {isa = PBXBuildFile; fileRef = 70AE284D1F2524E30082BDD2 /* fabric.apikey */; };
 		70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */; };
 		70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C19EA01EEA310700B668AB /* KrakenExchange.swift */; };
+		FDE0ABE8201E94E100075590 /* ParibuExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE0ABE7201E94E100075590 /* ParibuExchange.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +111,7 @@
 		C4313FAA3E2256C8A5D25C1F /* Pods_CoinTicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoinTicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4CC49C8D7CCCB6A0878C5BD /* Pods-CoinTicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinTicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker.release.xcconfig"; sourceTree = "<group>"; };
 		F947BA40CD0ED03B7C2327C8 /* Pods-CoinTicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinTicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker.debug.xcconfig"; sourceTree = "<group>"; };
+		FDE0ABE7201E94E100075590 /* ParibuExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParibuExchange.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 				703581D71EDFC2EC003FDF3E /* BitstampExchange.swift */,
 				701CDD572002EA0300A8D74C /* BittrexExchange.swift */,
 				70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */,
+				FDE0ABE7201E94E100075590 /* ParibuExchange.swift */,
 				701CDD592002F31700A8D74C /* CoinoneExchange.swift */,
 				703581D11EDE5477003FDF3E /* GDAXExchange.swift */,
 				701CDD612007146B00A8D74C /* HuobiExchange.swift */,
@@ -416,6 +419,7 @@
 				70AE284B1F25214D0082BDD2 /* TrackingUtils.swift in Sources */,
 				704AB31D1FEF18D700AFAF42 /* BinanceExchange.swift in Sources */,
 				703581D81EDFC2EC003FDF3E /* BitstampExchange.swift in Sources */,
+				FDE0ABE8201E94E100075590 /* ParibuExchange.swift in Sources */,
 				701CDD5E2005D25300A8D74C /* PoloniexExchange.swift in Sources */,
 				70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */,
 				700DF5E11EFF8E5700B53BDE /* KorbitExchange.swift in Sources */,

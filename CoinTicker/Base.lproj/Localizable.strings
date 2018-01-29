@@ -9,6 +9,7 @@
 "currency.jpy.title" = "JPY (Japanese Yen)";
 "currency.krw.title" = "KRW (South Korean Won)";
 "currency.rub.title" = "RUB (Russian Ruble)";
+"currency.try.title" = "TRY (Turkish Lira)";
 
 "currency.act.title" = "ACT (Achain)";
 "currency.ada.title" = "ADA (Cardano)";
