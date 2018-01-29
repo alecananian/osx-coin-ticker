@@ -9,6 +9,7 @@
 "currency.jpy.title" = "JPY (日本円)";
 "currency.krw.title" = "KRW (大韓民国ウォン)";
 "currency.rub.title" = "RUB (ロシアルーブル)";
+"currency.try.title" = "TRY (トルコリラ)";
 
 "currency.bch.title" = "BCH (ビットコインキャッシュ)";
 "currency.btc.title" = "BTC (ビットコイン)";

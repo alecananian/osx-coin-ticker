@@ -29,7 +29,7 @@ import Cocoa
 enum Currency: Int, Codable {
     
     // Physical
-    case cad, cny, eur, gbp, jpy, krw, rub, usd
+    case cad, cny, eur, gbp, jpy, krw, rub, `try`, usd
     
     // Crypto
     case act, ada, adx, aion, amp, appc, ardr, ark, bat, bch, bcn, bnb, bnt, bqx, btc, btcd, btg, btm, bts,
@@ -40,7 +40,7 @@ enum Currency: Int, Codable {
         trx, usdt, ven, vtc, waves, wax, wtc, xcp, xem, xlm, xmr, xrp, xuc, xvg, xzc, zec, zrx
     
     private static let AllPhysical = [
-        cad, cny, eur, gbp, jpy, krw, rub, usd
+        cad, cny, eur, gbp, jpy, krw, rub, `try`, usd
     ]
     
     private static let AllCrypto = [

@@ -9,5 +9,6 @@
 "currency.jpy.title" = "JPY (Японская иена)";
 "currency.krw.title" = "KRW (Южнокорейская вона)";
 "currency.rub.title" = "RUB (Российский рубль)";
+"currency.try.title" = "TRY (Турецкая лира)";
 
 "currency.btc.title" = "BTC (Биткойн)";
