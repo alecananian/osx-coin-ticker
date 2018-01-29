@@ -39,16 +39,16 @@ class ParibuExchange: Exchange {
     
     override func load() {
         super.load()
-        onLoaded(availableCurrencyPairs: [CurrencyPair(baseCurrency: .btc, quoteCurrency: .try)])
+        onLoaded(availableCurrencyPairs: [CurrencyPair(baseCurrency: .btc, quoteCurrency: .try, customCode: "BTC_TL")])
     }
     
     override internal func fetch() {
         let currencyPair = availableCurrencyPairs.first!
         requestAPI(Constants.TickerAPIPath).then { [weak self] result -> Void in
-            self?.setPrice(result.json["BTC_TL"]["last"].doubleValue, for: currencyPair)
+            self?.setPrice(result.json[currencyPair.customCode]["last"].doubleValue, for: currencyPair)
             self?.onFetchComplete()
-            }.catch { error in
-                print("Error fetching Paribu ticker: \(error)")
+        }.catch { error in
+            print("Error fetching Paribu ticker: \(error)")
         }
     }
     
