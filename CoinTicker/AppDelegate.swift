@@ -26,8 +26,9 @@
 
 import Cocoa
 import Alamofire
-import Fabric
-import Crashlytics
+import AppCenter
+import AppCenterAnalytics
+import AppCenterCrashes
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -48,14 +49,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     // MARK: NSApplicationDelegate
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Start Fabric
-        UserDefaults.standard.register(defaults: ["NSApplicationCrashOnExceptions": true])
-        if let resourceURL = Bundle.main.url(forResource: "fabric", withExtension: "apikey") {
+        // Start AppCenter
+        if let resourceURL = Bundle.main.url(forResource: "appcenter", withExtension: "secret") {
             do {
-                let apiKey = try String.init(contentsOf: resourceURL, encoding: .utf8)
-                Crashlytics.start(withAPIKey: apiKey.trimmingCharacters(in: .whitespacesAndNewlines))
+                let appSecret = try String.init(contentsOf: resourceURL, encoding: .utf8)
+                MSAppCenter.start(appSecret.trimmingCharacters(in: .whitespacesAndNewlines), withServices:[
+                    MSAnalytics.self,
+                    MSCrashes.self
+                ])
             } catch {
-                print("Error loading Fabric API key: \(error)")
+                print("Error loading AppCenter app secret: \(error)")
             }
         }
         
@@ -184,6 +187,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         updateMenuIcon()
         updatePrices()
+        
+        TrackingUtils.didShowIcon(shouldShowMenuIcon)
     }
     
     @IBAction private func onQuit(sender: AnyObject) {

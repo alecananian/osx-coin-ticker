@@ -123,11 +123,13 @@ class Exchange {
             if selectedCurrencyPairs.count > 0 {
                 selectedCurrencyPairs.remove(at: index)
                 reset()
+                TrackingUtils.didDeselectCurrencyPair(currencyPair)
             }
         } else if selectedCurrencyPairs.count < 5 {
             selectedCurrencyPairs.append(currencyPair)
             selectedCurrencyPairs = selectedCurrencyPairs.sorted()
             reset()
+            TrackingUtils.didSelectCurrencyPair(currencyPair)
         }
     }
     
