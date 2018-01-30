@@ -73,6 +73,7 @@ enum Currency: Int, Codable {
         case .nmc: return "ℕ"
         case .ppc: return "Ᵽ"
         case .rep: return "Ɍ"
+        case .try: return "₺"
         case .xmr: return "ɱ"
         case .xrp: return "Ʀ"
         case .zec: return "ⓩ"
