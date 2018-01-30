@@ -34,11 +34,13 @@
 "currency.cvc.title" = "CVC (Civic)";
 "currency.dash.title" = "DASH (Dash)";
 "currency.dcr.title" = "DCR (Decred)";
+"currency.dent.title" = "DENT (Dent)";
 "currency.dgb.title" = "DGB (Digibyte)";
 "currency.dgd.title" = "DGD (DigixDAO)";
 "currency.doge.title" = "DOGE (Dogecoin)";
 "currency.edo.title" = "EDO (Eidoo)";
 "currency.elf.title" = "ELF (aelf)";
+"currency.emc.title" = "EMC (Emercoin)";
 "currency.emc2.title" = "EMC2 (Einsteinium)";
 "currency.eng.title" = "ENG (Enigma)";
 "currency.eos.title" = "EOS (Eos Coin)";
@@ -111,6 +113,7 @@
 "currency.wax.title" = "WAX";
 "currency.wtc.title" = "WTC (Walton)";
 "currency.xcp.title" = "XCP (Counterparty)";
+"currency.xdn.title" = "XDN (DigitalNote)";
 "currency.xem.title" = "XEM (NewEconomyMovement)";
 "currency.xlm.title" = "XLM (Stellar Lumens)";
 "currency.xmr.title" = "XMR (Monero)";
