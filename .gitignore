@@ -128,7 +128,6 @@ Carthage/Build
 /*.gcno
 
 ### Fabric ###
-fabric.apikey
-fabric.buildsecret
+appcenter.secret
 
 # End of https://www.gitignore.io/api/osx,swift,xcode,cocoapods

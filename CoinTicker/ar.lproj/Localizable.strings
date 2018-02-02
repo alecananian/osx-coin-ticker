@@ -9,6 +9,7 @@
 "currency.jpy.title" = "الين الياباني (JPY)";
 "currency.krw.title" = "وون كوري جنوبي (KRW)";
 "currency.rub.title" = "الروبل الروسي (RUB)";
+"currency.try.title" = "ليرة تركية (TRY)";
 
 "currency.btc.title" = "بيتكوين (BTC)";
 "currency.ltc.title" = "لايت كوين (LTC)";
