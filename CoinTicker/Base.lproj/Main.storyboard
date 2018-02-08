@@ -26,7 +26,7 @@
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <menu key="submenu" title="Exchange" id="fga-XW-why" userLabel="Exchange Sub Menu">
                                 <items>
-                                    <menuItem title="Binance" tag="200" id="QjD-IZ-7n9">
+                                    <menuItem title="Binance" state="on" tag="200" id="QjD-IZ-7n9">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="rww-wG-xh7"/>
@@ -68,10 +68,16 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="Mkp-jD-qet"/>
                                         </connections>
                                     </menuItem>
-                                    <menuItem title="GDAX" state="on" tag="240" id="deQ-Xh-l5A">
+                                    <menuItem title="GDAX" tag="240" id="deQ-Xh-l5A">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="F1P-aa-4dD"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="HitBTC" tag="241" id="POr-JF-fef">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="UkX-oy-eT4"/>
                                         </connections>
                                     </menuItem>
                                     <menuItem title="Huobi Pro" tag="243" id="7sG-AA-ZZk">

@@ -25,16 +25,19 @@
 //
 
 import Cocoa
-import Crashlytics
+import AppCenterAnalytics
 
 enum TrackedEvent: String {
     case selectExchange = "Select Exchange"
     case selectUpdateInterval = "Select Update Interval"
     case selectCurrencyPair = "Select Currency Pair"
     case deselectCurrencyPair = "Deselect Currency Pair"
+    case showIcon = "Show Icon"
+    case hideIcon = "Hide Icon"
 }
 
 enum TrackedEventAttributes: String {
+    case country = "Country"
     case exchange = "Exchange"
     case updateInterval = "Update Interval"
     case currency = "Currency"
@@ -43,8 +46,8 @@ enum TrackedEventAttributes: String {
 
 struct TrackingUtils {
     
-    static func log(_ event: TrackedEvent, withAttributes attributes: [String: Any]?) {
-        Answers.logCustomEvent(withName: event.rawValue, customAttributes: attributes)
+    static func log(_ event: TrackedEvent, withAttributes attributes: [String: String]? = nil) {
+        MSAnalytics.trackEvent(event.rawValue, withProperties: attributes)
     }
     
     static func didSelectExchange(_ exchangeName: String) {
@@ -52,7 +55,7 @@ struct TrackingUtils {
     }
     
     static func didSelectUpdateInterval(_ updateInterval: Int) {
-        log(.selectUpdateInterval, withAttributes: [TrackedEventAttributes.updateInterval.rawValue: updateInterval])
+        log(.selectUpdateInterval, withAttributes: [TrackedEventAttributes.updateInterval.rawValue: String(updateInterval)])
     }
     
     static func didSelectCurrencyPair(_ currencyPair: CurrencyPair) {
@@ -61,6 +64,14 @@ struct TrackingUtils {
     
     static func didDeselectCurrencyPair(_ currencyPair: CurrencyPair) {
         log(.deselectCurrencyPair, withAttributes: [TrackedEventAttributes.currencyPair.rawValue: String(describing: currencyPair)])
+    }
+    
+    static func didShowIcon(_ showing: Bool) {
+        if showing {
+            log(.showIcon)
+        } else {
+            log(.hideIcon)
+        }
     }
     
 }

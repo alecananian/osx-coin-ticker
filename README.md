@@ -14,6 +14,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - [Korbit](https://www.korbit.co.kr)
 - [Kraken](https://www.kraken.com)
 - [OKEx](https://okex.com)
+- [Paribu](https://www.paribu.com/)
 - [Poloniex](https://poloniex.com)
 
 **Supported cryptocurrencies:**
@@ -47,11 +48,14 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - Dash (DASH)
 - Decentraland (MANA)
 - Decred (DCR)
+- Dent (DENT)
 - Digibyte (DGB)
+- DigitalNote (XDN)
 - DigixDAO (DGD)
 - Dogecoin (DOGE)
 - Eidoo (EDO)
 - Einsteinium (EMC2)
+- Emercoin (EMC)
 - Enigma (ENG)
 - Eos Coin (EOS)
 - Ethereum Classic (ETC)

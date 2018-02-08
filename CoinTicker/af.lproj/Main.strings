@@ -1,0 +1,33 @@
+/* Class = "NSMenuItem"; title = "Exchange"; ObjectID = "5Er-8L-qOO"; */
+"5Er-8L-qOO.title" = "Beurs";
+
+/* Class = "NSMenuItem"; title = "Update Interval"; ObjectID = "lbB-L9-6x8"; */
+"lbB-L9-6x8.title" = "Opdateerinterval";
+
+/* Class = "NSMenuItem"; title = "Real-Time"; ObjectID = "iQK-Z7-1Fe"; */
+"iQK-Z7-1Fe.title" = "Reële tyd";
+
+/* Class = "NSMenuItem"; title = "30 seconds"; ObjectID = "Rhw-zp-0cE"; */
+"Rhw-zp-0cE.title" = "30 sekondes";
+
+/* Class = "NSMenuItem"; title = "1 minute"; ObjectID = "nHw-cI-P1y"; */
+"nHw-cI-P1y.title" = "1 minuut";
+
+/* Class = "NSMenuItem"; title = "5 minutes"; ObjectID = "UVx-hm-2HX"; */
+"UVx-hm-2HX.title" = "5 minute";
+
+/* Class = "NSMenuItem"; title = "15 minutes"; ObjectID = "zO4-RI-LsE"; */
+"zO4-RI-LsE.title" = "15 minute";
+
+/* Class = "NSMenuItem"; title = "30 minutes"; ObjectID = "iCj-ws-s49"; */
+"iCj-ws-s49.title" = "30 minute";
+
+/* Class = "NSMenu"; title = "Options"; ObjectID = "GJN-LJ-KkF"; */
+"GJN-LJ-KkF.title" = "Opsies";
+
+/* Class = "NSMenuItem"; title = "Show Icon"; ObjectID = "OiI-ij-mGF"; */
+"OiI-ij-mGF.title" = "Toon ikoon";
+
+/* Class = "NSMenuItem"; title = "Quit"; ObjectID = "aEa-aJ-8Ch"; */
+"aEa-aJ-8Ch.title" = "Afsluit";
+
