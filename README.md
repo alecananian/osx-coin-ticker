@@ -99,11 +99,13 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - Novacoin (NVC)
 - Nxt (NXT)
 - OmiseGO (OMG)
+- Particl (PART)
 - Peercoin (PPC)
 - Po.et (POE)
 - Populous (PPT)
 - Potcoin (POT)
 - Power Ledger (POWR)
+- Primecoin (XPM)
 - QASH
 - Qtum (QTUM)
 - Quantstamp (QSP)
