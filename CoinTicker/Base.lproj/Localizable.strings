@@ -19,9 +19,11 @@
 "currency.appc.title" = "APPC (AppCoins)";
 "currency.ardr.title" = "ARDR (Ardor)";
 "currency.ark.title" = "ARK (Ark)";
+"currency.atm.title" = "ATM (ATMChain)";
 "currency.bat.title" = "BAT (Basic Attention Token)";
 "currency.bch.title" = "BCH (Bitcoin Cash)";
 "currency.bcn.title" = "BCN (Bytecoin)";
+"currency.blk.title" = "BLK (BlackCoin)";
 "currency.bnb.title" = "BNB (Binance Coin)";
 "currency.bqx.title" = "BQX (Bitquence)";
 "currency.btc.title" = "BTC (Bitcoin)";
@@ -29,6 +31,7 @@
 "currency.btg.title" = "BTG (Bitcoin Gold)";
 "currency.btm.title" = "BTM (Bitmark)";
 "currency.bts.title" = "BTS (Bitshares)";
+"currency.btx.title" = "BTX (BitCore)";
 "currency.bnt.title" = "BNT (Bancor)";
 "currency.cnd.title" = "CND (Cindicator)";
 "currency.cvc.title" = "CVC (Civic)";
@@ -117,6 +120,7 @@
 "currency.xem.title" = "XEM (NewEconomyMovement)";
 "currency.xlm.title" = "XLM (Stellar Lumens)";
 "currency.xmr.title" = "XMR (Monero)";
+"currency.xrb.title" = "XRB (Nano)";
 "currency.xrp.title" = "XRP (Ripple)";
 "currency.xuc.title" = "XUC (Exchange Union)";
 "currency.xvg.title" = "XVG (Verge)";
