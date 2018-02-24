@@ -11,10 +11,15 @@
 "currency.rub.title" = "RUB (ロシアルーブル)";
 "currency.try.title" = "TRY (トルコリラ)";
 
+"currency.ada.title" = "ADA (カルダノ)";
 "currency.bch.title" = "BCH (ビットコインキャッシュ)";
 "currency.btc.title" = "BTC (ビットコイン)";
+"currency.btg.title" = "BTG (ビットコインゴールド)";
 "currency.doge.title" = "DOGE (ドージコイン)";
+"currency.etc.title" = "ETC (イーサリアムクラシック)";
 "currency.eth.title" = "ETH (イーサリアム)";
 "currency.ltc.title" = "LTC (ライトコイン)";
 "currency.nmc.title" = "NMC (ネームコイン)";
 "currency.ppc.title" = "PPC (ピアコイン)";
+"currency.xpm.title" = "XPM (プライムコイン)";
+"currency.xvg.title" = "XVG (ヴァージ)";
