@@ -35,7 +35,7 @@ enum Currency: Int, Codable {
     case act, ada, adx, aion, amp, appc, ardr, ark, atm, bat, bch, bcn, blk, bnb, bnt, bqx, btc, btcd, btg, btm, bts, btx,
         cnd, cvc, dash, dcr, dent, dgb, dgd, doge, edo, elf, emc, emc2, eng, eos, etc, eth, etp, evx, fair, fct, fun,
         game, gas, gno, gnt, gxs, hsr, icn, icx, iota, kcash, kmd, knc, link, lrc, lsk, ltc,
-        maid, mana, mco, mkr, mln, mtl, nas, nav, nebl, neo, nmc, nvc, nxt, omg, part, pay, poe, pot, powr, ppc, ppt,
+        maid, mana, mco, mkr, mln, mtl, nano, nas, nav, nebl, neo, nmc, nvc, nxt, omg, part, pay, poe, pot, powr, ppc, ppt,
         qash, qsp, qtum, rcn, rdn, rep, req, ric, rlc, salt, san, sc, sngls, snt, steem, storj, strat, sub,
         trx, usdt, ven, vtc, waves, wax, wtc, xcp, xdn, xem, xlm, xmr, xpm, xrb, xrp, xuc, xvg, xzc, zec, zrx
     
@@ -47,7 +47,7 @@ enum Currency: Int, Codable {
         act, ada, adx, aion, amp, appc, ardr, ark, atm, bat, bch, bcn, blk, bnb, bnt, bqx, btc, btcd, btg, btm, bts, btx,
         cnd, cvc, dash, dcr, dent, dgb, dgd, doge, edo, elf, emc, emc2, eng, eos, etc, eth, etp, evx, fair, fct, fun,
         game, gas, gno, gnt, gxs, hsr, icn, icx, iota, kcash, kmd, knc, link, lrc, lsk, ltc,
-        maid, mana, mco, mkr, mln, mtl, nas, nav, nebl, neo, nmc, nvc, nxt, omg, part, pay, poe, pot, powr, ppc, ppt,
+        maid, mana, mco, mkr, mln, mtl, nano, nas, nav, nebl, neo, nmc, nvc, nxt, omg, part, pay, poe, pot, powr, ppc, ppt,
         qash, qsp, qtum, rcn, rdn, rep, req, ric, rlc, salt, san, sc, sngls, snt, steem, storj, strat, sub,
         trx, usdt, ven, vtc, waves, wax, wtc, xcp, xdn, xem, xlm, xmr, xpm, xrb, xrp, xuc, xvg, xzc, zec, zrx
     ]

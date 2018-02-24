@@ -76,6 +76,7 @@
 "currency.mkr.title" = "MKR (Maker)";
 "currency.mln.title" = "MLN (Melon)";
 "currency.mtl.title" = "MTL (Metal)";
+"currency.nano.title" = "NANO (Nano)";
 "currency.nas.title" = "NAS (Nebulas)";
 "currency.nav.title" = "NAV (Nav Coin)";
 "currency.nebl.title" = "NEBL (Neblio)";
