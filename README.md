@@ -91,7 +91,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - Monaco (MCO)
 - Monero (XMR)
 - Namecoin (NMC)
-- Nano (XRB)
+- Nano (NANO / XRB)
 - Nav Coin (NAV)
 - Neblio (NEBL)
 - Nebulas (NAS)
