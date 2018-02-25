@@ -1,10 +1,10 @@
 "menu.label.loading" = "Načítání...";
 
-"currency.usd.title" = "USD (Americký dolar)";
-"currency.gbp.title" = "GBP (Britská libra)";
-"currency.cad.title" = "CAD (Kanadský dolar)";
-"currency.cny.title" = "CNY (Čínský jüan)";
-"currency.jpy.title" = "JPY (Japonský jen)";
-"currency.krw.title" = "KRW (Jihokorejský won)";
-"currency.rub.title" = "RUB (Ruský rubl)";
-"currency.try.title" = "TRY (Turecké liry)";
+"currency.usd.title" = "Americký dolar";
+"currency.gbp.title" = "Britská libra";
+"currency.cad.title" = "Kanadský dolar";
+"currency.cny.title" = "Čínský jüan";
+"currency.jpy.title" = "Japonský jen";
+"currency.krw.title" = "Jihokorejský won";
+"currency.rub.title" = "Ruský rubl";
+"currency.try.title" = "Turecké liry";

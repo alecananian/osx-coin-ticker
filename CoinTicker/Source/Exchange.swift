@@ -170,7 +170,7 @@ class Exchange {
             }
             
             // Keep pair selected if new exchange has USDT instead of USD or vice versa
-            if currencyPair.quoteCurrency == .usdt || currencyPair.quoteCurrency == .usd, let newCurrencyPair = self.availableCurrencyPairs.first(where: { $0.baseCurrency == currencyPair.baseCurrency && ($0.quoteCurrency == .usd || $0.quoteCurrency == .usdt) }) {
+            if currencyPair.quoteCurrency.code == "USDT" || currencyPair.quoteCurrency.code == "USD", let newCurrencyPair = self.availableCurrencyPairs.first(where: { $0.baseCurrency == currencyPair.baseCurrency && ($0.quoteCurrency.code == "USD" || $0.quoteCurrency.code == "USDT") }) {
                 return newCurrencyPair
             }
             
@@ -178,9 +178,9 @@ class Exchange {
         })
         
         if selectedCurrencyPairs.count == 0 {
-            let localCurrency = Currency.build(fromCode: Locale.current.currencyCode)
+            let localCurrency = Currency(code: Locale.current.currencyCode)
             if let currencyPair = self.availableCurrencyPairs.first(where: { $0.quoteCurrency == localCurrency }) ??
-                self.availableCurrencyPairs.first(where: { $0.quoteCurrency == .usd }) ??
+                self.availableCurrencyPairs.first(where: { $0.quoteCurrency.code == "USD" }) ??
                 self.availableCurrencyPairs.first {
                 selectedCurrencyPairs.append(currencyPair)
             }

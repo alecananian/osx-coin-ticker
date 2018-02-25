@@ -39,7 +39,7 @@ class ParibuExchange: Exchange {
     
     override func load() {
         super.load()
-        onLoaded(availableCurrencyPairs: [CurrencyPair(baseCurrency: .btc, quoteCurrency: .try, customCode: "BTC_TL")])
+        onLoaded(availableCurrencyPairs: [CurrencyPair(baseCurrency: "BTC", quoteCurrency: "TRY", customCode: "BTC_TL")!])
     }
     
     override internal func fetch() {

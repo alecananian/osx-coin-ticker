@@ -42,7 +42,7 @@ class BithumbExchange: Exchange {
         requestAPI(Constants.FullTickerAPIPath).then { [weak self] result -> Void in
             let availableCurrencyPairs = result.json["data"].flatMap({ data -> CurrencyPair? in
                 let productId = data.0
-                return CurrencyPair(baseCurrency: productId, quoteCurrency: Currency.krw.code, customCode: productId)
+                return CurrencyPair(baseCurrency: productId, quoteCurrency: "KRW", customCode: productId)
             })
             self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
         }.catch { error in

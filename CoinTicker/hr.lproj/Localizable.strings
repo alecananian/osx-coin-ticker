@@ -1,11 +1,11 @@
 "menu.label.loading" = "Učitavanje...";
 "menu.label.offline" = "Izvan mreže";
 
-"currency.usd.title" = "USD (Američki dolar)";
-"currency.gbp.title" = "GBP (Britanska funta)";
-"currency.cad.title" = "CAD (Kanadski dolar)";
-"currency.cny.title" = "CNY (Kineski juan)";
-"currency.jpy.title" = "JPY (Japanski jen)";
-"currency.krw.title" = "KRW (Južnokorejski von)";
-"currency.rub.title" = "RUB (Ruski rubalj)";
-"currency.try.title" = "TRY (Turska lira)";
+"currency.usd.title" = "Američki dolar";
+"currency.gbp.title" = "Britanska funta";
+"currency.cad.title" = "Kanadski dolar";
+"currency.cny.title" = "Kineski juan";
+"currency.jpy.title" = "Japanski jen";
+"currency.krw.title" = "Južnokorejski von";
+"currency.rub.title" = "Ruski rubalj";
+"currency.try.title" = "Turska lira";

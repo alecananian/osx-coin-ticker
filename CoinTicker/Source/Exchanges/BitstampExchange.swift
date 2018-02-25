@@ -57,7 +57,7 @@ class BitstampExchange: Exchange {
                     return nil
                 }
                 
-                return (currencyPair.baseCurrency.isCrypto ? currencyPair : nil)
+                return (currencyPair.baseCurrency.isPhysical ? nil : currencyPair)
             })
             self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
         }.catch { error in
@@ -78,7 +78,7 @@ class BitstampExchange: Exchange {
             socket.onConnect = { [weak self] in
                 self?.selectedCurrencyPairs.forEach({ currencyPair in
                     var channelName = "live_trades"
-                    if currencyPair.baseCurrency != .btc || currencyPair.quoteCurrency != .usd {
+                    if !currencyPair.baseCurrency.isBitcoin || currencyPair.quoteCurrency.code != "USD" {
                         channelName += "_\(currencyPair.customCode)"
                     }
                     

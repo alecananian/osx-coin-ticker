@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "XRB.png",
+      "filename" : "CTLogo_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "XRB@2x.png",
+      "filename" : "CTLogo_small@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "XRB@3x.png",
+      "filename" : "CTLogo_small@3x.png",
       "scale" : "3x"
     }
   ],

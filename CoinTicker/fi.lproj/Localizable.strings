@@ -1,11 +1,11 @@
 "menu.label.loading" = "Ladataan...";
 
-"currency.usd.title" = "USD (Yhdysvaltain dollari)";
-"currency.eur.title" = "EUR (Euro)";
-"currency.gbp.title" = "GBP (Bristolin punta)";
-"currency.cad.title" = "CAD (Kanadan dollari)";
-"currency.cny.title" = "CNY (Kiinan yuan)";
-"currency.jpy.title" = "JPY (Japanin jeni)";
-"currency.krw.title" = "KRW (Etelä-Korean won)";
-"currency.rub.title" = "RUB (Venäjän rupla)";
-"currency.try.title" = "TRY (Turkkilainen liira)";
+"currency.usd.title" = "Yhdysvaltain dollari";
+"currency.eur.title" = "Euro";
+"currency.gbp.title" = "Bristolin punta";
+"currency.cad.title" = "Kanadan dollari";
+"currency.cny.title" = "Kiinan yuan";
+"currency.jpy.title" = "Japanin jeni";
+"currency.krw.title" = "Etelä-Korean won";
+"currency.rub.title" = "Venäjän rupla";
+"currency.try.title" = "Turkkilainen liira";

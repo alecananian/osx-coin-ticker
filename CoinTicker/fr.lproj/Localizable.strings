@@ -1,11 +1,11 @@
 "menu.label.loading" = "Chargement ...";
 "menu.label.offline" = "Hors connexion";
 
-"currency.usd.title" = "USD (Dollar des États-Unis)";
-"currency.gbp.title" = "GBP (Livre britannique)";
-"currency.cad.title" = "CAD (Dollar canadien)";
-"currency.cny.title" = "CNY (Yuan chinois)";
-"currency.jpy.title" = "JPY (Yen japonais)";
-"currency.krw.title" = "KRW (Won sud-coréen)";
-"currency.rub.title" = "RUB (Rouble russe)";
-"currency.try.title" = "TRY (Livre turque)";
+"currency.usd.title" = "Dollar des États-Unis";
+"currency.gbp.title" = "Livre britannique";
+"currency.cad.title" = "Dollar canadien";
+"currency.cny.title" = "Yuan chinois";
+"currency.jpy.title" = "Yen japonais";
+"currency.krw.title" = "Won sud-coréen";
+"currency.rub.title" = "Rouble russe";
+"currency.try.title" = "Livre turque";

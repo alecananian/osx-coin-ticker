@@ -26,122 +26,94 @@
 
 import Cocoa
 
-enum Currency: Int, Codable {
+struct Currency: Codable, Hashable {
     
-    // Physical
-    case cad, cny, eur, gbp, jpy, krw, rub, `try`, usd
+    var code: String
     
-    // Crypto
-    case act, ada, adx, aion, amp, appc, ardr, ark, atm, bat, bch, bcn, blk, bnb, bnt, bqx, btc, btcd, btg, btm, bts, btx,
-        cnd, cvc, dash, dcr, dent, dgb, dgd, doge, edo, elf, emc, emc2, eng, eos, etc, eth, etp, evx, fair, fct, fun,
-        game, gas, gno, gnt, gxs, hsr, icn, icx, iota, kcash, kmd, knc, link, lrc, lsk, ltc,
-        maid, mana, mco, mkr, mln, mtl, nano, nas, nav, nebl, neo, nmc, nvc, nxt, omg, part, pay, poe, pot, powr, ppc, ppt,
-        qash, qsp, qtum, rcn, rdn, rep, req, ric, rlc, salt, san, sc, sngls, snt, steem, storj, strat, sub,
-        trx, usdt, ven, vtc, waves, wax, wtc, xcp, xdn, xem, xlm, xmr, xpm, xrb, xrp, xuc, xvg, xzc, zec, zrx
-    
-    private static let AllPhysical = [
-        cad, cny, eur, gbp, jpy, krw, rub, `try`, usd
-    ]
-    
-    private static let AllCrypto = [
-        act, ada, adx, aion, amp, appc, ardr, ark, atm, bat, bch, bcn, blk, bnb, bnt, bqx, btc, btcd, btg, btm, bts, btx,
-        cnd, cvc, dash, dcr, dent, dgb, dgd, doge, edo, elf, emc, emc2, eng, eos, etc, eth, etp, evx, fair, fct, fun,
-        game, gas, gno, gnt, gxs, hsr, icn, icx, iota, kcash, kmd, knc, link, lrc, lsk, ltc,
-        maid, mana, mco, mkr, mln, mtl, nano, nas, nav, nebl, neo, nmc, nvc, nxt, omg, part, pay, poe, pot, powr, ppc, ppt,
-        qash, qsp, qtum, rcn, rdn, rep, req, ric, rlc, salt, san, sc, sngls, snt, steem, storj, strat, sub,
-        trx, usdt, ven, vtc, waves, wax, wtc, xcp, xdn, xem, xlm, xmr, xpm, xrb, xrp, xuc, xvg, xzc, zec, zrx
-    ]
-    
-    private static let AllValues = AllCrypto + AllPhysical
-    
-    var code: String {
-        return String(describing: self).uppercased()
+    var hashValue: Int {
+        return code.hashValue
     }
     
-    var displayName: String {
-        return String.LocalizedStringWithFallback("currency.\(code.lowercased()).title", comment: "Currency Title")
-    }
-    
-    var symbol: String? {
-        switch self {
-        case .rub: return "₽"
-        case .btc, .bch: return "₿"
-        case .doge: return "Ð"
-        case .etc: return "⟠"
-        case .eth: return "Ξ"
-        case .ltc: return "Ł"
-        case .nmc: return "ℕ"
-        case .ppc: return "Ᵽ"
-        case .rep: return "Ɍ"
-        case .try: return "₺"
-        case .xmr: return "ɱ"
-        case .xrp: return "Ʀ"
-        case .zec: return "ⓩ"
-        default: return (isCrypto ? code : nil)
-        }
-    }
-    
-    var iconImage: NSImage? {
-        return (NSImage(named: NSImage.Name(rawValue: code)) ?? smallIconImage)
-    }
-    
-    var smallIconImage: NSImage? {
-        return NSImage(named: NSImage.Name(rawValue: "\(code)_small"))
-    }
-    
-    var isCrypto: Bool {
-        return Currency.AllCrypto.contains(self)
-    }
-    
-    var isBitcoin: Bool {
-        return (self == .btc)
-    }
-    
-    private var isBitcoinCash: Bool {
-        return (self == .bch)
-    }
-    
-    static func build(fromCode code: String?) -> Currency? {
-        guard var normalizedCode = code?.uppercased() else {
+    init?(code: String?) {
+        guard var normalizedCode = code?.uppercased(), normalizedCode != "123" else {
             return nil
-        }
-        
-        if let currency = AllValues.first(where: { $0.code.uppercased() == normalizedCode }) {
-            return currency
         }
         
         // Further normalization for Kraken API which prefixes X for crypto currencies and Z for physical
         if normalizedCode.count >= 4 && (normalizedCode.first == "X" || normalizedCode.first == "Z") {
             normalizedCode = String(normalizedCode.suffix(normalizedCode.count - 1))
-            if let currency = AllValues.first(where: { $0.code.uppercased() == normalizedCode }) {
-                return currency
-            }
         }
         
-        // Group certain codes
-        switch normalizedCode {
-        case "RUR": return .rub
-        case "BCC": return .bch
-        case "DSH": return .dash
-        case "IOT": return .iota
-        case "QSH": return .qash
-        case "QTM": return .qtum
-        case "XBT": return .btc
-        case "XDG": return .doge
-        default:
-            #if DEBUG
-            print("Encountered unknown currency code: \(code!)")
-            #endif
-            return nil
+        self.code = normalizedCode
+    }
+    
+    var displayName: String {
+        let displayNameKey = "currency.\(internalCode.lowercased()).title"
+        let displayName = String.LocalizedStringWithFallback(displayNameKey, comment: "Currency Title")
+        if displayName == displayNameKey {
+            print(internalCode)
+        }
+        return (displayName != displayNameKey && displayName != code ? "\(code) (\(displayName))" : code)
+    }
+    
+    var symbol: String? {
+        switch internalCode {
+        case "RUB": return "₽"
+        case "BTC", "BCH": return "₿"
+        case "DOGE": return "Ð"
+        case "ETC": return "⟠"
+        case "ETH": return "Ξ"
+        case "LTC": return "Ł"
+        case "NMC": return "ℕ"
+        case "PPC": return "Ᵽ"
+        case "REP": return "Ɍ"
+        case "TRY": return "₺"
+        case "XMR": return "ɱ"
+        case "XRP": return "Ʀ"
+        case "ZEC": return "ⓩ"
+        default: return (isPhysical ? nil : code)
         }
     }
     
-    static func build(fromLocale locale: Locale) -> Currency? {
-        guard let currencyCode = locale.currencyCode else {
-            return nil
+    // Normalize varying codes from different exchanges internally so we can equate currencies
+    private var internalCode: String {
+        switch code {
+        case "RUR": return "RUB"
+        case "BCC": return "BCH"
+        case "DSH": return "DASH"
+        case "IOT": return "IOTA"
+        case "QSH": return "QASH"
+        case "QTM": return "QTUM"
+        case "XBT": return "BTC"
+        case "XDG": return "DOGE"
+        case "XRB": return "NANO"
+        case "YYW": return "YOYO"
+        default: return code
         }
-        
-        return Currency.build(fromCode: currencyCode)
+    }
+    
+    var iconImage: NSImage? {
+        return (NSImage(named: NSImage.Name(rawValue: internalCode)) ?? smallIconImage)
+    }
+    
+    var smallIconImage: NSImage? {
+        return NSImage(named: NSImage.Name(rawValue: "\(internalCode)_small"))
+    }
+    
+    var isPhysical: Bool {
+        return [
+            "CAD", "CNY", "EUR",
+            "GBP", "JPY", "KRW",
+            "RUB", "TRY", "USD"
+        ].contains(internalCode)
+    }
+    
+    var isBitcoin: Bool {
+        return (internalCode == "BTC")
+    }
+    
+    static func ==(lhs: Currency, rhs: Currency) -> Bool {
+        return lhs.internalCode == rhs.internalCode
     }
     
     static func <(lhs: Currency, rhs: Currency) -> Bool {
@@ -151,10 +123,6 @@ enum Currency: Int, Codable {
         
         if !lhs.isBitcoin && rhs.isBitcoin {
             return false
-        }
-        
-        if lhs.isBitcoinCash && !rhs.isBitcoin && !rhs.isBitcoinCash {
-            return true
         }
         
         return lhs.code < rhs.code
