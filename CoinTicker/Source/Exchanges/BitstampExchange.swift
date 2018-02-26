@@ -37,16 +37,13 @@ class BitstampExchange: Exchange {
         static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%@/"
     }
     
-    private var socket: WebSocket?
-    
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .bitstamp, delegate: delegate)
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json.arrayValue.flatMap({ result -> CurrencyPair? in
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json.arrayValue.flatMap { result in
                 let currencyCodes = result["name"].stringValue.split(separator: "/")
                 guard currencyCodes.count == 2, let baseCurrency = currencyCodes.first, let quoteCurrency = currencyCodes.last else {
                     return nil
@@ -58,16 +55,8 @@ class BitstampExchange: Exchange {
                 }
                 
                 return (currencyPair.baseCurrency.isPhysical ? nil : currencyPair)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching Bitstamp products: \(error)")
+            }
         }
-    }
-    
-    override func stop() {
-        super.stop()
-        socket?.disconnect()
     }
     
     override internal func fetch() {

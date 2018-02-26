@@ -39,8 +39,7 @@ class KorbitExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        onLoaded(availableCurrencyPairs: [
+        setAvailableCurrencyPairs([
             CurrencyPair(baseCurrency: "BTC", quoteCurrency: "KRW", customCode: "btc_krw")!,
             CurrencyPair(baseCurrency: "BCH", quoteCurrency: "KRW", customCode: "bch_krw")!,
             CurrencyPair(baseCurrency: "ETH", quoteCurrency: "KRW", customCode: "eth_krw")!,

@@ -39,8 +39,7 @@ class CoinoneExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        onLoaded(availableCurrencyPairs: [
+        setAvailableCurrencyPairs([
             CurrencyPair(baseCurrency: "BTC", quoteCurrency: "KRW", customCode: "btc")!,
             CurrencyPair(baseCurrency: "BCH", quoteCurrency: "KRW", customCode: "bch")!,
             CurrencyPair(baseCurrency: "BTG", quoteCurrency: "KRW", customCode: "btg")!,

@@ -40,17 +40,14 @@ class BittrexExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["result"].arrayValue.flatMap({ result -> CurrencyPair? in
-                let baseCurrency = result["MarketCurrency"].string
-                let quoteCurrency = result["BaseCurrency"].string
-                let customCode = result["MarketName"].string
-                return CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-            }.catch { error in
-                print("Error fetching Bittrex products: \(error)")
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json["result"].arrayValue.flatMap { result in
+                return CurrencyPair(
+                    baseCurrency: result["MarketCurrency"].string,
+                    quoteCurrency: result["BaseCurrency"].string,
+                    customCode: result["MarketName"].string
+                )
+            }
         }
     }
     

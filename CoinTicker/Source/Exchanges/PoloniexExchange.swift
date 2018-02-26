@@ -36,32 +36,25 @@ class PoloniexExchange: Exchange {
         static let TickerChannel = 1002
     }
     
-    private var socket: WebSocket?
-    
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .poloniex, delegate: delegate)
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.TickerAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json.flatMap({ currencyJSON -> CurrencyPair? in
+        super.load(from: Constants.TickerAPIPath) {
+            $0.json.flatMap({ currencyJSON in
                 let currencyCodes = currencyJSON.0.split(separator: "_")
-                if currencyCodes.count == 2, let baseCurrency = currencyCodes.last, let quoteCurrency = currencyCodes.first {
-                    return CurrencyPair(baseCurrency: String(baseCurrency), quoteCurrency: String(quoteCurrency), customCode: currencyJSON.1["id"].stringValue)
+                guard currencyCodes.count == 2, let baseCurrency = currencyCodes.last, let quoteCurrency = currencyCodes.first else {
+                    return nil
                 }
                 
-                return nil
+                return CurrencyPair(
+                    baseCurrency: String(baseCurrency),
+                    quoteCurrency: String(quoteCurrency),
+                    customCode: currencyJSON.1["id"].stringValue
+                )
             })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching Poloniex products: \(error)")
         }
-    }
-    
-    override func stop() {
-        super.stop()
-        socket?.disconnect()
     }
     
     override internal func fetch() {

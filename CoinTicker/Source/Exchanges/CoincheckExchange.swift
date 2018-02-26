@@ -38,8 +38,9 @@ class CoincheckExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        onLoaded(availableCurrencyPairs: [CurrencyPair(baseCurrency: "BTC", quoteCurrency: "JPY")!])
+        setAvailableCurrencyPairs([
+            CurrencyPair(baseCurrency: "BTC", quoteCurrency: "JPY")!
+        ])
     }
     
     override internal func fetch() {

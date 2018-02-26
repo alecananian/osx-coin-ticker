@@ -39,19 +39,19 @@ class KrakenExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["result"].flatMap({ data -> CurrencyPair? in
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json["result"].flatMap { data in
                 let (productId, result) = data
                 guard !productId.contains(".d") else {
                     return nil
                 }
                 
-                return CurrencyPair(baseCurrency: result["base"].string, quoteCurrency: result["quote"].string, customCode: productId)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching Kraken products: \(error)")
+                return CurrencyPair(
+                    baseCurrency: result["base"].string,
+                    quoteCurrency: result["quote"].string,
+                    customCode: productId
+                )
+            }
         }
     }
     

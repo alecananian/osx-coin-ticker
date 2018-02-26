@@ -37,30 +37,20 @@ class GDAXExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.gdax.com/products/%@/ticker"
     }
     
-    private var socket: WebSocket?
-    
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .gdax, delegate: delegate)
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json.arrayValue.flatMap({ result -> CurrencyPair? in
-                let baseCurrency = result["base_currency"].string
-                let quoteCurrency = result["quote_currency"].string
-                let customCode = result["id"].string
-                return CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching GDAX products: \(error)")
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json.arrayValue.flatMap { result in
+                CurrencyPair(
+                    baseCurrency: result["base_currency"].string,
+                    quoteCurrency: result["quote_currency"].string,
+                    customCode: result["id"].string
+                )
+            }
         }
-    }
-    
-    override func stop() {
-        super.stop()
-        socket?.disconnect()
     }
     
     override internal func fetch() {

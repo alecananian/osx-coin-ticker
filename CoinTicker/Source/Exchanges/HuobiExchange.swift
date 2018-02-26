@@ -40,17 +40,16 @@ class HuobiExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["data"].arrayValue.flatMap({ result -> CurrencyPair? in
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json["data"].arrayValue.flatMap { result in
                 let baseCurrency = result["base-currency"].stringValue
                 let quoteCurrency = result["quote-currency"].stringValue
-                let customCode = "\(baseCurrency)\(quoteCurrency)"
-                return CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching Huobi products: \(error)")
+                return CurrencyPair(
+                    baseCurrency: baseCurrency,
+                    quoteCurrency: quoteCurrency,
+                    customCode: "\(baseCurrency)\(quoteCurrency)"
+                )
+            }
         }
     }
     

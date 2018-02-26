@@ -37,27 +37,20 @@ class BinanceExchange: Exchange {
         static let SingleTickerAPIPathFormat = "https://www.binance.com/api/v3/ticker/price?symbol=%@"
     }
     
-    private var socket: WebSocket?
-    
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .binance, delegate: delegate)
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["symbols"].arrayValue.flatMap({ result in
-                return CurrencyPair(baseCurrency: result["baseAsset"].string, quoteCurrency: result["quoteAsset"].string, customCode: result["symbol"].string)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching Binance products: \(error)")
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json["symbols"].arrayValue.flatMap { result in
+                CurrencyPair(
+                    baseCurrency: result["baseAsset"].string,
+                    quoteCurrency: result["quoteAsset"].string,
+                    customCode: result["symbol"].string
+                )
+            }
         }
-    }
-    
-    override func stop() {
-        super.stop()
-        socket?.disconnect()
     }
     
     override internal func fetch() {

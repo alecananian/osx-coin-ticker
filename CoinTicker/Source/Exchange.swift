@@ -26,6 +26,7 @@
 
 import Foundation
 import Cocoa
+import Starscream
 import Alamofire
 import SwiftyJSON
 import PromiseKit
@@ -95,6 +96,7 @@ class Exchange {
         return DispatchQueue(label: "cointicker.\(self.site.rawValue)-api", qos: .utility, attributes: [.concurrent])
     }()
     
+    internal var socket: WebSocket?
     internal lazy var socketResponseQueue: DispatchQueue = { [unowned self] in
         return DispatchQueue(label: "cointicker.\(self.site.rawValue)-socket")
     }()
@@ -162,7 +164,15 @@ class Exchange {
         // Override
     }
     
-    func onLoaded(availableCurrencyPairs: [CurrencyPair]) {
+    internal func load(from apiPath: String, getAvailableCurrencyPairs: @escaping (ExchangeAPIResponse) -> [CurrencyPair]) {
+        requestAPI(apiPath).then { [weak self] result in
+            self?.setAvailableCurrencyPairs(getAvailableCurrencyPairs(result))
+        }.catch { error in
+            print("Error loading exchange: \(error)")
+        }
+    }
+    
+    internal func setAvailableCurrencyPairs(_ availableCurrencyPairs: [CurrencyPair]) {
         self.availableCurrencyPairs = availableCurrencyPairs.sorted()
         selectedCurrencyPairs = selectedCurrencyPairs.flatMap({ currencyPair -> CurrencyPair? in
             if let newCurrencyPair = self.availableCurrencyPairs.first(where: { $0 == currencyPair }) {
@@ -200,16 +210,12 @@ class Exchange {
     }
     
     internal func stop() {
+        socket?.disconnect()
         requestTimer?.invalidate()
         requestTimer = nil
         Alamofire.SessionManager.default.session.getTasksWithCompletionHandler({ dataTasks, _, _ in
             dataTasks.forEach({ $0.cancel() })
         })
-    }
-    
-    func reset() {
-        stop()
-        fetch()
     }
     
     private func startRequestTimer() {
@@ -225,6 +231,11 @@ class Exchange {
     @objc private func onRequestTimerFired(_ timer: Timer) {
         requestTimer?.invalidate()
         requestTimer = nil
+        fetch()
+    }
+    
+    func reset() {
+        stop()
         fetch()
     }
     

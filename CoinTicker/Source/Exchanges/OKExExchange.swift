@@ -40,20 +40,20 @@ class OKExExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["data"].arrayValue.flatMap({ result -> CurrencyPair? in
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json["data"].arrayValue.flatMap { result in
                 let customCode = result["symbol"].stringValue
                 let symbolParts = customCode.components(separatedBy: "_")
                 guard symbolParts.count == 2 else {
                     return nil
                 }
                 
-                return CurrencyPair(baseCurrency: symbolParts.first, quoteCurrency: symbolParts.last, customCode: customCode)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching OKEx products: \(error)")
+                return CurrencyPair(
+                    baseCurrency: symbolParts.first,
+                    quoteCurrency: symbolParts.last,
+                    customCode: customCode
+                )
+            }
         }
     }
     
