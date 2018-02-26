@@ -19,9 +19,11 @@
 "currency.appc.title" = "APPC (AppCoins)";
 "currency.ardr.title" = "ARDR (Ardor)";
 "currency.ark.title" = "ARK (Ark)";
+"currency.atm.title" = "ATM (ATMChain)";
 "currency.bat.title" = "BAT (Basic Attention Token)";
 "currency.bch.title" = "BCH (Bitcoin Cash)";
 "currency.bcn.title" = "BCN (Bytecoin)";
+"currency.blk.title" = "BLK (BlackCoin)";
 "currency.bnb.title" = "BNB (Binance Coin)";
 "currency.bqx.title" = "BQX (Bitquence)";
 "currency.btc.title" = "BTC (Bitcoin)";
@@ -29,6 +31,7 @@
 "currency.btg.title" = "BTG (Bitcoin Gold)";
 "currency.btm.title" = "BTM (Bitmark)";
 "currency.bts.title" = "BTS (Bitshares)";
+"currency.btx.title" = "BTX (BitCore)";
 "currency.bnt.title" = "BNT (Bancor)";
 "currency.cnd.title" = "CND (Cindicator)";
 "currency.cvc.title" = "CVC (Civic)";
@@ -70,9 +73,10 @@
 "currency.maid.title" = "MAID (MaidSafeCoin)";
 "currency.mana.title" = "MANA (Decentraland)";
 "currency.mco.title" = "MCO (Monaco)";
-"currency.mkr.title" = "MKR ()Maker";
+"currency.mkr.title" = "MKR (Maker)";
 "currency.mln.title" = "MLN (Melon)";
 "currency.mtl.title" = "MTL (Metal)";
+"currency.nano.title" = "NANO (Nano)";
 "currency.nas.title" = "NAS (Nebulas)";
 "currency.nav.title" = "NAV (Nav Coin)";
 "currency.nebl.title" = "NEBL (Neblio)";
@@ -81,6 +85,7 @@
 "currency.nvc.title" = "NVC (Novacoin)";
 "currency.nxt.title" = "NXT (Nxt)";
 "currency.omg.title" = "OMG (OmiseGO)";
+"currency.part.title" = "PART (Particl)";
 "currency.pay.title" = "PAY (TenX)";
 "currency.poe.title" = "POE (Po.et)";
 "currency.pot.title" = "POT (PotCoin)";
@@ -117,6 +122,8 @@
 "currency.xem.title" = "XEM (NewEconomyMovement)";
 "currency.xlm.title" = "XLM (Stellar Lumens)";
 "currency.xmr.title" = "XMR (Monero)";
+"currency.xpm.title" = "XPM (Primecoin)";
+"currency.xrb.title" = "XRB (Nano)";
 "currency.xrp.title" = "XRP (Ripple)";
 "currency.xuc.title" = "XUC (Exchange Union)";
 "currency.xvg.title" = "XVG (Verge)";

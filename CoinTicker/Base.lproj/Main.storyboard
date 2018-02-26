@@ -56,6 +56,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="NPA-sP-cEF"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="Bit-Z" tag="230" id="Sdd-vl-X4d">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="iVi-Dd-Ne5"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="Coincheck" tag="235" id="Flo-pw-qiD">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
