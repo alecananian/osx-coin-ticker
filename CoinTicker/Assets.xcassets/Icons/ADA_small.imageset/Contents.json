@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ADA.png",
+      "filename" : "ADA_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ADA@2x.png",
+      "filename" : "ADA_small@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ADA@3x.png",
+      "filename" : "ADA_small@3x.png",
       "scale" : "3x"
     }
   ],

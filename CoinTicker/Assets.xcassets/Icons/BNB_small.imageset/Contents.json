@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "BNB.png",
+      "filename" : "BNB_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "BNB@2x.png",
+      "filename" : "BNB_small@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "BNB@3x.png",
+      "filename" : "BNB_small@3x.png",
       "scale" : "3x"
     }
   ],

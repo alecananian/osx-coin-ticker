@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "TRX.png",
+      "filename" : "TRX_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "TRX@2x.png",
+      "filename" : "TRX_small@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "TRX@3x.png",
+      "filename" : "TRX_small@3x.png",
       "scale" : "3x"
     }
   ],
