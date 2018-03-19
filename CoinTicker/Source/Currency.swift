@@ -50,9 +50,6 @@ struct Currency: Codable, Hashable {
     var displayName: String {
         let displayNameKey = "currency.\(internalCode.lowercased()).title"
         let displayName = String.LocalizedStringWithFallback(displayNameKey, comment: "Currency Title")
-        if displayName == displayNameKey {
-            print(internalCode)
-        }
         return (displayName != displayNameKey && displayName != code ? "\(code) (\(displayName))" : code)
     }
     

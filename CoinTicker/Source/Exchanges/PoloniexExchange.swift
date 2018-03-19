@@ -58,7 +58,7 @@ class PoloniexExchange: Exchange {
     }
     
     override internal func fetch() {
-        requestAPI(Constants.TickerAPIPath).then { [weak self] result -> Void in
+        requestAPI(Constants.TickerAPIPath).map { [weak self] result in
             if let strongSelf = self {
                 for (_, result) in result.json {
                     if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: result["id"].stringValue) {

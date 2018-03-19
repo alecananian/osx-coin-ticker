@@ -61,7 +61,7 @@ class BinanceExchange: Exchange {
             apiPath = Constants.FullTickerAPIPath
         }
         
-        requestAPI(apiPath).then { [weak self] result -> Void in
+        requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
                 let results = result.json.array ?? [result.json]
                 results.forEach({ result in

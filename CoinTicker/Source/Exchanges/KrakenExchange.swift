@@ -58,7 +58,7 @@ class KrakenExchange: Exchange {
     override internal func fetch() {
         let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
         let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
-        requestAPI(apiPath).then { [weak self] result -> Void in
+        requestAPI(apiPath).map { [weak self] result in
             for (productId, result) in result.json["result"] {
                 if let currencyPair = self?.selectedCurrencyPair(withCustomCode: productId), let price = result["c"].array?.first?.doubleValue {
                     self?.setPrice(price, for: currencyPair)

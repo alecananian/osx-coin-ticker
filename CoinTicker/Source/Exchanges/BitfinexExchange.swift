@@ -102,7 +102,7 @@ class BitfinexExchange: Exchange {
         } else {
             let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
             let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
-            requestAPI(apiPath).then { [weak self] result -> Void in
+            requestAPI(apiPath).map { [weak self] result in
                 result.json.arrayValue.forEach({ result in
                     let data = result.arrayValue
                     if data.count > 7, let currencyPair = self?.selectedCurrencyPair(withCustomCode: data.first!.stringValue) {

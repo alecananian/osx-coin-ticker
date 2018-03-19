@@ -50,7 +50,7 @@ class BithumbExchange: Exchange {
     }
     
     override internal func fetch() {
-        requestAPI(Constants.FullTickerAPIPath).then { [weak self] result -> Void in
+        requestAPI(Constants.FullTickerAPIPath).map { [weak self] result in
             result.json["data"].forEach({ data in
                 let (productId, info) = data
                 if let currencyPair = self?.selectedCurrencyPair(withCustomCode: productId) {

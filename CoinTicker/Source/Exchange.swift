@@ -165,7 +165,7 @@ class Exchange {
     }
     
     internal func load(from apiPath: String, getAvailableCurrencyPairs: @escaping (ExchangeAPIResponse) -> [CurrencyPair]) {
-        requestAPI(apiPath).then { [weak self] result in
+        requestAPI(apiPath).map { [weak self] result in
             self?.setAvailableCurrencyPairs(getAvailableCurrencyPairs(result))
         }.catch { error in
             print("Error loading exchange: \(error)")
@@ -241,14 +241,14 @@ class Exchange {
     
     // MARK: API Helpers
     internal func requestAPI(_ apiPath: String, for representedObject: Any? = nil) -> Promise<ExchangeAPIResponse> {
-        return Promise { fulfill, reject in
+        return Promise { seal in
             Alamofire.request(apiPath).response(queue: apiResponseQueue, responseSerializer: apiResponseSerializer) { response in
                 switch response.result {
                 case .success(let value):
-                    fulfill(ExchangeAPIResponse(representedObject: representedObject, json: JSON(value)))
+                    seal.fulfill(ExchangeAPIResponse(representedObject: representedObject, json: JSON(value)))
                 case .failure(let error):
                     print("Error in API request: \(apiPath) \(error)")
-                    reject(error)
+                    seal.reject(error)
                 }
             }
         }

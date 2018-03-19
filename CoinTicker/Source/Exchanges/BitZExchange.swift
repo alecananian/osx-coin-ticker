@@ -61,7 +61,7 @@ class BitZExchange: Exchange {
             apiPath = Constants.FullTickerAPIPath
         }
         
-        requestAPI(apiPath).then { [weak self] result -> Void in
+        requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
                 let data = result.json["data"]
                 if strongSelf.selectedCurrencyPairs.count == 1, let currencyPair = strongSelf.selectedCurrencyPairs.first {

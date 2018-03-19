@@ -53,10 +53,10 @@ class CoinoneExchange: Exchange {
     }
     
     override internal func fetch() {
-        when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+        _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
             return requestAPI(apiRequestPath, for: currencyPair)
-        })).then { [weak self] results -> Void in
+        })).map { [weak self] results in
             results.forEach({ result in
                 switch result {
                 case .fulfilled(let value):
@@ -69,7 +69,7 @@ class CoinoneExchange: Exchange {
             })
             
             self?.onFetchComplete()
-        }.always {}
+        }
     }
     
 }

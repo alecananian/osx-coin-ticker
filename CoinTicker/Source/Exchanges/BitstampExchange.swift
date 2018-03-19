@@ -101,10 +101,10 @@ class BitstampExchange: Exchange {
             socket.connect()
             self.socket = socket
         } else {
-            when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+            _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
                 let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
                 return requestAPI(apiRequestPath, for: currencyPair)
-            })).then { [weak self] results -> Void in
+            })).map { [weak self] results in
                 results.forEach({ result in
                     switch result {
                     case .fulfilled(let value):
@@ -117,7 +117,7 @@ class BitstampExchange: Exchange {
                 })
                 
                 self?.onFetchComplete()
-            }.always {}
+            }
         }
     }
 
