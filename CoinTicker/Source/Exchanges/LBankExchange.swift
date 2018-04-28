@@ -1,8 +1,8 @@
 //
-//  BitZExchange.swift
+//  LBankExchange.swift
 //  CoinTicker
 //
-//  Created by Alec Ananian on 2/18/18.
+//  Created by Alec Ananian on 4/28/18.
 //  Copyright © 2018 Alec Ananian.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,21 +27,25 @@
 import Foundation
 import SwiftyJSON
 
-class BitZExchange: Exchange {
+class LBankExchange: Exchange {
     
     private struct Constants {
-        static let ProductListAPIPath = "https://www.bit-z.com/api_v1/tickerall"
-        static let FullTickerAPIPath = "https://www.bit-z.com/api_v1/tickerall"
-        static let SingleTickerAPIPathFormat = "https://www.bit-z.com/api_v1/ticker?coin=%@"
+        static let ProductListAPIPath = "https://api.lbank.info/v1/currencyPairs.do"
+        static let FullTickerAPIPath = "https://api.lbank.info/v1/ticker.do?symbol=all"
+        static let SingleTickerAPIPathFormat = "https://api.lbank.info/v1/ticker.do?symbol=%@"
     }
     
     init(delegate: ExchangeDelegate? = nil) {
-        super.init(site: .bitz, delegate: delegate)
+        super.init(site: .lbank, delegate: delegate)
     }
     
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json["data"].dictionaryValue.keys.compactMap { customCode in
+            $0.json.arrayValue.compactMap { data in
+                guard let customCode = data.string else {
+                    return nil
+                }
+                
                 let customCodeParts = customCode.split(separator: "_")
                 guard let baseCurrency = customCodeParts.first, let quoteCurrency = customCodeParts.last else {
                     return nil
@@ -58,7 +62,8 @@ class BitZExchange: Exchange {
     
     override internal func fetch() {
         let apiPath: String
-        if selectedCurrencyPairs.count == 1, let currencyPair = selectedCurrencyPairs.first {
+        let isSingleTicker = (selectedCurrencyPairs.count == 1)
+        if isSingleTicker, let currencyPair = selectedCurrencyPairs.first {
             apiPath = String(format: Constants.SingleTickerAPIPathFormat, currencyPair.customCode)
         } else {
             apiPath = Constants.FullTickerAPIPath
@@ -66,23 +71,18 @@ class BitZExchange: Exchange {
         
         requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
-                let data = result.json["data"]
-                if strongSelf.selectedCurrencyPairs.count == 1, let currencyPair = strongSelf.selectedCurrencyPairs.first {
-                    strongSelf.setPrice(data["last"].doubleValue, for: currencyPair)
-                } else {
-                    data.forEach({ (customCode, info) in
-                        if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: customCode) {
-                            strongSelf.setPrice(info["last"].doubleValue, for: currencyPair)
-                        }
-                    })
-                }
+                let results = result.json.array ?? [result.json]
+                results.forEach({ result in
+                    if let currencyPair = (isSingleTicker ? strongSelf.selectedCurrencyPairs.first : strongSelf.selectedCurrencyPair(withCustomCode: result["symbol"].stringValue)) {
+                        strongSelf.setPrice(result["ticker"]["latest"].doubleValue, for: currencyPair)
+                    }
+                })
                 
                 strongSelf.onFetchComplete()
             }
         }.catch { error in
-            print("Error fetching Bit-Z ticker: \(error)")
+            print("Error fetching LBank ticker: \(error)")
         }
     }
-    
-}
 
+}

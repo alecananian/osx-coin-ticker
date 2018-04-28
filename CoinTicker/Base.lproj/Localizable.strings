@@ -14,6 +14,7 @@
 "currency.1st.title" = "FirstBlood";
 "currency.2give.title" = "2GIVE";
 "currency.aac.title" = "Acute Angle Cloud";
+"currency.abt.title" = "Arcblock";
 "currency.aby.title" = "ArtByte";
 "currency.ace.title" = "Ace";
 "currency.act.title" = "Achain";
@@ -58,6 +59,7 @@
 "currency.bnb.title" = "Binance Coin";
 "currency.bnt.title" = "Bancor";
 "currency.bnty.title" = "Bounty0x";
+"currency.bot.title" = "Bodhi";
 "currency.bqx.title" = "Bitquence";
 "currency.brd.title" = "Bread";
 "currency.brk.title" = "Breakout";
@@ -67,6 +69,7 @@
 "currency.btcd.title" = "BitcoinDark";
 "currency.btg.title" = "Bitcoin Gold";
 "currency.btm.title" = "Bitmark";
+"currency.bto.title" = "Bottos";
 "currency.bts.title" = "Bitshares";
 "currency.btx.title" = "BitCore";
 "currency.burst.title" = "Burstcoin";
@@ -86,14 +89,17 @@
 "currency.cnd.title" = "Cindicator";
 "currency.coval.title" = "Circuits of Value";
 "currency.cpc.title" = "CPChain";
+"currency.cpx.title" = "Apex";
 "currency.crb.title" = "Creditbit";
 "currency.cre.title" = "Credits";
 "currency.crw.title" = "Crown";
+"currency.cs.title" = "Credits";
 "currency.ctr.title" = "Centra";
 "currency.cure.title" = "Curecoin";
 "currency.cvc.title" = "Civic";
 "currency.dash.title" = "Dash";
 "currency.dat.title" = "Datum";
+"currency.dbc.title" = "DeepBrain Chain";
 "currency.dcr.title" = "Decred";
 "currency.dct.title" = "DECENT";
 "currency.dent.title" = "Dent";
@@ -133,6 +139,7 @@
 "currency.exp.title" = "Expanse";
 "currency.fair.title" = "FairCoin";
 "currency.fct.title" = "Factom";
+"currency.fil6.title" = "Filecoin [Futures]";
 "currency.fldc.title" = "Folding Coin";
 "currency.flo.title" = "FlorinCoin";
 "currency.ftc.title" = "Feathercoin";
@@ -195,6 +202,7 @@
 "currency.mda.title" = "Moeda Loyalty Points";
 "currency.meme.title" = "Memetic / PepeCoin";
 "currency.mer.title" = "Mercury";
+"currency.mith.title" = "Mithril";
 "currency.mkr.title" = "Maker";
 "currency.mln.title" = "Melon";
 "currency.mod.title" = "Modum";
@@ -241,8 +249,10 @@
 "currency.powr.title" = "Power Ledger";
 "currency.ppc.title" = "Peercoin";
 "currency.ppt.title" = "Populous";
+"currency.pst.title" = "Primas";
 "currency.ptc.title" = "Pesetacoin";
 "currency.ptoy.title" = "Patientory";
+"currency.put.title" = "Profile Utility Token";
 "currency.pxc.title" = "Phoenixcoin";
 "currency.pyltn.title" = "Pylon Network";
 "currency.qash.title" = "QASH";
@@ -297,6 +307,7 @@
 "currency.thc.title" = "Hempcoin";
 "currency.tix.title" = "Blocktix";
 "currency.tks.title" = "Tokes";
+"currency.tky.title" = "THEKEY";
 "currency.tnb.title" = "Time New Bank";
 "currency.tnt.title" = "Tierion";
 "currency.trig.title" = "Triggers";
@@ -353,5 +364,6 @@
 "currency.zen.title" = "ZenCash";
 "currency.zgc.title" = "ZenGold";
 "currency.zil.title" = "Zilliqa";
+"currency.zpt.title" = "Zeepin";
 "currency.zrx.title" = "0x";
 "currency.zsc.title" = "Zeusshield";

@@ -45,6 +45,7 @@ enum ExchangeSite: Int, Codable {
     case huobi = 243
     case korbit = 245
     case kraken = 250
+    case lbank = 260
     case okex = 275
     case paribu = 290
     case poloniex = 300
@@ -64,6 +65,7 @@ enum ExchangeSite: Int, Codable {
         case .huobi: return HuobiExchange(delegate: delegate)
         case .korbit: return KorbitExchange(delegate: delegate)
         case .kraken: return KrakenExchange(delegate: delegate)
+        case .lbank: return LBankExchange(delegate: delegate)
         case .okex: return OKExExchange(delegate: delegate)
         case .paribu: return ParibuExchange(delegate: delegate)
         case .poloniex: return PoloniexExchange(delegate: delegate)
