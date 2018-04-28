@@ -39,7 +39,7 @@ class BithumbExchange: Exchange {
     
     override func load() {
         super.load(from: Constants.FullTickerAPIPath) {
-            $0.json["data"].flatMap { data in
+            $0.json["data"].compactMap { data in
                 CurrencyPair(
                     baseCurrency: data.0,
                     quoteCurrency: "KRW",

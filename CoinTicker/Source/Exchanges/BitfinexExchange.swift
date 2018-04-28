@@ -42,7 +42,7 @@ class BitfinexExchange: Exchange {
     
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json.arrayValue.flatMap { result in
+            $0.json.arrayValue.compactMap { result in
                 let pairString = result.stringValue
                 guard pairString.count == 6 else {
                     return nil
@@ -100,7 +100,7 @@ class BitfinexExchange: Exchange {
             socket.connect()
             self.socket = socket
         } else {
-            let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
+            let productIds: [String] = selectedCurrencyPairs.map({ $0.customCode })
             let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
             requestAPI(apiPath).map { [weak self] result in
                 result.json.arrayValue.forEach({ result in

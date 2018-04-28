@@ -40,7 +40,7 @@ class KrakenExchange: Exchange {
     
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json["result"].flatMap { data in
+            $0.json["result"].compactMap { data in
                 let (productId, result) = data
                 guard !productId.contains(".d") else {
                     return nil
@@ -56,7 +56,7 @@ class KrakenExchange: Exchange {
     }
     
     override internal func fetch() {
-        let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
+        let productIds: [String] = selectedCurrencyPairs.map({ $0.customCode })
         let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
         requestAPI(apiPath).map { [weak self] result in
             for (productId, result) in result.json["result"] {

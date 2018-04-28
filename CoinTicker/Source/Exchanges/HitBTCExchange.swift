@@ -44,7 +44,7 @@ class HitBTCExchange: Exchange {
     
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json.arrayValue.flatMap { result in
+            $0.json.arrayValue.compactMap { result in
                 CurrencyPair(
                     baseCurrency: result["baseCurrency"].string,
                     quoteCurrency: result["quoteCurrency"].string,

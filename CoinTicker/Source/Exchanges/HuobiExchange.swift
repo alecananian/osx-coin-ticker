@@ -41,7 +41,7 @@ class HuobiExchange: Exchange {
     
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json["data"].arrayValue.flatMap { result in
+            $0.json["data"].arrayValue.compactMap { result in
                 let baseCurrency = result["base-currency"].stringValue
                 let quoteCurrency = result["quote-currency"].stringValue
                 return CurrencyPair(

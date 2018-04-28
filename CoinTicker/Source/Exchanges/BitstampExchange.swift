@@ -43,7 +43,7 @@ class BitstampExchange: Exchange {
     
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json.arrayValue.flatMap { result in
+            $0.json.arrayValue.compactMap { result in
                 let currencyCodes = result["name"].stringValue.split(separator: "/")
                 guard currencyCodes.count == 2, let baseCurrency = currencyCodes.first, let quoteCurrency = currencyCodes.last else {
                     return nil

@@ -311,7 +311,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     fileprivate func updatePrices() {
         DispatchQueue.main.async {
-            let priceStrings = self.currentExchange.selectedCurrencyPairs.flatMap { currencyPair in
+            let priceStrings = self.currentExchange.selectedCurrencyPairs.map { currencyPair -> String in
                 let price = self.currentExchange.price(for: currencyPair)
                 let priceString = self.stringForPrice(price, in: currencyPair.quoteCurrency)
                 if self.currentExchange.isSingleBaseCurrencySelected && TickerConfig.showsIcon {

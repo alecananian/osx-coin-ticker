@@ -43,7 +43,7 @@ class GDAXExchange: Exchange {
     
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json.arrayValue.flatMap { result in
+            $0.json.arrayValue.compactMap { result in
                 CurrencyPair(
                     baseCurrency: result["base_currency"].string,
                     quoteCurrency: result["quote_currency"].string,
@@ -58,7 +58,7 @@ class GDAXExchange: Exchange {
             let socket = WebSocket(url: Constants.WebSocketURL)
             socket.callbackQueue = socketResponseQueue
             
-            let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
+            let productIds: [String] = selectedCurrencyPairs.map({ $0.customCode })
             socket.onConnect = {
                 let json = JSON([
                     "type": "subscribe",

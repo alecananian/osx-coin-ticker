@@ -106,7 +106,7 @@ class Exchange {
     }
     
     var isSingleBaseCurrencySelected: Bool {
-        return (Set(selectedCurrencyPairs.flatMap({ $0.baseCurrency })).count == 1)
+        return (Set(selectedCurrencyPairs.map({ $0.baseCurrency })).count == 1)
     }
     
     // MARK: Initialization
@@ -174,7 +174,7 @@ class Exchange {
     
     internal func setAvailableCurrencyPairs(_ availableCurrencyPairs: [CurrencyPair]) {
         self.availableCurrencyPairs = availableCurrencyPairs.sorted()
-        selectedCurrencyPairs = selectedCurrencyPairs.flatMap({ currencyPair -> CurrencyPair? in
+        selectedCurrencyPairs = selectedCurrencyPairs.compactMap { currencyPair in
             if let newCurrencyPair = self.availableCurrencyPairs.first(where: { $0 == currencyPair }) {
                 return newCurrencyPair
             }
@@ -185,7 +185,7 @@ class Exchange {
             }
             
             return nil
-        })
+        }
         
         if selectedCurrencyPairs.count == 0 {
             let localCurrency = Currency(code: Locale.current.currencyCode)

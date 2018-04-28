@@ -43,7 +43,7 @@ class BinanceExchange: Exchange {
     
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json["symbols"].arrayValue.flatMap { result in
+            $0.json["symbols"].arrayValue.compactMap { result in
                 CurrencyPair(
                     baseCurrency: result["baseAsset"].string,
                     quoteCurrency: result["quoteAsset"].string,
@@ -81,7 +81,7 @@ class BinanceExchange: Exchange {
         }
         
         if isUpdatingInRealTime {
-            let currencyPairCodes: [String] = selectedCurrencyPairs.flatMap({ "\($0.customCode.lowercased())@ticker" })
+            let currencyPairCodes: [String] = selectedCurrencyPairs.map({ "\($0.customCode.lowercased())@ticker" })
             let socket = WebSocket(url: URL(string: String(format: Constants.WebSocketPathFormat, currencyPairCodes.joined(separator: "/")))!)
             
             socket.onText = { [weak self] text in

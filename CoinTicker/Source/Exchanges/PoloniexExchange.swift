@@ -42,7 +42,7 @@ class PoloniexExchange: Exchange {
     
     override func load() {
         super.load(from: Constants.TickerAPIPath) {
-            $0.json.flatMap({ currencyJSON in
+            $0.json.compactMap { currencyJSON in
                 let currencyCodes = currencyJSON.0.split(separator: "_")
                 guard currencyCodes.count == 2, let baseCurrency = currencyCodes.last, let quoteCurrency = currencyCodes.first else {
                     return nil
@@ -53,7 +53,7 @@ class PoloniexExchange: Exchange {
                     quoteCurrency: String(quoteCurrency),
                     customCode: currencyJSON.1["id"].stringValue
                 )
-            })
+            }
         }
     }
     

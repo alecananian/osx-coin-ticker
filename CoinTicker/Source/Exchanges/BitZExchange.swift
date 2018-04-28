@@ -42,7 +42,7 @@ class BitZExchange: Exchange {
     override func load() {
         super.load()
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json["data"].dictionaryValue.keys.flatMap { customCode in
+            $0.json["data"].dictionaryValue.keys.compactMap { customCode in
                 let customCodeParts = customCode.split(separator: "_")
                 guard let baseCurrency = customCodeParts.first, let quoteCurrency = customCodeParts.last else {
                     return nil

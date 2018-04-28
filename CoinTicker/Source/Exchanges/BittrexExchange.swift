@@ -41,7 +41,7 @@ class BittrexExchange: Exchange {
     
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json["result"].arrayValue.flatMap { result in
+            $0.json["result"].arrayValue.compactMap { result in
                 return CurrencyPair(
                     baseCurrency: result["MarketCurrency"].string,
                     quoteCurrency: result["BaseCurrency"].string,
