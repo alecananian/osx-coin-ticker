@@ -40,6 +40,7 @@ enum ExchangeSite: Int, Codable {
     case bitz = 230
     case coincheck = 235
     case coinone = 237
+    case gateio = 239
     case gdax = 240
     case hitbtc = 241
     case huobi = 243
@@ -60,6 +61,7 @@ enum ExchangeSite: Int, Codable {
         case .bitz: return BitZExchange(delegate: delegate)
         case .coincheck: return CoincheckExchange(delegate: delegate)
         case .coinone: return CoinoneExchange(delegate: delegate)
+        case .gateio: return GateIOExchange(delegate: delegate)
         case .gdax: return GDAXExchange(delegate: delegate)
         case .hitbtc: return HitBTCExchange(delegate: delegate)
         case .huobi: return HuobiExchange(delegate: delegate)

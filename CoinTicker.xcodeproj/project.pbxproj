@@ -28,6 +28,7 @@
 		705F48581EDE3A29009A629D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 705F48571EDE3A29009A629D /* Assets.xcassets */; };
 		705F485B1EDE3A29009A629D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705F48591EDE3A29009A629D /* Main.storyboard */; };
 		70621C562095313200A5A450 /* LBankExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70621C552095313200A5A450 /* LBankExchange.swift */; };
+		70621C582095407100A5A450 /* GateIOExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70621C572095407100A5A450 /* GateIOExchange.swift */; };
 		7096A532200C531700A5A758 /* BithumbExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7096A531200C531700A5A758 /* BithumbExchange.swift */; };
 		7096A534200D3B8700A5A758 /* OKExExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7096A533200D3B8700A5A758 /* OKExExchange.swift */; };
 		70A6C098201D5EEC0085F3B2 /* appcenter.secret in Resources */ = {isa = PBXBuildFile; fileRef = 70A6C097201D5EEC0085F3B2 /* appcenter.secret */; };
@@ -100,6 +101,7 @@
 		705F485A1EDE3A29009A629D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		705F485C1EDE3A29009A629D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		70621C552095313200A5A450 /* LBankExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LBankExchange.swift; sourceTree = "<group>"; };
+		70621C572095407100A5A450 /* GateIOExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GateIOExchange.swift; sourceTree = "<group>"; };
 		7096A531200C531700A5A758 /* BithumbExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BithumbExchange.swift; sourceTree = "<group>"; };
 		7096A533200D3B8700A5A758 /* OKExExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OKExExchange.swift; sourceTree = "<group>"; };
 		70A6C097201D5EEC0085F3B2 /* appcenter.secret */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = appcenter.secret; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				702ED12B2037C3AF00CA7ED6 /* BitZExchange.swift */,
 				70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */,
 				701CDD592002F31700A8D74C /* CoinoneExchange.swift */,
+				70621C572095407100A5A450 /* GateIOExchange.swift */,
 				703581D11EDE5477003FDF3E /* GDAXExchange.swift */,
 				70A6C0992020261E0085F3B2 /* HitBTCExchange.swift */,
 				701CDD612007146B00A8D74C /* HuobiExchange.swift */,
@@ -404,6 +407,7 @@
 				FDE0ABE8201E94E100075590 /* ParibuExchange.swift in Sources */,
 				701CDD5E2005D25300A8D74C /* PoloniexExchange.swift in Sources */,
 				70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */,
+				70621C582095407100A5A450 /* GateIOExchange.swift in Sources */,
 				700DF5E11EFF8E5700B53BDE /* KorbitExchange.swift in Sources */,
 				701CDD5C2003027D00A8D74C /* BitfinexExchange.swift in Sources */,
 				703581D61EDE580B003FDF3E /* Exchange.swift in Sources */,

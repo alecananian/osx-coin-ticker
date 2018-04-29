@@ -74,6 +74,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="Mkp-jD-qet"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="Gate.io" tag="239" id="r4W-dz-PeK">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="RPb-aZ-qZl"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="GDAX" tag="240" id="deQ-Xh-l5A">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
