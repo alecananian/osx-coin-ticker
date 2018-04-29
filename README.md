@@ -10,6 +10,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - [Bit-Z](https://bit-z.com)
 - [Coincheck](https://coincheck.com)
 - [Coinone](https://coinone.co.kr)
+- [Gate.io](https://gate.io)
 - [GDAX](https://www.gdax.com)
 - [Huobi.pro](https://www.huobi.pro)
 - [Korbit](https://www.korbit.co.kr)
@@ -138,6 +139,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - ZCoin (XZC)
 - Zcash (ZEC)
 - 0x (ZRX)
+- and more...
 
 ## Development
 After downloading or forking the repository, open `CoinTicker.xcworkspace` in Xcode 9 and run the following command in Terminal to install dependencies via [CocoaPods](https://cocoapods.org):
