@@ -109,6 +109,7 @@
 "currency.dcr.title" = "Decred";
 "currency.dct.title" = "DECENT";
 "currency.ddd.title" = "Scry.info";
+"currency.ddm.title" = "DDM Token";
 "currency.dent.title" = "Dent";
 "currency.dgb.title" = "Digibyte";
 "currency.dgd.title" = "DigixDAO";
@@ -131,6 +132,7 @@
 "currency.efl.title" = "e-Gulden";
 "currency.egc.title" = "EverGreenCoin";
 "currency.egcc.title" = "Engine Chain Coin";
+"currency.eko.title" = "EchoLink";
 "currency.ekt.title" = "EDUCare";
 "currency.elec.title" = "Electrify.Asia";
 "currency.elf.title" = "aelf";
@@ -203,6 +205,7 @@
 "currency.knc.title" = "Kyber Network";
 "currency.kore.title" = "Kore";
 "currency.lbc.title" = "LBRY Credits";
+"currency.lch.title" = "Litecoin Cash";
 "currency.lend.title" = "ETHLend";
 "currency.leo.title" = "LEOcoin";
 "currency.lgd.title" = "Legends Room";
@@ -268,6 +271,7 @@
 "currency.pst.title" = "Primas";
 "currency.ptc.title" = "Pesetacoin";
 "currency.ptoy.title" = "Patientory";
+"currency.ptr.title" = "Petro";
 "currency.put.title" = "Profile Utility Token";
 "currency.pxc.title" = "Phoenixcoin";
 "currency.pyltn.title" = "Pylon Network";
@@ -293,6 +297,7 @@
 "currency.salt.title" = "SALT";
 "currency.san.title" = "Santiment Network Token";
 "currency.sbd.title" = "Steem Dollars";
+"currency.sbtc.title" = "Super Bitcoin";
 "currency.sc.title" = "Siacoin";
 "currency.seq.title" = "Sequence";
 "currency.shift.title" = "Shift";
@@ -320,6 +325,7 @@
 "currency.swt.title" = "Swarm City";
 "currency.synx.title" = "Syndicate";
 "currency.sys.title" = "Syscoin";
+"currency.tgc.title" = "TigerCoin";
 "currency.thc.title" = "Hempcoin";
 "currency.tix.title" = "Blocktix";
 "currency.tks.title" = "Tokes";
@@ -333,12 +339,14 @@
 "currency.tusd.title" = "TrueUSD";
 "currency.tx.title" = "TransferCoin ";
 "currency.ubq.title" = "Ubiq";
+"currency.uip.title" = "UnlimitedIP";
 "currency.ukg.title" = "UnikoinGold";
 "currency.unb.title" = "UnbreakableCoin";
 "currency.unit.title" = "Universal Currency";
 "currency.usdt.title" = "Tether";
 "currency.vee.title" = "BLOCKv";
 "currency.ven.title" = "VeChain";
+"currency.vet.title" = "VeChain Thor";
 "currency.via.title" = "Viacoin";
 "currency.vib.title" = "Viberate";
 "currency.vibe.title" = "VIBE";
