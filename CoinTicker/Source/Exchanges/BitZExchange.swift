@@ -40,19 +40,19 @@ class BitZExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["data"].dictionaryValue.keys.flatMap({ customCode -> CurrencyPair? in
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json["data"].dictionaryValue.keys.compactMap { customCode in
                 let customCodeParts = customCode.split(separator: "_")
                 guard let baseCurrency = customCodeParts.first, let quoteCurrency = customCodeParts.last else {
                     return nil
                 }
                 
-                return CurrencyPair(baseCurrency: String(baseCurrency), quoteCurrency: String(quoteCurrency), customCode: customCode)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching Bit-Z products: \(error)")
+                return CurrencyPair(
+                    baseCurrency: String(baseCurrency),
+                    quoteCurrency: String(quoteCurrency),
+                    customCode: customCode
+                )
+            }
         }
     }
     
@@ -64,7 +64,7 @@ class BitZExchange: Exchange {
             apiPath = Constants.FullTickerAPIPath
         }
         
-        requestAPI(apiPath).then { [weak self] result -> Void in
+        requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
                 let data = result.json["data"]
                 if strongSelf.selectedCurrencyPairs.count == 1, let currencyPair = strongSelf.selectedCurrencyPairs.first {

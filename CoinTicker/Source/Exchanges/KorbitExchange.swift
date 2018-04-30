@@ -39,21 +39,20 @@ class KorbitExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        onLoaded(availableCurrencyPairs: [
-            CurrencyPair(baseCurrency: .btc, quoteCurrency: .krw, customCode: "btc_krw"),
-            CurrencyPair(baseCurrency: .bch, quoteCurrency: .krw, customCode: "bch_krw"),
-            CurrencyPair(baseCurrency: .eth, quoteCurrency: .krw, customCode: "eth_krw"),
-            CurrencyPair(baseCurrency: .etc, quoteCurrency: .krw, customCode: "etc_krw"),
-            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .krw, customCode: "xrp_krw")
+        setAvailableCurrencyPairs([
+            CurrencyPair(baseCurrency: "BTC", quoteCurrency: "KRW", customCode: "btc_krw")!,
+            CurrencyPair(baseCurrency: "BCH", quoteCurrency: "KRW", customCode: "bch_krw")!,
+            CurrencyPair(baseCurrency: "ETH", quoteCurrency: "KRW", customCode: "eth_krw")!,
+            CurrencyPair(baseCurrency: "ETC", quoteCurrency: "KRW", customCode: "etc_krw")!,
+            CurrencyPair(baseCurrency: "XRP", quoteCurrency: "KRW", customCode: "xrp_krw")!
         ])
     }
     
     override internal func fetch() {
-        when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+        _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
             return requestAPI(apiRequestPath, for: currencyPair)
-        })).then { [weak self] results -> Void in
+        })).map { [weak self] results in
             results.forEach({ result in
                 switch result {
                 case .fulfilled(let value):
@@ -66,7 +65,7 @@ class KorbitExchange: Exchange {
             })
             
             self?.onFetchComplete()
-        }.always {}
+        }
     }
 
 }

@@ -37,27 +37,20 @@ class BinanceExchange: Exchange {
         static let SingleTickerAPIPathFormat = "https://www.binance.com/api/v3/ticker/price?symbol=%@"
     }
     
-    private var socket: WebSocket?
-    
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .binance, delegate: delegate)
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["symbols"].arrayValue.flatMap({ result in
-                return CurrencyPair(baseCurrency: result["baseAsset"].string, quoteCurrency: result["quoteAsset"].string, customCode: result["symbol"].string)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching Binance products: \(error)")
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json["symbols"].arrayValue.compactMap { result in
+                CurrencyPair(
+                    baseCurrency: result["baseAsset"].string,
+                    quoteCurrency: result["quoteAsset"].string,
+                    customCode: result["symbol"].string
+                )
+            }
         }
-    }
-    
-    override func stop() {
-        super.stop()
-        socket?.disconnect()
     }
     
     override internal func fetch() {
@@ -68,7 +61,7 @@ class BinanceExchange: Exchange {
             apiPath = Constants.FullTickerAPIPath
         }
         
-        requestAPI(apiPath).then { [weak self] result -> Void in
+        requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
                 let results = result.json.array ?? [result.json]
                 results.forEach({ result in
@@ -88,7 +81,7 @@ class BinanceExchange: Exchange {
         }
         
         if isUpdatingInRealTime {
-            let currencyPairCodes: [String] = selectedCurrencyPairs.flatMap({ "\($0.customCode.lowercased())@ticker" })
+            let currencyPairCodes: [String] = selectedCurrencyPairs.map({ "\($0.customCode.lowercased())@ticker" })
             let socket = WebSocket(url: URL(string: String(format: Constants.WebSocketPathFormat, currencyPairCodes.joined(separator: "/")))!)
             
             socket.onText = { [weak self] text in

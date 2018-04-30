@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "NMC.png",
+      "filename" : "NMC_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "NMC@2x.png",
+      "filename" : "NMC_small@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "NMC@3x.png",
+      "filename" : "NMC_small@3x.png",
       "scale" : "3x"
     }
   ],

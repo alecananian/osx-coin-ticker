@@ -1,41 +1,45 @@
 PODS:
-  - Alamofire (4.6.0)
-  - AppCenter (1.4.0):
-    - AppCenter/Analytics (= 1.4.0)
-    - AppCenter/Crashes (= 1.4.0)
-  - AppCenter/Analytics (1.4.0):
+  - Alamofire (4.7.2)
+  - AppCenter (1.6.0):
+    - AppCenter/Analytics (= 1.6.0)
+    - AppCenter/Crashes (= 1.6.0)
+  - AppCenter/Analytics (1.6.0):
     - AppCenter/Core
-  - AppCenter/Core (1.4.0)
-  - AppCenter/Crashes (1.4.0):
+  - AppCenter/Core (1.6.0)
+  - AppCenter/Crashes (1.6.0):
     - AppCenter/Core
-  - PromiseKit (4.4.0):
-    - PromiseKit/Foundation (= 4.4.0)
-    - PromiseKit/QuartzCore (= 4.4.0)
-    - PromiseKit/UIKit (= 4.4.0)
-  - PromiseKit/CorePromise (4.4.0)
-  - PromiseKit/Foundation (4.4.0):
+  - PromiseKit (6.2.5):
+    - PromiseKit/CorePromise (= 6.2.5)
+    - PromiseKit/Foundation (= 6.2.5)
+    - PromiseKit/UIKit (= 6.2.5)
+  - PromiseKit/CorePromise (6.2.5)
+  - PromiseKit/Foundation (6.2.5):
     - PromiseKit/CorePromise
-  - PromiseKit/QuartzCore (4.4.0):
-    - PromiseKit/CorePromise
-  - PromiseKit/UIKit (4.4.0):
-    - PromiseKit/CorePromise
-  - Starscream (3.0.4)
-  - SwiftyJSON (4.0.0)
+  - Starscream (3.0.5)
+  - SwiftyJSON (4.1.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.0)
   - AppCenter
-  - PromiseKit (~> 4.4)
+  - PromiseKit (~> 6.0)
   - Starscream (~> 3.0.3)
   - SwiftyJSON (~> 4.0)
 
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - AppCenter
+    - PromiseKit
+    - Starscream
+    - SwiftyJSON
+
 SPEC CHECKSUMS:
-  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
-  AppCenter: 2f5890b60944971b8c3767269a9d693205a91fef
-  PromiseKit: ecf5fe92275d57ee77c9ede858af47a162e9b97e
-  Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
-  SwiftyJSON: 070dabdcb1beb81b247c65ffa3a79dbbfb3b48aa
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  AppCenter: 05e11ff99d3224131363abb61830172f5f28e53e
+  PromiseKit: a26828b0a8d5874960dfdb575b57a70790ec36f1
+  Starscream: faf918b2f2eff7d5dd21180646bf015a669673bd
+  SwiftyJSON: c29297daf073d2aa016295d5809cdd68045c39b3
 
-PODFILE CHECKSUM: 563efec62eb90b459eb68c25d386968e77185d88
+PODFILE CHECKSUM: c6147d42d7a0992ad2cb33a5fb2883fd4079293d
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0

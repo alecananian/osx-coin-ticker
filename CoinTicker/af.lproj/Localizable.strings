@@ -1,11 +1,11 @@
 "menu.label.loading" = "Laai tans...";
 "menu.label.offline" = "Vanlyn";
 
-"currency.usd.title" = "USD (Amerikaanse dollar)";
-"currency.gbp.title" = "GBP (Britse pond)";
-"currency.cad.title" = "CAD (Kanadese dollar)";
-"currency.cny.title" = "CNY (Chinese juan)";
-"currency.jpy.title" = "JPY (Japannese Jen)";
-"currency.krw.title" = "KRW (Suid-Koreaanse won)";
-"currency.rub.title" = "RUB (Russiese roebel)";
-"currency.try.title" = "TRY (Turkse lira)";
+"currency.usd.title" = "Amerikaanse dollar";
+"currency.gbp.title" = "Britse pond";
+"currency.cad.title" = "Kanadese dollar";
+"currency.cny.title" = "Chinese juan";
+"currency.jpy.title" = "Japannese Jen";
+"currency.krw.title" = "Suid-Koreaanse won";
+"currency.rub.title" = "Russiese roebel";
+"currency.try.title" = "Turkse lira";

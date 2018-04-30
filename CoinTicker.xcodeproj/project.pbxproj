@@ -27,6 +27,8 @@
 		705F48541EDE3A29009A629D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 705F48531EDE3A29009A629D /* AppDelegate.swift */; };
 		705F48581EDE3A29009A629D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 705F48571EDE3A29009A629D /* Assets.xcassets */; };
 		705F485B1EDE3A29009A629D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 705F48591EDE3A29009A629D /* Main.storyboard */; };
+		70621C562095313200A5A450 /* LBankExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70621C552095313200A5A450 /* LBankExchange.swift */; };
+		70621C582095407100A5A450 /* GateIOExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70621C572095407100A5A450 /* GateIOExchange.swift */; };
 		7096A532200C531700A5A758 /* BithumbExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7096A531200C531700A5A758 /* BithumbExchange.swift */; };
 		7096A534200D3B8700A5A758 /* OKExExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7096A533200D3B8700A5A758 /* OKExExchange.swift */; };
 		70A6C098201D5EEC0085F3B2 /* appcenter.secret in Resources */ = {isa = PBXBuildFile; fileRef = 70A6C097201D5EEC0085F3B2 /* appcenter.secret */; };
@@ -98,6 +100,8 @@
 		705F48571EDE3A29009A629D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		705F485A1EDE3A29009A629D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		705F485C1EDE3A29009A629D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		70621C552095313200A5A450 /* LBankExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LBankExchange.swift; sourceTree = "<group>"; };
+		70621C572095407100A5A450 /* GateIOExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GateIOExchange.swift; sourceTree = "<group>"; };
 		7096A531200C531700A5A758 /* BithumbExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BithumbExchange.swift; sourceTree = "<group>"; };
 		7096A533200D3B8700A5A758 /* OKExExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OKExExchange.swift; sourceTree = "<group>"; };
 		70A6C097201D5EEC0085F3B2 /* appcenter.secret */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = appcenter.secret; sourceTree = "<group>"; };
@@ -151,11 +155,13 @@
 				702ED12B2037C3AF00CA7ED6 /* BitZExchange.swift */,
 				70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */,
 				701CDD592002F31700A8D74C /* CoinoneExchange.swift */,
+				70621C572095407100A5A450 /* GateIOExchange.swift */,
 				703581D11EDE5477003FDF3E /* GDAXExchange.swift */,
 				70A6C0992020261E0085F3B2 /* HitBTCExchange.swift */,
 				701CDD612007146B00A8D74C /* HuobiExchange.swift */,
 				700DF5E01EFF8E5100B53BDE /* KorbitExchange.swift */,
 				70C19EA01EEA310700B668AB /* KrakenExchange.swift */,
+				70621C552095313200A5A450 /* LBankExchange.swift */,
 				7096A533200D3B8700A5A758 /* OKExExchange.swift */,
 				FDE0ABE7201E94E100075590 /* ParibuExchange.swift */,
 				701CDD5D2005D25300A8D74C /* PoloniexExchange.swift */,
@@ -246,7 +252,6 @@
 				705F484D1EDE3A29009A629D /* Frameworks */,
 				705F484E1EDE3A29009A629D /* Resources */,
 				495CA9F0A15077CA3B6B018F /* [CP] Embed Pods Frameworks */,
-				2DC0616423D299B61A0E18ED /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -264,7 +269,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Alec Ananian";
 				TargetAttributes = {
 					705F484F1EDE3A29009A629D = {
@@ -336,21 +341,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2DC0616423D299B61A0E18ED /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		495CA9F0A15077CA3B6B018F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -401,6 +391,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */,
+				70621C562095313200A5A450 /* LBankExchange.swift in Sources */,
 				703581D21EDE5477003FDF3E /* GDAXExchange.swift in Sources */,
 				701CDD622007146B00A8D74C /* HuobiExchange.swift in Sources */,
 				704462C51FC1FE5400AB2A88 /* CurrencyPair.swift in Sources */,
@@ -416,6 +407,7 @@
 				FDE0ABE8201E94E100075590 /* ParibuExchange.swift in Sources */,
 				701CDD5E2005D25300A8D74C /* PoloniexExchange.swift in Sources */,
 				70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */,
+				70621C582095407100A5A450 /* GateIOExchange.swift in Sources */,
 				700DF5E11EFF8E5700B53BDE /* KorbitExchange.swift in Sources */,
 				701CDD5C2003027D00A8D74C /* BitfinexExchange.swift in Sources */,
 				703581D61EDE580B003FDF3E /* Exchange.swift in Sources */,
@@ -509,6 +501,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -516,6 +509,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -567,6 +561,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -574,6 +569,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

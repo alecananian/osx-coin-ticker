@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "XCP.png",
+      "filename" : "XCP_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "XCP@2x.png",
+      "filename" : "XCP_small@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "XCP@3x.png",
+      "filename" : "XCP_small@3x.png",
       "scale" : "3x"
     }
   ],

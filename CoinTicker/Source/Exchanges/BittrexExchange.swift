@@ -40,25 +40,22 @@ class BittrexExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["result"].arrayValue.flatMap({ result -> CurrencyPair? in
-                let baseCurrency = result["MarketCurrency"].string
-                let quoteCurrency = result["BaseCurrency"].string
-                let customCode = result["MarketName"].string
-                return CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-            }.catch { error in
-                print("Error fetching Bittrex products: \(error)")
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json["result"].arrayValue.compactMap { result in
+                return CurrencyPair(
+                    baseCurrency: result["MarketCurrency"].string,
+                    quoteCurrency: result["BaseCurrency"].string,
+                    customCode: result["MarketName"].string
+                )
+            }
         }
     }
     
     override internal func fetch() {
-        when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+        _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
             return requestAPI(apiRequestPath, for: currencyPair)
-        })).then { [weak self] results -> Void in
+        })).map { [weak self] results in
             results.forEach({ result in
                 switch result {
                 case .fulfilled(let value):
@@ -71,7 +68,7 @@ class BittrexExchange: Exchange {
             })
             
             self?.onFetchComplete()
-        }.always {}
+        }
     }
     
 }

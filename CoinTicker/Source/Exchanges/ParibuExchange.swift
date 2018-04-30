@@ -38,13 +38,14 @@ class ParibuExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        onLoaded(availableCurrencyPairs: [CurrencyPair(baseCurrency: .btc, quoteCurrency: .try, customCode: "BTC_TL")])
+        setAvailableCurrencyPairs([
+            CurrencyPair(baseCurrency: "BTC", quoteCurrency: "TRY", customCode: "BTC_TL")!
+        ])
     }
     
     override internal func fetch() {
         let currencyPair = availableCurrencyPairs.first!
-        requestAPI(Constants.TickerAPIPath).then { [weak self] result -> Void in
+        requestAPI(Constants.TickerAPIPath).map { [weak self] result in
             self?.setPrice(result.json[currencyPair.customCode]["last"].doubleValue, for: currencyPair)
             self?.onFetchComplete()
         }.catch { error in

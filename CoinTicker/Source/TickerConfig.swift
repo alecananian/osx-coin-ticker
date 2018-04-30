@@ -25,6 +25,7 @@
 //
 
 import Foundation
+import Cocoa
 
 class TickerConfig {
     
@@ -38,6 +39,9 @@ class TickerConfig {
     struct Constants {
         static let RealTimeUpdateInterval: Int = 5
     }
+    
+    static let LogoImage = NSImage(named: NSImage.Name(rawValue: "CTLogo"))!
+    static let SmallLogoImage = NSImage(named: NSImage.Name(rawValue: "CTLogo_small"))!
     
     static var defaultExchange: Exchange {
         let exchange = defaultExchangeSite.exchange()

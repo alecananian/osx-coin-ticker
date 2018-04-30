@@ -1,14 +1,14 @@
 "menu.label.loading" = "Завантаження...";
 "menu.label.offline" = "Автономний";
 
-"currency.usd.title" = "USD (Долар США)";
-"currency.eur.title" = "EUR (Євро)";
-"currency.gbp.title" = "GBP (Британський фунт)";
-"currency.cad.title" = "CAD (Канадський долар)";
-"currency.cny.title" = "CNY (Китайський юань)";
-"currency.jpy.title" = "JPY (Японська єна)";
-"currency.krw.title" = "KRW (Південнокорейська вона)";
-"currency.rub.title" = "RUB (Російський рубль)";
-"currency.try.title" = "TRY (Турецька ліра)";
+"currency.usd.title" = "Долар США";
+"currency.eur.title" = "Євро";
+"currency.gbp.title" = "Британський фунт";
+"currency.cad.title" = "Канадський долар";
+"currency.cny.title" = "Китайський юань";
+"currency.jpy.title" = "Японська єна";
+"currency.krw.title" = "Південнокорейська вона";
+"currency.rub.title" = "Російський рубль";
+"currency.try.title" = "Турецька ліра";
 
-"currency.btc.title" = "BTC (Біткойн)";
+"currency.btc.title" = "Біткойн";

@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "GAS.png",
+      "filename" : "GAS_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "GAS@2x.png",
+      "filename" : "GAS_small@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "GAS@3x.png",
+      "filename" : "GAS_small@3x.png",
       "scale" : "3x"
     }
   ],

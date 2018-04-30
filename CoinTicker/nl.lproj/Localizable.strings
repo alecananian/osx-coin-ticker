@@ -1,10 +1,10 @@
 "menu.label.loading" = "Laden...";
 
-"currency.usd.title" = "USD (Amerikaanse dollar)";
-"currency.gbp.title" = "GBP (Britse pond)";
-"currency.cad.title" = "CAD (Canadese dollar)";
-"currency.cny.title" = "CNY (Chinese renminbi)";
-"currency.jpy.title" = "JPY (Japanse yen)";
-"currency.krw.title" = "KRW (Zuid-Koreaanse won)";
-"currency.rub.title" = "RUB (Russische roebel)";
-"currency.try.title" = "TRY (Turkse lira)";
+"currency.usd.title" = "Amerikaanse dollar";
+"currency.gbp.title" = "Britse pond";
+"currency.cad.title" = "Canadese dollar";
+"currency.cny.title" = "Chinese renminbi";
+"currency.jpy.title" = "Japanse yen";
+"currency.krw.title" = "Zuid-Koreaanse won";
+"currency.rub.title" = "Russische roebel";
+"currency.try.title" = "Turkse lira";

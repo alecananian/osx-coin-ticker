@@ -39,25 +39,24 @@ class CoinoneExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        onLoaded(availableCurrencyPairs: [
-            CurrencyPair(baseCurrency: .btc, quoteCurrency: .krw, customCode: "btc"),
-            CurrencyPair(baseCurrency: .bch, quoteCurrency: .krw, customCode: "bch"),
-            CurrencyPair(baseCurrency: .btg, quoteCurrency: .krw, customCode: "btg"),
-            CurrencyPair(baseCurrency: .eth, quoteCurrency: .krw, customCode: "eth"),
-            CurrencyPair(baseCurrency: .etc, quoteCurrency: .krw, customCode: "etc"),
-            CurrencyPair(baseCurrency: .iota, quoteCurrency: .krw, customCode: "iota"),
-            CurrencyPair(baseCurrency: .ltc, quoteCurrency: .krw, customCode: "ltc"),
-            CurrencyPair(baseCurrency: .qtum, quoteCurrency: .krw, customCode: "qtum"),
-            CurrencyPair(baseCurrency: .xrp, quoteCurrency: .krw, customCode: "xrp")
+        setAvailableCurrencyPairs([
+            CurrencyPair(baseCurrency: "BTC", quoteCurrency: "KRW", customCode: "btc")!,
+            CurrencyPair(baseCurrency: "BCH", quoteCurrency: "KRW", customCode: "bch")!,
+            CurrencyPair(baseCurrency: "BTG", quoteCurrency: "KRW", customCode: "btg")!,
+            CurrencyPair(baseCurrency: "ETH", quoteCurrency: "KRW", customCode: "eth")!,
+            CurrencyPair(baseCurrency: "ETC", quoteCurrency: "KRW", customCode: "etc")!,
+            CurrencyPair(baseCurrency: "IOTA", quoteCurrency: "KRW", customCode: "iota")!,
+            CurrencyPair(baseCurrency: "LTC", quoteCurrency: "KRW", customCode: "ltc")!,
+            CurrencyPair(baseCurrency: "QTUM", quoteCurrency: "KRW", customCode: "qtum")!,
+            CurrencyPair(baseCurrency: "XRP", quoteCurrency: "KRW", customCode: "xrp")!
         ])
     }
     
     override internal func fetch() {
-        when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+        _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
             return requestAPI(apiRequestPath, for: currencyPair)
-        })).then { [weak self] results -> Void in
+        })).map { [weak self] results in
             results.forEach({ result in
                 switch result {
                 case .fulfilled(let value):
@@ -70,7 +69,7 @@ class CoinoneExchange: Exchange {
             })
             
             self?.onFetchComplete()
-        }.always {}
+        }
     }
     
 }

@@ -1,11 +1,11 @@
 "menu.label.loading" = "Laster inn...";
 "menu.label.offline" = "Frakoblet";
 
-"currency.usd.title" = "USD (Amerikansk dollar)";
-"currency.gbp.title" = "GBP (Britisk pund)";
-"currency.cad.title" = "CAD (Canadisk dollar)";
-"currency.cny.title" = "CNY (Kinesiske yuan)";
-"currency.jpy.title" = "JPY (Japansk yen)";
-"currency.krw.title" = "KRW (Sørkoreansk won)";
-"currency.rub.title" = "RUB (Russisk rubel)";
-"currency.try.title" = "TRY (Tyrkisk lire)";
+"currency.usd.title" = "Amerikansk dollar";
+"currency.gbp.title" = "Britisk pund";
+"currency.cad.title" = "Canadisk dollar";
+"currency.cny.title" = "Kinesiske yuan";
+"currency.jpy.title" = "Japansk yen";
+"currency.krw.title" = "Sørkoreansk won";
+"currency.rub.title" = "Russisk rubel";
+"currency.try.title" = "Tyrkisk lire";
