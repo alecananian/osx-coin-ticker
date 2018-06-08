@@ -277,7 +277,7 @@
 				TargetAttributes = {
 					705F484F1EDE3A29009A629D = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = 7T4C477WWF;
+						DevelopmentTeam = JQW3SW3342;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -611,7 +611,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 7T4C477WWF;
+				DEVELOPMENT_TEAM = JQW3SW3342;
 				INFOPLIST_FILE = CoinTicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alecananian.cointicker;
@@ -631,7 +631,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 7T4C477WWF;
+				DEVELOPMENT_TEAM = JQW3SW3342;
 				INFOPLIST_FILE = CoinTicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alecananian.cointicker;
