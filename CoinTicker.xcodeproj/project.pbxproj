@@ -36,6 +36,7 @@
 		70AE284B1F25214D0082BDD2 /* TrackingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AE284A1F2520FC0082BDD2 /* TrackingUtils.swift */; };
 		70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */; };
 		70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C19EA01EEA310700B668AB /* KrakenExchange.swift */; };
+		FD1000C820CA9DF30075F86E /* BTCTurkExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1000C720CA9DF30075F86E /* BTCTurkExchange.swift */; };
 		FDE0ABE8201E94E100075590 /* ParibuExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE0ABE7201E94E100075590 /* ParibuExchange.swift */; };
 /* End PBXBuildFile section */
 
@@ -120,6 +121,7 @@
 		C4313FAA3E2256C8A5D25C1F /* Pods_CoinTicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoinTicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4CC49C8D7CCCB6A0878C5BD /* Pods-CoinTicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinTicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker.release.xcconfig"; sourceTree = "<group>"; };
 		F947BA40CD0ED03B7C2327C8 /* Pods-CoinTicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinTicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker.debug.xcconfig"; sourceTree = "<group>"; };
+		FD1000C720CA9DF30075F86E /* BTCTurkExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BTCTurkExchange.swift; sourceTree = "<group>"; };
 		FDE0ABE7201E94E100075590 /* ParibuExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParibuExchange.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -153,8 +155,8 @@
 				703581D71EDFC2EC003FDF3E /* BitstampExchange.swift */,
 				701CDD572002EA0300A8D74C /* BittrexExchange.swift */,
 				702ED12B2037C3AF00CA7ED6 /* BitZExchange.swift */,
+				FD1000C720CA9DF30075F86E /* BTCTurkExchange.swift */,
 				70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */,
-				FDE0ABE7201E94E100075590 /* ParibuExchange.swift */,
 				701CDD592002F31700A8D74C /* CoinoneExchange.swift */,
 				70621C572095407100A5A450 /* GateIOExchange.swift */,
 				703581D11EDE5477003FDF3E /* GDAXExchange.swift */,
@@ -275,7 +277,7 @@
 				TargetAttributes = {
 					705F484F1EDE3A29009A629D = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = JQW3SW3342;
+						DevelopmentTeam = 7T4C477WWF;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
@@ -416,6 +418,7 @@
 				7096A532200C531700A5A758 /* BithumbExchange.swift in Sources */,
 				70A6C09A2020261E0085F3B2 /* HitBTCExchange.swift in Sources */,
 				7096A534200D3B8700A5A758 /* OKExExchange.swift in Sources */,
+				FD1000C820CA9DF30075F86E /* BTCTurkExchange.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,7 +611,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JQW3SW3342;
+				DEVELOPMENT_TEAM = 7T4C477WWF;
 				INFOPLIST_FILE = CoinTicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alecananian.cointicker;
@@ -628,7 +631,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = JQW3SW3342;
+				DEVELOPMENT_TEAM = 7T4C477WWF;
 				INFOPLIST_FILE = CoinTicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alecananian.cointicker;
