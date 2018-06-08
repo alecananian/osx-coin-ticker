@@ -1,17 +1,17 @@
 "menu.label.loading" = "يتم الآن التحميل";
 "menu.label.offline" = "غير متصل";
 
-"currency.usd.title" = "الدولار الأمريكي (USD)";
-"currency.eur.title" = "اليورو (EUR)";
-"currency.gbp.title" = "الجنيه البريطاني (GBP)";
-"currency.cad.title" = "الدولار الكندي (CAD)";
-"currency.cny.title" = "اليوان الرينمنبي الصيني (CNY)";
-"currency.jpy.title" = "الين الياباني (JPY)";
-"currency.krw.title" = "وون كوري جنوبي (KRW)";
-"currency.rub.title" = "الروبل الروسي (RUB)";
-"currency.try.title" = "ليرة تركية (TRY)";
+"currency.usd.title" = "الدولار الأمريكي";
+"currency.eur.title" = "اليورو";
+"currency.gbp.title" = "الجنيه البريطاني";
+"currency.cad.title" = "الدولار الكندي";
+"currency.cny.title" = "اليوان الرينمنبي الصيني";
+"currency.jpy.title" = "الين الياباني";
+"currency.krw.title" = "وون كوري جنوبي";
+"currency.rub.title" = "الروبل الروسي";
+"currency.try.title" = "ليرة تركية";
 
-"currency.btc.title" = "بيتكوين (BTC)";
-"currency.ltc.title" = "لايت كوين (LTC)";
-"currency.nmc.title" = "نيم كوين (NMC)";
-"currency.ppc.title" = "بير كوين (PPC)";
+"currency.btc.title" = "بيتكوين";
+"currency.ltc.title" = "لايت كوين";
+"currency.nmc.title" = "نيم كوين";
+"currency.ppc.title" = "بير كوين";

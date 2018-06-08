@@ -36,35 +36,25 @@ class BitfinexExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.bitfinex.com/v2/tickers?symbols=%@"
     }
     
-    private var socket: WebSocket?
-    
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .bitfinex, delegate: delegate)
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json.arrayValue.flatMap({ result -> CurrencyPair? in
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json.arrayValue.compactMap { result in
                 let pairString = result.stringValue
-                if pairString.count == 6 {
-                    let baseCurrency = String(pairString.prefix(3))
-                    let quoteCurrency = String(pairString.suffix(3))
-                    let customCode = "t\(pairString.uppercased())"
-                    return CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode)
+                guard pairString.count == 6 else {
+                    return nil
                 }
                 
-                return nil
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-            }.catch { error in
-                print("Error fetching Bitfinex products: \(error)")
+                return CurrencyPair(
+                    baseCurrency: String(pairString.prefix(3)),
+                    quoteCurrency: String(pairString.suffix(3)),
+                    customCode: "t\(pairString.uppercased())"
+                )
+            }
         }
-    }
-    
-    override func stop() {
-        super.stop()
-        socket?.disconnect()
     }
     
     override internal func fetch() {
@@ -110,9 +100,9 @@ class BitfinexExchange: Exchange {
             socket.connect()
             self.socket = socket
         } else {
-            let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
+            let productIds: [String] = selectedCurrencyPairs.map({ $0.customCode })
             let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
-            requestAPI(apiPath).then { [weak self] result -> Void in
+            requestAPI(apiPath).map { [weak self] result in
                 result.json.arrayValue.forEach({ result in
                     let data = result.arrayValue
                     if data.count > 7, let currencyPair = self?.selectedCurrencyPair(withCustomCode: data.first!.stringValue) {

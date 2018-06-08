@@ -44,11 +44,7 @@ struct CurrencyPair: Comparable, Codable {
     }
     
     init?(baseCurrency: String?, quoteCurrency: String?, customCode: String? = nil) {
-        guard let baseCurrencyString = baseCurrency, let quoteCurrencyString = quoteCurrency else {
-            return nil
-        }
-        
-        guard let baseCurrency = Currency.build(fromCode: baseCurrencyString), let quoteCurrency = Currency.build(fromCode: quoteCurrencyString) else {
+        guard let baseCurrency = Currency(code: baseCurrency), let quoteCurrency = Currency(code: quoteCurrency) else {
             return nil
         }
         

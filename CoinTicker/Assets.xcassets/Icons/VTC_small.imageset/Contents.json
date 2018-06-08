@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "VTC.png",
+      "filename" : "VTC_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "VTC@2x.png",
+      "filename" : "VTC_small@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "VTC@3x.png",
+      "filename" : "VTC_small@3x.png",
       "scale" : "3x"
     }
   ],

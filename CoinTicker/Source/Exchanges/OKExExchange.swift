@@ -40,28 +40,28 @@ class OKExExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["data"].arrayValue.flatMap({ result -> CurrencyPair? in
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json["data"].arrayValue.compactMap { result in
                 let customCode = result["symbol"].stringValue
                 let symbolParts = customCode.components(separatedBy: "_")
                 guard symbolParts.count == 2 else {
                     return nil
                 }
                 
-                return CurrencyPair(baseCurrency: symbolParts.first, quoteCurrency: symbolParts.last, customCode: customCode)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching OKEx products: \(error)")
+                return CurrencyPair(
+                    baseCurrency: symbolParts.first,
+                    quoteCurrency: symbolParts.last,
+                    customCode: customCode
+                )
+            }
         }
     }
     
     override internal func fetch() {
-        when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+        _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
             return requestAPI(apiRequestPath, for: currencyPair)
-        })).then { [weak self] results -> Void in
+        })).map { [weak self] results in
             results.forEach({ result in
                 switch result {
                 case .fulfilled(let value):
@@ -74,7 +74,7 @@ class OKExExchange: Exchange {
             })
             
             self?.onFetchComplete()
-        }.always {}
+        }
     }
     
 }

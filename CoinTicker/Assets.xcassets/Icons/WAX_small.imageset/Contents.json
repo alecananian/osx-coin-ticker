@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "WAX.png",
+      "filename" : "WAX_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "WAX@2x.png",
+      "filename" : "WAX_small@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "WAX@3x.png",
+      "filename" : "WAX_small@3x.png",
       "scale" : "3x"
     }
   ],

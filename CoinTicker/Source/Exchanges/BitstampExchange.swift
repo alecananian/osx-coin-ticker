@@ -37,16 +37,13 @@ class BitstampExchange: Exchange {
         static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%@/"
     }
     
-    private var socket: WebSocket?
-    
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .bitstamp, delegate: delegate)
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json.arrayValue.flatMap({ result -> CurrencyPair? in
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json.arrayValue.compactMap { result in
                 let currencyCodes = result["name"].stringValue.split(separator: "/")
                 guard currencyCodes.count == 2, let baseCurrency = currencyCodes.first, let quoteCurrency = currencyCodes.last else {
                     return nil
@@ -57,17 +54,9 @@ class BitstampExchange: Exchange {
                     return nil
                 }
                 
-                return (currencyPair.baseCurrency.isCrypto ? currencyPair : nil)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching Bitstamp products: \(error)")
+                return (currencyPair.baseCurrency.isPhysical ? nil : currencyPair)
+            }
         }
-    }
-    
-    override func stop() {
-        super.stop()
-        socket?.disconnect()
     }
     
     override internal func fetch() {
@@ -78,7 +67,7 @@ class BitstampExchange: Exchange {
             socket.onConnect = { [weak self] in
                 self?.selectedCurrencyPairs.forEach({ currencyPair in
                     var channelName = "live_trades"
-                    if currencyPair.baseCurrency != .btc || currencyPair.quoteCurrency != .usd {
+                    if !currencyPair.baseCurrency.isBitcoin || currencyPair.quoteCurrency.code != "USD" {
                         channelName += "_\(currencyPair.customCode)"
                     }
                     
@@ -112,10 +101,10 @@ class BitstampExchange: Exchange {
             socket.connect()
             self.socket = socket
         } else {
-            when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+            _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
                 let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
                 return requestAPI(apiRequestPath, for: currencyPair)
-            })).then { [weak self] results -> Void in
+            })).map { [weak self] results in
                 results.forEach({ result in
                     switch result {
                     case .fulfilled(let value):
@@ -128,7 +117,7 @@ class BitstampExchange: Exchange {
                 })
                 
                 self?.onFetchComplete()
-            }.always {}
+            }
         }
     }
 

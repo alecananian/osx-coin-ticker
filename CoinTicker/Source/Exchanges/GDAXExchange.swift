@@ -37,30 +37,20 @@ class GDAXExchange: Exchange {
         static let TickerAPIPathFormat = "https://api.gdax.com/products/%@/ticker"
     }
     
-    private var socket: WebSocket?
-    
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .gdax, delegate: delegate)
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json.arrayValue.flatMap({ result -> CurrencyPair? in
-                let baseCurrency = result["base_currency"].string
-                let quoteCurrency = result["quote_currency"].string
-                let customCode = result["id"].string
-                return CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching GDAX products: \(error)")
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json.arrayValue.compactMap { result in
+                CurrencyPair(
+                    baseCurrency: result["base_currency"].string,
+                    quoteCurrency: result["quote_currency"].string,
+                    customCode: result["id"].string
+                )
+            }
         }
-    }
-    
-    override func stop() {
-        super.stop()
-        socket?.disconnect()
     }
     
     override internal func fetch() {
@@ -68,7 +58,7 @@ class GDAXExchange: Exchange {
             let socket = WebSocket(url: Constants.WebSocketURL)
             socket.callbackQueue = socketResponseQueue
             
-            let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
+            let productIds: [String] = selectedCurrencyPairs.map({ $0.customCode })
             socket.onConnect = {
                 let json = JSON([
                     "type": "subscribe",
@@ -94,10 +84,10 @@ class GDAXExchange: Exchange {
             socket.connect()
             self.socket = socket
         } else {
-            when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+            _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
                 let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
                 return requestAPI(apiRequestPath, for: currencyPair)
-            })).then { [weak self] results -> Void in
+            })).map { [weak self] results in
                 results.forEach({ result in
                     switch result {
                     case .fulfilled(let value):
@@ -110,7 +100,7 @@ class GDAXExchange: Exchange {
                 })
                 
                 self?.onFetchComplete()
-            }.always {}
+            }
         }
     }
 

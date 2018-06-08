@@ -112,8 +112,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func updateMenuWithOfflineText() {
         DispatchQueue.main.async {
             self.statusItem.title = NSLocalizedString("menu.label.offline", comment: "Label to display when network connection fails")
-            let image = NSImage(named: NSImage.Name(rawValue: "CTLogo"))
-            image?.isTemplate = true
+            let image = TickerConfig.LogoImage
+            image.isTemplate = true
             self.statusItem.image = image
         }
     }
@@ -198,22 +198,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private func menuItem(forQuoteCurrency quoteCurrency: Currency) -> NSMenuItem {
         let item = NSMenuItem(title: quoteCurrency.displayName, action: #selector(self.onSelectQuoteCurrency(sender:)), keyEquivalent: "")
         item.representedObject = quoteCurrency
-        if let smallIconImage = quoteCurrency.smallIconImage {
-            smallIconImage.isTemplate = quoteCurrency.isCrypto
-            item.image = smallIconImage
-        }
-        
+        let image = quoteCurrency.smallIconImage ?? TickerConfig.SmallLogoImage
+        image.isTemplate = !quoteCurrency.isPhysical
+        item.image = image
         return item
     }
     
     private func menuItem(forBaseCurrency baseCurrency: Currency) -> NSMenuItem {
         let item = NSMenuItem(title: baseCurrency.displayName, action: nil, keyEquivalent: "")
         item.representedObject = baseCurrency
-        if let smallIconImage = baseCurrency.smallIconImage {
-            smallIconImage.isTemplate = true
-            item.image = smallIconImage
-        }
-        
+        let image = baseCurrency.smallIconImage ?? TickerConfig.SmallLogoImage
+        image.isTemplate = true
+        item.image = image
         return item
     }
     
@@ -254,7 +250,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             if self.currentExchange.isSingleBaseCurrencySelected, let image = self.currentExchange.selectedCurrencyPairs.first!.baseCurrency.iconImage {
                 iconImage = image
             } else {
-                iconImage = NSImage(named: NSImage.Name(rawValue: "CTLogo"))!
+                iconImage = TickerConfig.LogoImage
             }
             
             iconImage.isTemplate = true
@@ -315,7 +311,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     fileprivate func updatePrices() {
         DispatchQueue.main.async {
-            let priceStrings = self.currentExchange.selectedCurrencyPairs.flatMap { currencyPair in
+            let priceStrings = self.currentExchange.selectedCurrencyPairs.map { currencyPair -> String in
                 let price = self.currentExchange.price(for: currencyPair)
                 let priceString = self.stringForPrice(price, in: currencyPair.quoteCurrency)
                 if self.currentExchange.isSingleBaseCurrencySelected && TickerConfig.showsIcon {

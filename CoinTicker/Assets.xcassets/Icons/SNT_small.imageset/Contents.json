@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "SNT.png",
+      "filename" : "SNT_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "SNT@2x.png",
+      "filename" : "SNT_small@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "SNT@3x.png",
+      "filename" : "SNT_small@3x.png",
       "scale" : "3x"
     }
   ],

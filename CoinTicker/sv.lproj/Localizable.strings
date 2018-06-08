@@ -1,10 +1,10 @@
 "menu.label.loading" = "Läser in...";
 
-"currency.usd.title" = "USD (USA-dollar)";
-"currency.gbp.title" = "GBP (Brittiskt pund)";
-"currency.cad.title" = "CAD (Kanadensisk dollar)";
-"currency.cny.title" = "CNY (Kinesisk yuan renminbi)";
-"currency.jpy.title" = "JPY (Japansk yen)";
-"currency.krw.title" = "KRW (Sydkoreansk won)";
-"currency.rub.title" = "RUB (Rysk rubel)";
-"currency.try.title" = "TRY (Turkiska lira)";
+"currency.usd.title" = "USA-dollar";
+"currency.gbp.title" = "Brittiskt pund";
+"currency.cad.title" = "Kanadensisk dollar";
+"currency.cny.title" = "Kinesisk yuan renminbi";
+"currency.jpy.title" = "Japansk yen";
+"currency.krw.title" = "Sydkoreansk won";
+"currency.rub.title" = "Rysk rubel";
+"currency.try.title" = "Turkiska lira";

@@ -1,10 +1,10 @@
 "menu.label.loading" = "Caricamento in corso...";
 
-"currency.usd.title" = "USD (Dollaro statunitense)";
-"currency.gbp.title" = "GBP (Sterlina britannica)";
-"currency.cad.title" = "CAD (Dollaro canadese)";
-"currency.cny.title" = "CNY (Renminbi cinese)";
-"currency.jpy.title" = "JPY (Yen giapponese)";
-"currency.krw.title" = "KRW (Won sudcoreano)";
-"currency.rub.title" = "RUB (Rublo russo)";
-"currency.try.title" = "TRY (Lira turca)";
+"currency.usd.title" = "Dollaro statunitense";
+"currency.gbp.title" = "Sterlina britannica";
+"currency.cad.title" = "Dollaro canadese";
+"currency.cny.title" = "Renminbi cinese";
+"currency.jpy.title" = "Yen giapponese";
+"currency.krw.title" = "Won sudcoreano";
+"currency.rub.title" = "Rublo russo";
+"currency.try.title" = "Lira turca";

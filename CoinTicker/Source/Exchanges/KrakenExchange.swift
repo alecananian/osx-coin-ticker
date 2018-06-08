@@ -39,26 +39,26 @@ class KrakenExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["result"].flatMap({ data -> CurrencyPair? in
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json["result"].compactMap { data in
                 let (productId, result) = data
                 guard !productId.contains(".d") else {
                     return nil
                 }
                 
-                return CurrencyPair(baseCurrency: result["base"].string, quoteCurrency: result["quote"].string, customCode: productId)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching Kraken products: \(error)")
+                return CurrencyPair(
+                    baseCurrency: result["base"].string,
+                    quoteCurrency: result["quote"].string,
+                    customCode: productId
+                )
+            }
         }
     }
     
     override internal func fetch() {
-        let productIds: [String] = selectedCurrencyPairs.flatMap({ $0.customCode })
+        let productIds: [String] = selectedCurrencyPairs.map({ $0.customCode })
         let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
-        requestAPI(apiPath).then { [weak self] result -> Void in
+        requestAPI(apiPath).map { [weak self] result in
             for (productId, result) in result.json["result"] {
                 if let currencyPair = self?.selectedCurrencyPair(withCustomCode: productId), let price = result["c"].array?.first?.doubleValue {
                     self?.setPrice(price, for: currencyPair)

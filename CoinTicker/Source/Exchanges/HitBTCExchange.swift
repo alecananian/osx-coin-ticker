@@ -38,30 +38,20 @@ class HitBTCExchange: Exchange {
         static let SingleTickerAPIPathFormat = "https://api.hitbtc.com/api/2/public/ticker/%@"
     }
     
-    private var socket: WebSocket?
-    
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .hitbtc, delegate: delegate)
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.ProductListAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json.arrayValue.flatMap({ result -> CurrencyPair? in
-                let baseCurrency = result["baseCurrency"].string
-                let quoteCurrency = result["quoteCurrency"].string
-                let customCode = result["id"].string
-                return CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching HitBTC products: \(error)")
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json.arrayValue.compactMap { result in
+                CurrencyPair(
+                    baseCurrency: result["baseCurrency"].string,
+                    quoteCurrency: result["quoteCurrency"].string,
+                    customCode: result["id"].string
+                )
+            }
         }
-    }
-    
-    override func stop() {
-        super.stop()
-        socket?.disconnect()
     }
     
     override internal func fetch() {
@@ -72,7 +62,7 @@ class HitBTCExchange: Exchange {
             apiPath = Constants.FullTickerAPIPath
         }
         
-        requestAPI(apiPath).then { [weak self] result -> Void in
+        requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
                 let results = result.json.array ?? [result.json]
                 results.forEach({ result in

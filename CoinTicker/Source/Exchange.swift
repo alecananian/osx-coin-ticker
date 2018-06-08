@@ -26,6 +26,7 @@
 
 import Foundation
 import Cocoa
+import Starscream
 import Alamofire
 import SwiftyJSON
 import PromiseKit
@@ -36,13 +37,16 @@ enum ExchangeSite: Int, Codable {
     case bithumb = 207
     case bitstamp = 210
     case bittrex = 225
+    case bitz = 230
     case coincheck = 235
     case coinone = 237
+    case gateio = 239
     case gdax = 240
     case hitbtc = 241
     case huobi = 243
     case korbit = 245
     case kraken = 250
+    case lbank = 260
     case okex = 275
     case paribu = 290
     case poloniex = 300
@@ -54,13 +58,16 @@ enum ExchangeSite: Int, Codable {
         case .bithumb: return BithumbExchange(delegate: delegate)
         case .bitstamp: return BitstampExchange(delegate: delegate)
         case .bittrex: return BittrexExchange(delegate: delegate)
+        case .bitz: return BitZExchange(delegate: delegate)
         case .coincheck: return CoincheckExchange(delegate: delegate)
         case .coinone: return CoinoneExchange(delegate: delegate)
+        case .gateio: return GateIOExchange(delegate: delegate)
         case .gdax: return GDAXExchange(delegate: delegate)
         case .hitbtc: return HitBTCExchange(delegate: delegate)
         case .huobi: return HuobiExchange(delegate: delegate)
         case .korbit: return KorbitExchange(delegate: delegate)
         case .kraken: return KrakenExchange(delegate: delegate)
+        case .lbank: return LBankExchange(delegate: delegate)
         case .okex: return OKExExchange(delegate: delegate)
         case .paribu: return ParibuExchange(delegate: delegate)
         case .poloniex: return PoloniexExchange(delegate: delegate)
@@ -93,6 +100,7 @@ class Exchange {
         return DispatchQueue(label: "cointicker.\(self.site.rawValue)-api", qos: .utility, attributes: [.concurrent])
     }()
     
+    internal var socket: WebSocket?
     internal lazy var socketResponseQueue: DispatchQueue = { [unowned self] in
         return DispatchQueue(label: "cointicker.\(self.site.rawValue)-socket")
     }()
@@ -102,7 +110,7 @@ class Exchange {
     }
     
     var isSingleBaseCurrencySelected: Bool {
-        return (Set(selectedCurrencyPairs.flatMap({ $0.baseCurrency })).count == 1)
+        return (Set(selectedCurrencyPairs.map({ $0.baseCurrency })).count == 1)
     }
     
     // MARK: Initialization
@@ -160,25 +168,33 @@ class Exchange {
         // Override
     }
     
-    func onLoaded(availableCurrencyPairs: [CurrencyPair]) {
+    internal func load(from apiPath: String, getAvailableCurrencyPairs: @escaping (ExchangeAPIResponse) -> [CurrencyPair]) {
+        requestAPI(apiPath).map { [weak self] result in
+            self?.setAvailableCurrencyPairs(getAvailableCurrencyPairs(result))
+        }.catch { error in
+            print("Error loading exchange: \(error)")
+        }
+    }
+    
+    internal func setAvailableCurrencyPairs(_ availableCurrencyPairs: [CurrencyPair]) {
         self.availableCurrencyPairs = availableCurrencyPairs.sorted()
-        selectedCurrencyPairs = selectedCurrencyPairs.flatMap({ currencyPair -> CurrencyPair? in
+        selectedCurrencyPairs = selectedCurrencyPairs.compactMap { currencyPair in
             if let newCurrencyPair = self.availableCurrencyPairs.first(where: { $0 == currencyPair }) {
                 return newCurrencyPair
             }
             
             // Keep pair selected if new exchange has USDT instead of USD or vice versa
-            if currencyPair.quoteCurrency == .usdt || currencyPair.quoteCurrency == .usd, let newCurrencyPair = self.availableCurrencyPairs.first(where: { $0.baseCurrency == currencyPair.baseCurrency && ($0.quoteCurrency == .usd || $0.quoteCurrency == .usdt) }) {
+            if currencyPair.quoteCurrency.code == "USDT" || currencyPair.quoteCurrency.code == "USD", let newCurrencyPair = self.availableCurrencyPairs.first(where: { $0.baseCurrency == currencyPair.baseCurrency && ($0.quoteCurrency.code == "USD" || $0.quoteCurrency.code == "USDT") }) {
                 return newCurrencyPair
             }
             
             return nil
-        })
+        }
         
         if selectedCurrencyPairs.count == 0 {
-            let localCurrency = Currency.build(fromCode: Locale.current.currencyCode)
+            let localCurrency = Currency(code: Locale.current.currencyCode)
             if let currencyPair = self.availableCurrencyPairs.first(where: { $0.quoteCurrency == localCurrency }) ??
-                self.availableCurrencyPairs.first(where: { $0.quoteCurrency == .usd }) ??
+                self.availableCurrencyPairs.first(where: { $0.quoteCurrency.code == "USD" }) ??
                 self.availableCurrencyPairs.first {
                 selectedCurrencyPairs.append(currencyPair)
             }
@@ -198,16 +214,12 @@ class Exchange {
     }
     
     internal func stop() {
+        socket?.disconnect()
         requestTimer?.invalidate()
         requestTimer = nil
         Alamofire.SessionManager.default.session.getTasksWithCompletionHandler({ dataTasks, _, _ in
             dataTasks.forEach({ $0.cancel() })
         })
-    }
-    
-    func reset() {
-        stop()
-        fetch()
     }
     
     private func startRequestTimer() {
@@ -226,16 +238,21 @@ class Exchange {
         fetch()
     }
     
+    func reset() {
+        stop()
+        fetch()
+    }
+    
     // MARK: API Helpers
     internal func requestAPI(_ apiPath: String, for representedObject: Any? = nil) -> Promise<ExchangeAPIResponse> {
-        return Promise { fulfill, reject in
+        return Promise { seal in
             Alamofire.request(apiPath).response(queue: apiResponseQueue, responseSerializer: apiResponseSerializer) { response in
                 switch response.result {
                 case .success(let value):
-                    fulfill(ExchangeAPIResponse(representedObject: representedObject, json: JSON(value)))
+                    seal.fulfill(ExchangeAPIResponse(representedObject: representedObject, json: JSON(value)))
                 case .failure(let error):
                     print("Error in API request: \(apiPath) \(error)")
-                    reject(error)
+                    seal.reject(error)
                 }
             }
         }

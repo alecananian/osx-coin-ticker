@@ -1,10 +1,10 @@
 "menu.label.loading" = "Indlæser...";
 
-"currency.usd.title" = "USD (Amerikanske dollar)";
-"currency.gbp.title" = "GBP (Britiske pund)";
-"currency.cad.title" = "CAD (Canadiske dollar)";
-"currency.cny.title" = "CNY (Kinesiske yuan)";
-"currency.jpy.title" = "JPY (Japanske yen)";
-"currency.krw.title" = "KRW (Sydkoreanske won)";
-"currency.rub.title" = "RUB (Russiske rubler)";
-"currency.try.title" = "TRY (Tyrkisk lira)";
+"currency.usd.title" = "Amerikanske dollar";
+"currency.gbp.title" = "Britiske pund";
+"currency.cad.title" = "Canadiske dollar";
+"currency.cny.title" = "Kinesiske yuan";
+"currency.jpy.title" = "Japanske yen";
+"currency.krw.title" = "Sydkoreanske won";
+"currency.rub.title" = "Russiske rubler";
+"currency.try.title" = "Tyrkisk lira";

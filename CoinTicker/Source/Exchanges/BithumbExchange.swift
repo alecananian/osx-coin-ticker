@@ -38,20 +38,19 @@ class BithumbExchange: Exchange {
     }
     
     override func load() {
-        super.load()
-        requestAPI(Constants.FullTickerAPIPath).then { [weak self] result -> Void in
-            let availableCurrencyPairs = result.json["data"].flatMap({ data -> CurrencyPair? in
-                let productId = data.0
-                return CurrencyPair(baseCurrency: productId, quoteCurrency: Currency.krw.code, customCode: productId)
-            })
-            self?.onLoaded(availableCurrencyPairs: availableCurrencyPairs)
-        }.catch { error in
-            print("Error fetching Bithumb products: \(error)")
+        super.load(from: Constants.FullTickerAPIPath) {
+            $0.json["data"].compactMap { data in
+                CurrencyPair(
+                    baseCurrency: data.0,
+                    quoteCurrency: "KRW",
+                    customCode: data.0
+                )
+            }
         }
     }
     
     override internal func fetch() {
-        requestAPI(Constants.FullTickerAPIPath).then { [weak self] result -> Void in
+        requestAPI(Constants.FullTickerAPIPath).map { [weak self] result in
             result.json["data"].forEach({ data in
                 let (productId, info) = data
                 if let currencyPair = self?.selectedCurrencyPair(withCustomCode: productId) {

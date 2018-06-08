@@ -1,12 +1,12 @@
 "menu.label.loading" = "Բեռնում...";
 "menu.label.offline" = "Անցանց";
 
-"currency.usd.title" = "USD (ԱՄՆ դոլար)";
-"currency.eur.title" = "EUR (Եվրո)";
-"currency.gbp.title" = "GBP (Մեծ Բրիտանիայի ֆունտ ստեռլինգ)";
-"currency.cad.title" = "CAD (Կանադական դոլար)";
-"currency.cny.title" = "CNY (Չինական յուան)";
-"currency.jpy.title" = "JPY (Ճապոնական իեն)";
-"currency.krw.title" = "KRW (Հարավ կորեական վոն)";
-"currency.rub.title" = "RUB (Ռուսական ռուբլի)";
-"currency.try.title" = "TRY (Թուրքական լիրա)";
+"currency.usd.title" = "ԱՄՆ դոլար";
+"currency.eur.title" = "Եվրո";
+"currency.gbp.title" = "Մեծ Բրիտանիայի ֆունտ ստեռլինգ";
+"currency.cad.title" = "Կանադական դոլար";
+"currency.cny.title" = "Չինական յուան";
+"currency.jpy.title" = "Ճապոնական իեն";
+"currency.krw.title" = "Հարավ կորեական վոն";
+"currency.rub.title" = "Ռուսական ռուբլի";
+"currency.try.title" = "Թուրքական լիրա";
