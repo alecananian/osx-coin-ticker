@@ -146,6 +146,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="USk-V9-VLU"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="UPbit" tag="350" id="8Kp-5g-Uop">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="gXd-Qg-YcQ"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="ZB.COM" tag="400" id="Swn-Mm-s5C">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
