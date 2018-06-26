@@ -26,6 +26,12 @@
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <menu key="submenu" title="Exchange" id="fga-XW-why" userLabel="Exchange Sub Menu">
                                 <items>
+                                    <menuItem title="Bibox" tag="100" id="mPv-Wq-TNr">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="jed-em-rnP"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="Binance" state="on" tag="200" id="QjD-IZ-7n9">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
