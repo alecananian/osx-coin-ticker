@@ -52,6 +52,7 @@ enum ExchangeSite: Int, Codable {
     case okex = 275
     case paribu = 290
     case poloniex = 300
+    case zb = 400
     
     func exchange(delegate: ExchangeDelegate? = nil) -> Exchange {
         switch self {
@@ -75,6 +76,7 @@ enum ExchangeSite: Int, Codable {
         case .okex: return OKExExchange(delegate: delegate)
         case .paribu: return ParibuExchange(delegate: delegate)
         case .poloniex: return PoloniexExchange(delegate: delegate)
+        case .zb: return ZBExchange(delegate: delegate)
         }
     }
 }
