@@ -90,11 +90,11 @@ struct Currency: Codable, Hashable {
     }
     
     var iconImage: NSImage? {
-        return (NSImage(named: NSImage.Name(rawValue: internalCode)) ?? smallIconImage)
+        return (NSImage(named: internalCode) ?? smallIconImage)
     }
     
     var smallIconImage: NSImage? {
-        return NSImage(named: NSImage.Name(rawValue: "\(internalCode)_small"))
+        return NSImage(named: "\(internalCode)_small")
     }
     
     var isPhysical: Bool {
