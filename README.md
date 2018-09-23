@@ -2,12 +2,14 @@
 CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, Ethereum, Litecoin, Ripple, Dogecoin, Dash and many other altcoins/cryptocurrencies. Set it to pull prices and all currency pairs from your favorite coin exchange and get updates at your own pace (from real-time to 30 minute intervals) in the status bar.
 
 **Available exchanges:**
+- [Bibox](https://www.bibox.com)
 - [Binance](https://www.binance.com)
 - [Bitfinex](https://www.bitfinex.com)
 - [Bithumb](https://bithumb.com)
 - [Bitstamp](https://www.bitstamp.net)
 - [Bittrex](https://bittrex.com)
 - [Bit-Z](https://bit-z.com)
+- [BTCTurk](https://btcturk.com)
 - [Coincheck](https://coincheck.com)
 - [Coinone](https://coinone.co.kr)
 - [Gate.io](https://gate.io)
@@ -15,10 +17,12 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - [Huobi.pro](https://www.huobi.pro)
 - [Korbit](https://www.korbit.co.kr)
 - [Kraken](https://www.kraken.com)
-- [LBank](https://www.lbank.info/)
+- [LBank](https://www.lbank.info)
 - [OKEx](https://okex.com)
-- [Paribu](https://www.paribu.com/)
+- [Paribu](https://www.paribu.com)
 - [Poloniex](https://poloniex.com)
+- [UPbit](https://www.upbit.com)
+- [ZB.COM](https://www.zb.com)
 
 **Supported cryptocurrencies:**
 - Bitcoin (BTC / XBT)

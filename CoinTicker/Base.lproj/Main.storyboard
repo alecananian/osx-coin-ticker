@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14109"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14113"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -26,6 +26,12 @@
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <menu key="submenu" title="Exchange" id="fga-XW-why" userLabel="Exchange Sub Menu">
                                 <items>
+                                    <menuItem title="Bibox" tag="100" id="mPv-Wq-TNr">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="jed-em-rnP"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="Binance" state="on" tag="200" id="QjD-IZ-7n9">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
@@ -60,6 +66,12 @@
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="iVi-Dd-Ne5"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="BTCTurk" tag="233" id="VUp-hv-IJn" userLabel="BTCTurk">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="Qxh-g7-o1p"/>
                                         </connections>
                                     </menuItem>
                                     <menuItem title="Coincheck" tag="235" id="Flo-pw-qiD">
@@ -132,6 +144,18 @@
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="USk-V9-VLU"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="UPbit" tag="350" id="8Kp-5g-Uop">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="gXd-Qg-YcQ"/>
+                                        </connections>
+                                    </menuItem>
+                                    <menuItem title="ZB.COM" tag="400" id="Swn-Mm-s5C">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="P4o-qa-vc2"/>
                                         </connections>
                                     </menuItem>
                                 </items>
