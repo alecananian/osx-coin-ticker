@@ -26,13 +26,9 @@
 
 import Cocoa
 
-struct Currency: Codable, Hashable {
+struct Currency: Codable {
     
     var code: String
-    
-    var hashValue: Int {
-        return code.hashValue
-    }
     
     init?(code: String?) {
         guard var normalizedCode = code?.uppercased(), normalizedCode != "123" else {
@@ -109,9 +105,17 @@ struct Currency: Codable, Hashable {
         return (internalCode == "BTC")
     }
     
-    static func ==(lhs: Currency, rhs: Currency) -> Bool {
-        return lhs.internalCode == rhs.internalCode
+}
+
+extension Currency: Hashable {
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(code)
     }
+    
+}
+
+extension Currency: Equatable {
     
     static func <(lhs: Currency, rhs: Currency) -> Bool {
         if lhs.isBitcoin && !rhs.isBitcoin {
@@ -125,5 +129,8 @@ struct Currency: Codable, Hashable {
         return lhs.code < rhs.code
     }
     
+    static func ==(lhs: Currency, rhs: Currency) -> Bool {
+        return lhs.internalCode == rhs.internalCode
+    }
+    
 }
-

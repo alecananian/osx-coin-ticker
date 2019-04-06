@@ -137,7 +137,7 @@ class Exchange {
             return
         }
         
-        if let index = selectedCurrencyPairs.index(of: currencyPair) {
+        if let index = selectedCurrencyPairs.firstIndex(of: currencyPair) {
             if selectedCurrencyPairs.count > 0 {
                 selectedCurrencyPairs.remove(at: index)
                 reset()

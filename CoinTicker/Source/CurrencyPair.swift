@@ -63,8 +63,8 @@ extension CurrencyPair: CustomStringConvertible {
 
 extension CurrencyPair: Hashable {
     
-    var hashValue: Int {
-        return String(describing: self).hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(String(describing: self))
     }
     
 }
