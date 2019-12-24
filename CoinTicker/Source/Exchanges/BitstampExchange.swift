@@ -32,7 +32,7 @@ import PromiseKit
 class BitstampExchange: Exchange {
     
     private struct Constants {
-        static let WebSocketURL = URL(string: "wss://ws.pusherapp.com/app/de504dc5763aeef9ff52?protocol=7")!
+        static let WebSocketURL = URL(string: "wss://ws.bitstamp.net")!
         static let ProductListAPIPath = "https://www.bitstamp.net/api/v2/trading-pairs-info/"
         static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%@/"
     }
@@ -66,15 +66,10 @@ class BitstampExchange: Exchange {
             
             socket.onConnect = { [weak self] in
                 self?.selectedCurrencyPairs.forEach({ currencyPair in
-                    var channelName = "live_trades"
-                    if !currencyPair.baseCurrency.isBitcoin || currencyPair.quoteCurrency.code != "USD" {
-                        channelName += "_\(currencyPair.customCode)"
-                    }
-                    
                     let json = JSON([
-                        "event": "pusher:subscribe",
+                        "event": "bts:subscribe",
                         "data": [
-                            "channel": channelName
+                            "channel": "live_trades_\(currencyPair.customCode)"
                         ]
                     ])
                     
@@ -89,9 +84,8 @@ class BitstampExchange: Exchange {
                     let result = JSON(parseJSON: text)
                     if result["event"] == "trade" {
                         let productId = result["channel"].stringValue.replacingOccurrences(of: "live_trades_", with: "")
-                        if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: (productId == "live_trades" ? "btcusd" : productId)) {
-                            let data = JSON(parseJSON: result["data"].stringValue)
-                            strongSelf.setPrice(data["price"].doubleValue, for: currencyPair)
+                        if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: productId) {
+                            strongSelf.setPrice(result["data"]["price"].doubleValue, for: currencyPair)
                             strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                         }
                     }
