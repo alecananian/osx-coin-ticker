@@ -281,7 +281,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = "Alec Ananian";
 				TargetAttributes = {
 					705F484F1EDE3A29009A629D = {
@@ -625,6 +625,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = JQW3SW3342;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = CoinTicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alecananian.cointicker;
@@ -643,6 +644,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = JQW3SW3342;
+				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = CoinTicker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alecananian.cointicker;

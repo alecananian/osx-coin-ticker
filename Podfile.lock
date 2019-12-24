@@ -1,32 +1,32 @@
 PODS:
-  - Alamofire (4.8.2)
-  - AppCenter (1.14.0):
-    - AppCenter/Analytics (= 1.14.0)
-    - AppCenter/Crashes (= 1.14.0)
-  - AppCenter/Analytics (1.14.0):
+  - Alamofire (4.9.1)
+  - AppCenter (2.5.3):
+    - AppCenter/Analytics (= 2.5.3)
+    - AppCenter/Crashes (= 2.5.3)
+  - AppCenter/Analytics (2.5.3):
     - AppCenter/Core
-  - AppCenter/Core (1.14.0)
-  - AppCenter/Crashes (1.14.0):
+  - AppCenter/Core (2.5.3)
+  - AppCenter/Crashes (2.5.3):
     - AppCenter/Core
-  - PromiseKit (6.8.3):
-    - PromiseKit/CorePromise (= 6.8.3)
-    - PromiseKit/Foundation (= 6.8.3)
-    - PromiseKit/UIKit (= 6.8.3)
-  - PromiseKit/CorePromise (6.8.3)
-  - PromiseKit/Foundation (6.8.3):
+  - PromiseKit (6.12.0):
+    - PromiseKit/CorePromise (= 6.12.0)
+    - PromiseKit/Foundation (= 6.12.0)
+    - PromiseKit/UIKit (= 6.12.0)
+  - PromiseKit/CorePromise (6.12.0)
+  - PromiseKit/Foundation (6.12.0):
     - PromiseKit/CorePromise
-  - Starscream (3.1.0)
-  - SwiftyJSON (4.3.0)
+  - Starscream (3.1.1)
+  - SwiftyJSON (5.0.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.0)
   - AppCenter
   - PromiseKit (~> 6.0)
   - Starscream (~> 3.1)
-  - SwiftyJSON (~> 4.0)
+  - SwiftyJSON (~> 5.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  trunk:
     - Alamofire
     - AppCenter
     - PromiseKit
@@ -34,12 +34,12 @@ SPEC REPOS:
     - SwiftyJSON
 
 SPEC CHECKSUMS:
-  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  AppCenter: 02c5efe08d3bbab5421ae41d5f7aa7238906b817
-  PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
-  Starscream: 08172b481e145289c4930cb567230fb55897cfa4
-  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  AppCenter: 765ff38c4d360fc5ec61b61a8be24d74cd6d4d83
+  PromiseKit: c06835ba442ce5454ce3cdde470232804a6e4ff8
+  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
+  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: aed64897fd73d51c924d471a00dc10de62de7097
+PODFILE CHECKSUM: c8e85b4e7b2d25d8ba083a51011d27baeb131a1b
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.8.4

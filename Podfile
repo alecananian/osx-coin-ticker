@@ -5,7 +5,7 @@ target 'CoinTicker' do
   
   pod 'Alamofire', '~> 4.0'
   pod 'Starscream', '~> 3.1'
-  pod 'SwiftyJSON', '~> 4.0'
+  pod 'SwiftyJSON', '~> 5.0'
   pod 'PromiseKit', '~> 6.0'
   pod 'AppCenter'
 end
