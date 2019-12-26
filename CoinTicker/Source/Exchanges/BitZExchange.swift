@@ -26,13 +26,13 @@
 
 import Foundation
 import SwiftyJSON
+import PromiseKit
 
 class BitZExchange: Exchange {
     
     private struct Constants {
-        static let ProductListAPIPath = "https://www.bit-z.com/api_v1/tickerall"
-        static let FullTickerAPIPath = "https://www.bit-z.com/api_v1/tickerall"
-        static let SingleTickerAPIPathFormat = "https://www.bit-z.com/api_v1/ticker?coin=%@"
+        static let ProductListAPIPath = "https://apiv2.bitz.com/Market/symbolList"
+        static let TickerAPIPathFormat = "https://apiv2.bitz.com/Market/ticker?symbol=%@"
     }
     
     init(delegate: ExchangeDelegate? = nil) {
@@ -47,40 +47,32 @@ class BitZExchange: Exchange {
                     return nil
                 }
                 
-                return CurrencyPair(
-                    baseCurrency: String(baseCurrency),
-                    quoteCurrency: String(quoteCurrency),
-                    customCode: customCode
-                )
+                guard let currencyPair = CurrencyPair(baseCurrency: String(baseCurrency), quoteCurrency: String(quoteCurrency), customCode: customCode) else {
+                    return nil
+                }
+                
+                return (currencyPair.baseCurrency.isPhysical ? nil : currencyPair)
             }
         }
     }
     
     override internal func fetch() {
-        let apiPath: String
-        if selectedCurrencyPairs.count == 1, let currencyPair = selectedCurrencyPairs.first {
-            apiPath = String(format: Constants.SingleTickerAPIPathFormat, currencyPair.customCode)
-        } else {
-            apiPath = Constants.FullTickerAPIPath
-        }
-        
-        requestAPI(apiPath).map { [weak self] result in
-            if let strongSelf = self {
-                let data = result.json["data"]
-                if strongSelf.selectedCurrencyPairs.count == 1, let currencyPair = strongSelf.selectedCurrencyPairs.first {
-                    strongSelf.setPrice(data["last"].doubleValue, for: currencyPair)
-                } else {
-                    data.forEach({ (customCode, info) in
-                        if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: customCode) {
-                            strongSelf.setPrice(info["last"].doubleValue, for: currencyPair)
-                        }
-                    })
+        _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+            let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
+            return requestAPI(apiRequestPath, for: currencyPair)
+        })).map { [weak self] results in
+            results.forEach({ result in
+                switch result {
+                case .fulfilled(let value):
+                    if let currencyPair = value.representedObject as? CurrencyPair {
+                        let price = value.json["data"]["now"].doubleValue
+                        self?.setPrice(price, for: currencyPair)
+                    }
+                default: break
                 }
-                
-                strongSelf.onFetchComplete()
-            }
-        }.catch { error in
-            print("Error fetching Bit-Z ticker: \(error)")
+            })
+            
+            self?.onFetchComplete()
         }
     }
     
