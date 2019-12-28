@@ -168,7 +168,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             return
         }
         
-        if let baseCurrency = menuItem.parent?.representedObject as? Currency, let quoteCurrency = menuItem.representedObject as? Currency {
+        if let baseCurrency = menuItem.parent?.representedObject as? Currency, let quoteCurrency = menuItem.representedObject as? Currency, currentExchange.selectedCurrencyPairs.count > 1 || currentExchange.selectedCurrencyPairs.first != CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency) {
             // Reset exchange fetching
             currentExchange.toggleCurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency)
             
