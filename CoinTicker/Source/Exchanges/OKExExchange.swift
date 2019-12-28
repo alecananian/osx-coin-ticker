@@ -31,8 +31,8 @@ import PromiseKit
 class OKExExchange: Exchange {
     
     private struct Constants {
-        static let ProductListAPIPath = "https://www.okex.com/v2/markets/products"
-        static let TickerAPIPathFormat = "https://www.okex.com/v2/markets/%@/ticker"
+        static let ProductListAPIPath = "https://www.okex.com/api/spot/v3/instruments"
+        static let TickerAPIPathFormat = "https://www.okex.com/api/spot/v3/instruments/%@/ticker"
     }
     
     init(delegate: ExchangeDelegate? = nil) {
@@ -41,17 +41,11 @@ class OKExExchange: Exchange {
     
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json["data"].arrayValue.compactMap { result in
-                let customCode = result["symbol"].stringValue
-                let symbolParts = customCode.components(separatedBy: "_")
-                guard symbolParts.count == 2 else {
-                    return nil
-                }
-                
+            $0.json.arrayValue.compactMap { result in
                 return CurrencyPair(
-                    baseCurrency: symbolParts.first,
-                    quoteCurrency: symbolParts.last,
-                    customCode: customCode
+                    baseCurrency: result["base_currency"].stringValue,
+                    quoteCurrency: result["quote_currency"].stringValue,
+                    customCode: result["instrument_id"].stringValue
                 )
             }
         }
@@ -66,7 +60,7 @@ class OKExExchange: Exchange {
                 switch result {
                 case .fulfilled(let value):
                     if let currencyPair = value.representedObject as? CurrencyPair {
-                        let price = value.json["data"]["last"].doubleValue
+                        let price = value.json["last"].doubleValue
                         self?.setPrice(price, for: currencyPair)
                     }
                 default: break
