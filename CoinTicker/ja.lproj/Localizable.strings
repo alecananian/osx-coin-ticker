@@ -8,11 +8,14 @@
 "currency.cny.title" = "中国人民元";
 "currency.jpy.title" = "日本円";
 "currency.krw.title" = "大韓民国ウォン";
+"currency.ngn.title" = "ナイジェリアナイラ";
 "currency.rub.title" = "ロシアルーブル";
 "currency.try.title" = "トルコリラ";
 
 "currency.ada.title" = "カルダノ";
+"currency.bcd.title" = "ビットコインダイヤモンド";
 "currency.bch.title" = "ビットコインキャッシュ";
+"currency.bcn.title" = "バイトコイン";
 "currency.btc.title" = "ビットコイン";
 "currency.btg.title" = "ビットコインゴールド";
 "currency.doge.title" = "ドージコイン";

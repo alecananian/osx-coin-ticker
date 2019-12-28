@@ -51,16 +51,18 @@ struct Currency: Codable {
     
     var symbol: String? {
         switch internalCode {
-        case "RUB": return "₽"
         case "BTC", "BCH": return "₿"
         case "DOGE": return "Ð"
         case "ETC": return "⟠"
         case "ETH": return "Ξ"
         case "LTC": return "Ł"
+        case "NGN": return "₦"
         case "NMC": return "ℕ"
         case "PPC": return "Ᵽ"
         case "REP": return "Ɍ"
+        case "RUB": return "₽"
         case "TRY": return "₺"
+        case "USDS": return "USDⓈ"
         case "XMR": return "ɱ"
         case "XRP": return "Ʀ"
         case "ZEC": return "ⓩ"
@@ -95,9 +97,16 @@ struct Currency: Codable {
     
     var isPhysical: Bool {
         return [
-            "CAD", "CNY", "EUR",
-            "GBP", "JPY", "KRW",
-            "RUB", "TRY", "USD"
+            "CAD",
+            "CNY",
+            "EUR",
+            "GBP",
+            "JPY",
+            "KRW",
+            "NGN",
+            "RUB",
+            "TRY",
+            "USD",
         ].contains(internalCode)
     }
     

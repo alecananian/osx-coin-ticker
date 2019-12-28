@@ -32,7 +32,7 @@ class BinanceExchange: Exchange {
     
     private struct Constants {
         static let WebSocketPathFormat = "wss://stream.binance.com:9443/stream?streams=%@"
-        static let ProductListAPIPath = "https://www.binance.com/api/v1/exchangeInfo"
+        static let ProductListAPIPath = "https://www.binance.com/api/v3/exchangeInfo"
         static let FullTickerAPIPath = "https://www.binance.com/api/v3/ticker/price"
         static let SingleTickerAPIPathFormat = "https://www.binance.com/api/v3/ticker/price?symbol=%@"
     }

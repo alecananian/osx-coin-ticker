@@ -8,15 +8,26 @@
 "currency.cny.title" = "중국 위안";
 "currency.jpy.title" = "일본 엔";
 "currency.krw.title" = "대한민국 원";
+"currency.ngn.title" = "나이지리아 나이라";
 "currency.rub.title" = "러시아 루블";
 "currency.try.title" = "터키 리라";
 
+"currency.aur.title" = "오로라코인";
+"currency.bcn.title" = "바이트코인";
+"currency.blk.title" = "블랙코인";
 "currency.btc.title" = "비트코인 캐시";
 "currency.btc.title" = "비트코인";
+"currency.burst.title" = "버스트코인";
+"currency.dash.title" = "대시";
 "currency.doge.title" = "도지코인";
 "currency.etc.title" = "이더리움 클래식";
 "currency.eth.title" = "이더리움";
+"currency.grc.title" = "그리드코인";
 "currency.ltc.title" = "라이트코인";
 "currency.nmc.title" = "네임코인";
 "currency.ppc.title" = "피어코인";
+"currency.xcp.title" = "카운터파티";
+"currency.xlm.title" = "스텔라";
+"currency.xmr.title" = "모네로";
+"currency.xpm.title" = "프라임코인";
 "currency.xrp.title" = "리플";
