@@ -1,12 +1,16 @@
 "menu.label.loading" = "Chargement ...";
 "menu.label.offline" = "Hors connexion";
 
-"currency.usd.title" = "Dollar des États-Unis";
-"currency.gbp.title" = "Livre britannique";
+"currency.aud.title" = "Dollar australien";
+"currency.brl.title" = "Réal brésilien";
 "currency.cad.title" = "Dollar canadien";
 "currency.cny.title" = "Yuan chinois";
+"currency.gbp.title" = "Livre britannique";
 "currency.jpy.title" = "Yen japonais";
 "currency.krw.title" = "Won sud-coréen";
 "currency.ngn.title" = "Naira nigérian";
 "currency.rub.title" = "Rouble russe";
 "currency.try.title" = "Livre turque";
+"currency.uah.title" = "Hryvnia ukrainienne";
+"currency.usd.title" = "Dollar américain";
+"currency.zar.title" = "Rand sud-africain";

@@ -1,16 +1,20 @@
 "menu.label.loading" = "Loading...";
 "menu.label.offline" = "Offline";
 
-"currency.usd.title" = "US Dollar";
-"currency.eur.title" = "Euro";
-"currency.gbp.title" = "British Pound";
+"currency.aud.title" = "Australian Dollar";
+"currency.brl.title" = "Brazilian Real";
 "currency.cad.title" = "Canadian Dollar";
 "currency.cny.title" = "Chinese Yuan";
+"currency.eur.title" = "Euro";
+"currency.gbp.title" = "British Pound";
 "currency.jpy.title" = "Japanese Yen";
 "currency.krw.title" = "South Korean Won";
 "currency.ngn.title" = "Nigerian Naira";
 "currency.rub.title" = "Russian Ruble";
 "currency.try.title" = "Turkish Lira";
+"currency.uah.title" = "Ukrainian Hryvnia";
+"currency.usd.title" = "US Dollar";
+"currency.zar.title" = "South African Rand";
 
 "currency.1st.title" = "FirstBlood";
 "currency.2give.title" = "2GIVE";
@@ -65,6 +69,7 @@
 "currency.bela.title" = "Bela";
 "currency.bft.title" = "BnkToTheFuture";
 "currency.bgbp.title" = "Binance GBP Stable Coin";
+"currency.bidr.title" = "Binance IDR Stable Coin";
 "currency.bifi.title" = "BitcoinFile";
 "currency.bitb.title" = "Bean Cash";
 "currency.bitcny.title" = "bitCNY";
@@ -74,6 +79,7 @@
 "currency.block.title" = "Blocknet";
 "currency.blt.title" = "Bloom";
 "currency.blz.title" = "Bluzelle";
+"currency.bkrw.title" = "Binance KRW Stable Coin";
 "currency.bnb.title" = "Binance Coin";
 "currency.bnt.title" = "Bancor";
 "currency.bnty.title" = "Bounty0x";
@@ -231,6 +237,7 @@
 "currency.hwc.title" = "HollyWoodCoin";
 "currency.icn.title" = "Iconomi";
 "currency.icx.title" = "ICON";
+"currency.idrt.title" = "Rupiah Token";
 "currency.ignis.title" = "Ignis";
 "currency.incnt.title" = "Incent";
 "currency.infx.title" = "Influxcoin";

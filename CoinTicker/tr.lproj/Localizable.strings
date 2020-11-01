@@ -1,6 +1,8 @@
 "menu.label.loading" = "Yükleniyor...";
 "menu.label.offline" = "Çevrimdışı";
 
+"currency.aud.title" = "Avustralya doları";
+"currency.brl.title" = "Brezilya reali";
 "currency.usd.title" = "ABD doları";
 "currency.gbp.title" = "İngiliz sterlini";
 "currency.cad.title" = "Kanada doları";
@@ -10,3 +12,5 @@
 "currency.ngn.title" = "Nijerya naira";
 "currency.rub.title" = "Rus rublesi";
 "currency.try.title" = "Türk lirası";
+"currency.uah.title" = "Ukrayna grivnası";
+"currency.zar.title" = "Güney Afrika randı";

@@ -1,6 +1,8 @@
 "menu.label.loading" = "読み込み中...";
 "menu.label.offline" = "オフライン";
 
+"currency.aud.title" = "オーストラリア・ドル";
+"currency.brl.title" = "レアル";
 "currency.usd.title" = "アメリカドル";
 "currency.eur.title" = "ユーロ";
 "currency.gbp.title" = "イギリスポンド";
@@ -11,6 +13,8 @@
 "currency.ngn.title" = "ナイジェリアナイラ";
 "currency.rub.title" = "ロシアルーブル";
 "currency.try.title" = "トルコリラ";
+"currency.uah.title" = "フリヴニャ";
+"currency.zar.title" = "南アフリカランド";
 
 "currency.ada.title" = "カルダノ";
 "currency.bcd.title" = "ビットコインダイヤモンド";

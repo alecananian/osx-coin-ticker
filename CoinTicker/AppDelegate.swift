@@ -221,21 +221,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.currentExchange.availableCurrencyPairs.forEach { currencyPair in
                 let baseCurrency = currencyPair.baseCurrency
                 let quoteCurrency = currencyPair.quoteCurrency
-                let menuItem: NSMenuItem
-                if let savedMenuItem = menuMapping[baseCurrency.code] {
-                    menuItem = savedMenuItem
-                } else {
-                    menuItem = self.menuItem(forBaseCurrency: baseCurrency)
-                    menuItem.state = (self.currentExchange.isCurrencyPairSelected(baseCurrency: baseCurrency) ? .on : .off)
-                    menuItem.submenu = NSMenu()
-                    menuMapping[baseCurrency.code] = menuItem
-                    self.currencyMenuItems.append(menuItem)
-                    self.mainMenu.insertItem(menuItem, at: menuMapping.count + indexOffset)
+                if !baseCurrency.isPhysical {
+                    let menuItem: NSMenuItem
+                    if let savedMenuItem = menuMapping[baseCurrency.code] {
+                        menuItem = savedMenuItem
+                    } else {
+                        menuItem = self.menuItem(forBaseCurrency: baseCurrency)
+                        menuItem.state = (self.currentExchange.isCurrencyPairSelected(baseCurrency: baseCurrency) ? .on : .off)
+                        menuItem.submenu = NSMenu()
+                        menuMapping[baseCurrency.code] = menuItem
+                        self.currencyMenuItems.append(menuItem)
+                        self.mainMenu.insertItem(menuItem, at: menuMapping.count + indexOffset)
+                    }
+                    
+                    let submenuItem = self.menuItem(forQuoteCurrency: quoteCurrency)
+                    submenuItem.state = (self.currentExchange.isCurrencyPairSelected(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency) ? .on : .off)
+                    menuItem.submenu!.addItem(submenuItem)
                 }
-                
-                let submenuItem = self.menuItem(forQuoteCurrency: quoteCurrency)
-                submenuItem.state = (self.currentExchange.isCurrencyPairSelected(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency) ? .on : .off)
-                menuItem.submenu!.addItem(submenuItem)
             }
             
             self.updateMenuIcon()

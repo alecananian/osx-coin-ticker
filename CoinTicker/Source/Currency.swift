@@ -97,6 +97,8 @@ struct Currency: Codable {
     
     var isPhysical: Bool {
         return [
+            "AUD",
+            "BRL",
             "CAD",
             "CNY",
             "EUR",
@@ -106,7 +108,9 @@ struct Currency: Codable {
             "NGN",
             "RUB",
             "TRY",
+            "UAH",
             "USD",
+            "ZAR",
         ].contains(internalCode)
     }
     

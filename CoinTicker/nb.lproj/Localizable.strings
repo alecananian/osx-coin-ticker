@@ -1,6 +1,8 @@
 "menu.label.loading" = "Laster inn...";
 "menu.label.offline" = "Frakoblet";
 
+"currency.aud.title" = "Australsk dollar";
+"currency.brl.title" = "Brasiliansk real";
 "currency.usd.title" = "Amerikansk dollar";
 "currency.gbp.title" = "Britisk pund";
 "currency.cad.title" = "Canadisk dollar";
@@ -10,3 +12,5 @@
 "currency.ngn.title" = "Nigeriansk naira";
 "currency.rub.title" = "Russisk rubel";
 "currency.try.title" = "Tyrkisk lire";
+"currency.uah.title" = "Ukrainsk hryvnja";
+"currency.zar.title" = "Sørafrikansk rand";

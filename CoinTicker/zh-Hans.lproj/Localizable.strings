@@ -1,6 +1,8 @@
 "menu.label.loading" = "正在加载···";
 "menu.label.offline" = "脱机";
 
+"currency.aud.title" = "澳大利亚元";
+"currency.brl.title" = "巴西雷亚尔";
 "currency.usd.title" = "美元";
 "currency.eur.title" = "欧元";
 "currency.gbp.title" = "英镑";
@@ -11,6 +13,8 @@
 "currency.ngn.title" = "尼日利亚奈拉";
 "currency.rub.title" = "俄罗斯卢布";
 "currency.try.title" = "土耳其里拉";
+"currency.uah.title" = "乌克兰格里夫纳";
+"currency.zar.title" = "南非兰特";
 
 "currency.bch.title" = "比特币现金";
 "currency.btc.title" = "比特币";

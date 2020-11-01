@@ -1,5 +1,7 @@
 "menu.label.loading" = "Načítání...";
 
+"currency.aud.title" = "Australský dolar";
+"currency.brl.title" = "Brazilský real";
 "currency.usd.title" = "Americký dolar";
 "currency.gbp.title" = "Britská libra";
 "currency.cad.title" = "Kanadský dolar";
@@ -9,3 +11,5 @@
 "currency.ngn.title" = "Nigerijská naira";
 "currency.rub.title" = "Ruský rubl";
 "currency.try.title" = "Turecké liry";
+"currency.uah.title" = "Ukrajinská hřivna";
+"currency.zar.title" = "Jihoafrický rand";

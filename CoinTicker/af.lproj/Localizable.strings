@@ -1,12 +1,16 @@
 "menu.label.loading" = "Laai tans...";
 "menu.label.offline" = "Vanlyn";
 
+"currency.aud.title" = "Australiese dollar";
+"currency.brl.title" = "Brasiliaanse real";
 "currency.usd.title" = "Amerikaanse dollar";
 "currency.gbp.title" = "Britse pond";
 "currency.cad.title" = "Kanadese dollar";
 "currency.cny.title" = "Chinese juan";
-"currency.jpy.title" = "Japannese Jen";
+"currency.jpy.title" = "Japannese jen";
 "currency.krw.title" = "Suid-Koreaanse won";
 "currency.ngn.title" = "Nigeriese naira";
 "currency.rub.title" = "Russiese roebel";
 "currency.try.title" = "Turkse lira";
+"currency.uah.title" = "Oekraïense grivna";
+"currency.zar.title" = "Suid-Afrikaanse rand";

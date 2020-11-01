@@ -1,6 +1,8 @@
 "menu.label.loading" = "알림 로딩중...";
 "menu.label.offline" = "오프라인";
 
+"currency.aud.title" = "오스트레일리아 달러";
+"currency.brl.title" = "브라질 헤알";
 "currency.usd.title" = "미국 달러";
 "currency.eur.title" = "유로";
 "currency.gbp.title" = "파운드 스털링";
@@ -11,6 +13,8 @@
 "currency.ngn.title" = "나이지리아 나이라";
 "currency.rub.title" = "러시아 루블";
 "currency.try.title" = "터키 리라";
+"currency.uah.title" = "우크라이나 흐리우냐";
+"currency.zar.title" = "남아프리카 공화국 랜드";
 
 "currency.aur.title" = "오로라코인";
 "currency.bcn.title" = "바이트코인";

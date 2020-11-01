@@ -1,6 +1,8 @@
 "menu.label.loading" = "Cargando...";
 "menu.label.offline" = "Sin conexión";
 
+"currency.aud.title" = "Dólar australiano";
+"currency.brl.title" = "Real brasileño";
 "currency.usd.title" = "Dólar estadounidense";
 "currency.gbp.title" = "Libra esterlina";
 "currency.cad.title" = "Dólar canadiense";
@@ -10,3 +12,5 @@
 "currency.ngn.title" = "Naira nigeriana";
 "currency.rub.title" = "Rublo ruso";
 "currency.try.title" = "Lira turca";
+"currency.uah.title" = "Grivna ucraniana";
+"currency.zar.title" = "Rand sudafricano";

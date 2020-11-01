@@ -1,5 +1,7 @@
 "menu.label.loading" = "Laden...";
 
+"currency.aud.title" = "Australische dollar";
+"currency.brl.title" = "Braziliaanse real";
 "currency.usd.title" = "Amerikaanse dollar";
 "currency.gbp.title" = "Britse pond";
 "currency.cad.title" = "Canadese dollar";
@@ -9,3 +11,5 @@
 "currency.ngn.title" = "Nigeriaanse naira";
 "currency.rub.title" = "Russische roebel";
 "currency.try.title" = "Turkse lira";
+"currency.uah.title" = "Oekraïense grivna";
+"currency.zar.title" = "Zuid-Afrikaanse rand";

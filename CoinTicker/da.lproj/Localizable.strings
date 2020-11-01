@@ -1,5 +1,7 @@
 "menu.label.loading" = "Indlæser...";
 
+"currency.aud.title" = "Australske dollar";
+"currency.brl.title" = "Brasiliansk real";
 "currency.usd.title" = "Amerikanske dollar";
 "currency.gbp.title" = "Britiske pund";
 "currency.cad.title" = "Canadiske dollar";
@@ -9,3 +11,5 @@
 "currency.ngn.title" = "Nigerianske naira";
 "currency.rub.title" = "Russiske rubler";
 "currency.try.title" = "Tyrkisk lira";
+"currency.uah.title" = "Ukrainske hryvnia";
+"currency.zar.title" = "Sydafrikansk rand";

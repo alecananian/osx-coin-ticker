@@ -1,5 +1,7 @@
 "menu.label.loading" = "Ladataan...";
 
+"currency.aud.title" = "Australian dollari";
+"currency.brl.title" = "Brasilian real";
 "currency.usd.title" = "Yhdysvaltain dollari";
 "currency.eur.title" = "Euro";
 "currency.gbp.title" = "Bristolin punta";
@@ -10,3 +12,5 @@
 "currency.ngn.title" = "Nigerian naira";
 "currency.rub.title" = "Venäjän rupla";
 "currency.try.title" = "Turkkilainen liira";
+"currency.uah.title" = "Ukrainan hryvnia";
+"currency.zar.title" = "Etelä-Afrikan randi";

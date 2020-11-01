@@ -1,6 +1,8 @@
 "menu.label.loading" = "يتم الآن التحميل";
 "menu.label.offline" = "غير متصل";
 
+"currency.aud.title" = "دولار أسترالي";
+"currency.brl.title" = "ريال برازيلي";
 "currency.usd.title" = "الدولار الأمريكي";
 "currency.eur.title" = "اليورو";
 "currency.gbp.title" = "الجنيه البريطاني";
@@ -11,6 +13,8 @@
 "currency.ngn.title" = "نيرة نيجيرية";
 "currency.rub.title" = "الروبل الروسي";
 "currency.try.title" = "ليرة تركية";
+"currency.uah.title" = "هريفنا أوكرانية";
+"currency.zar.title" = "راند جنوب أفريقي";
 
 "currency.btc.title" = "بيتكوين";
 "currency.ltc.title" = "لايت كوين";

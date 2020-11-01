@@ -1,5 +1,7 @@
 "menu.label.loading" = "Ładowanie...";
 
+"currency.aud.title" = "Dolar australijski";
+"currency.brl.title" = "Real brazylijski";
 "currency.usd.title" = "Dolar amerykański";
 "currency.gbp.title" = "Funt brytyjski";
 "currency.cad.title" = "Dolar kanadyjski";
@@ -9,3 +11,5 @@
 "currency.ngn.title" = "Naira nigeryjska";
 "currency.rub.title" = "Rubel rosyjski";
 "currency.try.title" = "Lira turecka";
+"currency.uah.title" = "Hrywna ukraińska";
+"currency.zar.title" = "Rand południowoafrykański";

@@ -1,6 +1,8 @@
 "menu.label.loading" = "Завантаження...";
 "menu.label.offline" = "Автономний";
 
+"currency.aud.title" = "Австралійський долар";
+"currency.brl.title" = "Бразильський реал";
 "currency.usd.title" = "Долар США";
 "currency.eur.title" = "Євро";
 "currency.gbp.title" = "Британський фунт";
@@ -11,5 +13,7 @@
 "currency.ngn.title" = "Нігерійська найра";
 "currency.rub.title" = "Російський рубль";
 "currency.try.title" = "Турецька ліра";
+"currency.uah.title" = "Українська гривня";
+"currency.zar.title" = "Південноафриканський ранд";
 
 "currency.btc.title" = "Біткоїн";

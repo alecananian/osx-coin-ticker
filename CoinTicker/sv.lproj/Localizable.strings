@@ -1,5 +1,7 @@
 "menu.label.loading" = "Läser in...";
 
+"currency.aud.title" = "Australisk dollar";
+"currency.brl.title" = "Brasiliansk real";
 "currency.usd.title" = "USA-dollar";
 "currency.gbp.title" = "Brittiskt pund";
 "currency.cad.title" = "Kanadensisk dollar";
@@ -9,3 +11,5 @@
 "currency.ngn.title" = "Nigerianska naira";
 "currency.rub.title" = "Rysk rubel";
 "currency.try.title" = "Turkiska lira";
+"currency.uah.title" = "Ukrainska hryvnia";
+"currency.zar.title" = "Sydafrikanska rand";
