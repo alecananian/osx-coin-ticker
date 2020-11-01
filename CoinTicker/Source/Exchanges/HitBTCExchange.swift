@@ -82,35 +82,39 @@ class HitBTCExchange: Exchange {
         }
         
         if isUpdatingInRealTime {
-            let socket = WebSocket(url: Constants.WebSocketURL)
+            let socket = WebSocket(request: URLRequest(url: Constants.WebSocketURL))
             socket.callbackQueue = socketResponseQueue
-            
-            socket.onConnect = { [weak self] in
-                self?.selectedCurrencyPairs.forEach({ currencyPair in
-                    let json = JSON([
-                        "method": "subscribeTicker",
-                        "params": [
-                            "symbol": currencyPair.customCode
-                        ]
-                    ])
+            socket.onEvent = { [weak self] event in
+                switch event {
+                case .connected(_):
+                    self?.selectedCurrencyPairs.forEach({ currencyPair in
+                        let json = JSON([
+                            "method": "subscribeTicker",
+                            "params": [
+                                "symbol": currencyPair.customCode
+                            ]
+                        ])
+                        
+                        if let string = json.rawString() {
+                            socket.write(string: string)
+                        }
+                    })
                     
-                    if let string = json.rawString() {
-                        socket.write(string: string)
-                    }
-                })
-            }
-            
-            socket.onText = { [weak self] text in
-                if let strongSelf = self {
-                    let result = JSON(parseJSON: text)
-                    if result["method"] == "ticker" {
-                        let data = result["params"]
-                        if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: data["symbol"].stringValue) {
-                            let price = data["last"].doubleValue
-                            strongSelf.setPrice(price, for: currencyPair)
-                            strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
+                case .text(let text):
+                    if let strongSelf = self {
+                        let result = JSON(parseJSON: text)
+                        if result["method"] == "ticker" {
+                            let data = result["params"]
+                            if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: data["symbol"].stringValue) {
+                                let price = data["last"].doubleValue
+                                strongSelf.setPrice(price, for: currencyPair)
+                                strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
+                            }
                         }
                     }
+                    
+                default:
+                    break
                 }
             }
             

@@ -77,23 +77,27 @@ class PoloniexExchange: Exchange {
         }
         
         if isUpdatingInRealTime {
-            let socket = WebSocket(url: Constants.WebSocketURL)
+            let socket = WebSocket(request: URLRequest(url: Constants.WebSocketURL))
             socket.callbackQueue = socketResponseQueue
-            
-            socket.onConnect = {
-                let jsonString = JSON([
-                    "command": "subscribe",
-                    "channel": Constants.TickerChannel
-                ]).rawString()!
-                socket.write(string: jsonString)
-            }
-            
-            socket.onText = { [weak self] text in
-                if let strongSelf = self, let result = JSON(parseJSON: text).array, result.first?.int == Constants.TickerChannel, let data = result.last?.array, data.count >= 2 {
-                    if let productId = data.first?.stringValue, let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: productId) {
-                        strongSelf.setPrice(data[1].doubleValue, for: currencyPair)
-                        strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
+            socket.onEvent = { [weak self] event in
+                switch event {
+                case .connected(_):
+                    let jsonString = JSON([
+                        "command": "subscribe",
+                        "channel": Constants.TickerChannel
+                    ]).rawString()!
+                    socket.write(string: jsonString)
+                    
+                case .text(let text):
+                    if let strongSelf = self, let result = JSON(parseJSON: text).array, result.first?.int == Constants.TickerChannel, let data = result.last?.array, data.count >= 2 {
+                        if let productId = data.first?.stringValue, let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: productId) {
+                            strongSelf.setPrice(data[1].doubleValue, for: currencyPair)
+                            strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
+                        }
                     }
+                    
+                default:
+                    break
                 }
             }
             

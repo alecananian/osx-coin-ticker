@@ -103,7 +103,6 @@ class Exchange {
     var selectedCurrencyPairs = [CurrencyPair]()
     private var currencyPrices = [CurrencyPair: Double]()
     
-    private let apiResponseSerializer = DataRequest.jsonResponseSerializer()
     private lazy var apiResponseQueue: DispatchQueue = { [unowned self] in
         return DispatchQueue(label: "cointicker.\(self.site.rawValue)-api", qos: .utility, attributes: [.concurrent])
     }()
@@ -226,7 +225,7 @@ class Exchange {
         socket?.disconnect()
         requestTimer?.invalidate()
         requestTimer = nil
-        Alamofire.SessionManager.default.session.getTasksWithCompletionHandler({ dataTasks, _, _ in
+        Session.default.session.getTasksWithCompletionHandler({ dataTasks, _, _ in
             dataTasks.forEach({ $0.cancel() })
         })
     }
@@ -255,7 +254,7 @@ class Exchange {
     // MARK: API Helpers
     internal func requestAPI(_ apiPath: String, for representedObject: Any? = nil) -> Promise<ExchangeAPIResponse> {
         return Promise { seal in
-            Alamofire.request(apiPath).response(queue: apiResponseQueue, responseSerializer: apiResponseSerializer) { response in
+            AF.request(apiPath).responseJSON(queue: apiResponseQueue) { response in
                 switch response.result {
                 case .success(let value):
                     seal.fulfill(ExchangeAPIResponse(representedObject: representedObject, json: JSON(value)))

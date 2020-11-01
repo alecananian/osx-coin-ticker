@@ -66,17 +66,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(onWorkspaceWillSleep(notification:)), name: NSWorkspace.willSleepNotification, object: nil)
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(onWorkspaceDidWake(notification:)), name: NSWorkspace.didWakeNotification, object: nil)
         
-        // Listen to network reachability status
-        reachabilityManager.listenerQueue = DispatchQueue(label: "cointicker.reachability", qos: .utility, attributes: [.concurrent])
-        reachabilityManager.listener = { [weak self] status in
-            if status == .reachable(.ethernetOrWiFi) || status == .reachable(.wwan) {
-                self?.currentExchange?.load()
-            } else {
-                self?.currentExchange?.stop()
-                self?.updateMenuWithOfflineText()
-            }
-        }
-        
         // Set the main menu
         statusItem.menu = mainMenu
         
@@ -88,7 +77,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         showIconMenuItem.state = (TickerConfig.showsIcon ? .on : .off)
         
         // Listen for network status
-        reachabilityManager.startListening()
+        let reachabilityQueue = DispatchQueue(label: "cointicker.reachability", qos: .utility, attributes: [.concurrent])
+        reachabilityManager.startListening(onQueue: reachabilityQueue) { [weak self] status in
+            if status == .reachable(.ethernetOrWiFi) || status == .reachable(.cellular) {
+                self?.currentExchange?.load()
+            } else {
+                self?.currentExchange?.stop()
+                self?.updateMenuWithOfflineText()
+            }
+        }
+        
         if !reachabilityManager.isReachable {
             updateMenuWithOfflineText()
         }

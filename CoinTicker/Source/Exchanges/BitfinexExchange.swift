@@ -59,41 +59,46 @@ class BitfinexExchange: Exchange {
     
     override internal func fetch() {
         if isUpdatingInRealTime {
-            let socket = WebSocket(url: Constants.WebSocketURL)
+            let socket = WebSocket(request: URLRequest(url: Constants.WebSocketURL))
             socket.callbackQueue = socketResponseQueue
             
             var channelIds =  [String: Int]()
             selectedCurrencyPairs.forEach({ channelIds[$0.customCode] = 0 })
-            socket.onConnect = {
-                channelIds.keys.forEach({ productId in
-                    let json = JSON([
-                        "event": "subscribe",
-                        "channel": "ticker",
-                        "symbol": productId
-                    ])
-                    
-                    if let string = json.rawString() {
-                        socket.write(string: string)
-                    }
-                })
-            }
-            
-            socket.onText = { [weak self] text in
-                if let strongSelf = self {
-                    let json = JSON(parseJSON: text)
-                    if json["event"] == "subscribed" {
-                        if let productId = json["symbol"].string {
-                            channelIds[productId] = json["chanId"].intValue
+            socket.onEvent = { [weak self] event in
+                switch event {
+                case .connected(_):
+                    channelIds.keys.forEach({ productId in
+                        let json = JSON([
+                            "event": "subscribe",
+                            "channel": "ticker",
+                            "symbol": productId
+                        ])
+                        
+                        if let string = json.rawString() {
+                            socket.write(string: string)
                         }
-                    } else if let data = json.array,
-                        let channelId = data.first?.int,
-                        let info = data.last?.array, info.count > 6,
-                        let productId = channelIds.first(where: { $0.value == channelId })?.0,
-                        let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: productId) {
-                        let price = info[6].doubleValue
-                        strongSelf.setPrice(price, for: currencyPair)
-                        strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
+                    })
+                    
+                case .text(let text):
+                    if let strongSelf = self {
+                        let json = JSON(parseJSON: text)
+                        if json["event"] == "subscribed" {
+                            if let productId = json["symbol"].string {
+                                channelIds[productId] = json["chanId"].intValue
+                            }
+                        } else if let data = json.array,
+                            let channelId = data.first?.int,
+                            let info = data.last?.array, info.count > 6,
+                            let productId = channelIds.first(where: { $0.value == channelId })?.0,
+                            let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: productId) {
+                            let price = info[6].doubleValue
+                            strongSelf.setPrice(price, for: currencyPair)
+                            strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
+                        }
                     }
+                    
+                default:
+                    break
                 }
             }
             

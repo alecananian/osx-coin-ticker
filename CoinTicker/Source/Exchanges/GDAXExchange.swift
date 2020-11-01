@@ -55,29 +55,34 @@ class GDAXExchange: Exchange {
     
     override internal func fetch() {
         if isUpdatingInRealTime {
-            let socket = WebSocket(url: Constants.WebSocketURL)
+            let socket = WebSocket(request: URLRequest(url: Constants.WebSocketURL))
             socket.callbackQueue = socketResponseQueue
             
             let productIds: [String] = selectedCurrencyPairs.map({ $0.customCode })
-            socket.onConnect = {
-                let json = JSON([
-                    "type": "subscribe",
-                    "product_ids": productIds,
-                    "channels": ["ticker"]
-                ])
+            socket.onEvent = { [weak self] event in
+                switch event {
+                case .connected(_):
+                    let json = JSON([
+                        "type": "subscribe",
+                        "product_ids": productIds,
+                        "channels": ["ticker"]
+                    ])
 
-                if let string = json.rawString() {
-                    socket.write(string: string)
-                }
-            }
-            
-            socket.onText = { [weak self] text in
-                if let strongSelf = self {
-                    let json = JSON(parseJSON: text)
-                    if json["type"].string == "ticker", let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: json["product_id"].stringValue) {
-                        strongSelf.setPrice(json["price"].doubleValue, for: currencyPair)
-                        strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
+                    if let string = json.rawString() {
+                        socket.write(string: string)
                     }
+                    
+                case .text(let text):
+                    if let strongSelf = self {
+                        let json = JSON(parseJSON: text)
+                        if json["type"].string == "ticker", let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: json["product_id"].stringValue) {
+                            strongSelf.setPrice(json["price"].doubleValue, for: currencyPair)
+                            strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
+                        }
+                    }
+                    
+                default:
+                    break
                 }
             }
             
