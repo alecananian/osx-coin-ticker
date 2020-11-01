@@ -30,7 +30,7 @@ import SwiftyJSON
 class BTCTurkExchange: Exchange {
     
     private struct Constants {
-        static let FullTickerAPIPath = "https://btcturk.com/api/ticker"
+        static let FullTickerAPIPath = "https://api.btcturk.com/api/v2/ticker"
     }
     
     init(delegate: ExchangeDelegate? = nil) {
@@ -48,7 +48,7 @@ class BTCTurkExchange: Exchange {
     
     override internal func fetch() {
         requestAPI(Constants.FullTickerAPIPath).map { [weak self] result in
-            result.json.arrayValue.forEach({ data in
+            result.json["data"].arrayValue.forEach({ data in
                 let (productId, price) = (data["pair"].stringValue, data["last"].doubleValue)
                 
                 if let currencyPair = self?.selectedCurrencyPair(withCustomCode: productId) {
