@@ -51,6 +51,8 @@ struct Currency: Codable {
     
     var symbol: String? {
         switch internalCode {
+        case "AUD": return "$"
+        case "BRL": return "R$"
         case "BTC", "BCH": return "₿"
         case "DOGE": return "Ð"
         case "ETC": return "⟠"
@@ -62,9 +64,11 @@ struct Currency: Codable {
         case "REP": return "Ɍ"
         case "RUB": return "₽"
         case "TRY": return "₺"
+        case "UAH": return "₴"
         case "USDS": return "USDⓈ"
         case "XMR": return "ɱ"
         case "XRP": return "Ʀ"
+        case "ZAR": return "R"
         case "ZEC": return "ⓩ"
         default: return (isPhysical ? nil : code)
         }
