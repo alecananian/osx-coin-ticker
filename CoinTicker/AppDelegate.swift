@@ -217,25 +217,26 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.currencyMenuItems.removeAll()
             
             let indexOffset = self.mainMenu.index(of: self.currencyStartSeparator)
-            _ = self.currentExchange.availableCurrencyPairs.reduce(into: [Currency: NSMenuItem](), { dict, currencyPair in
+            var menuMapping = [String: NSMenuItem]()
+            self.currentExchange.availableCurrencyPairs.forEach { currencyPair in
                 let baseCurrency = currencyPair.baseCurrency
                 let quoteCurrency = currencyPair.quoteCurrency
                 let menuItem: NSMenuItem
-                if let savedMenuItem = dict[baseCurrency] {
+                if let savedMenuItem = menuMapping[baseCurrency.code] {
                     menuItem = savedMenuItem
                 } else {
                     menuItem = self.menuItem(forBaseCurrency: baseCurrency)
                     menuItem.state = (self.currentExchange.isCurrencyPairSelected(baseCurrency: baseCurrency) ? .on : .off)
                     menuItem.submenu = NSMenu()
-                    dict[baseCurrency] = menuItem
+                    menuMapping[baseCurrency.code] = menuItem
                     self.currencyMenuItems.append(menuItem)
-                    self.mainMenu.insertItem(menuItem, at: dict.count + indexOffset)
+                    self.mainMenu.insertItem(menuItem, at: menuMapping.count + indexOffset)
                 }
                 
                 let submenuItem = self.menuItem(forQuoteCurrency: quoteCurrency)
                 submenuItem.state = (self.currentExchange.isCurrencyPairSelected(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency) ? .on : .off)
                 menuItem.submenu!.addItem(submenuItem)
-            })
+            }
             
             self.updateMenuIcon()
             self.updatePrices()
