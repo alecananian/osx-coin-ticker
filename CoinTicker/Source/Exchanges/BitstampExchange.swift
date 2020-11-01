@@ -59,6 +59,26 @@ class BitstampExchange: Exchange {
         }
     }
     
+    private func fetchAPI() {
+        _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+            let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
+            return requestAPI(apiRequestPath, for: currencyPair)
+        })).map { [weak self] results in
+            results.forEach({ result in
+                switch result {
+                case .fulfilled(let value):
+                    if let currencyPair = value.representedObject as? CurrencyPair {
+                        let price = value.json["last"].doubleValue
+                        self?.setPrice(price, for: currencyPair)
+                    }
+                default: break
+                }
+            })
+            
+            self?.onFetchComplete()
+        }
+    }
+    
     override internal func fetch() {
         if isUpdatingInRealTime {
             let socket = WebSocket(request: URLRequest(url: Constants.WebSocketURL))
@@ -77,6 +97,8 @@ class BitstampExchange: Exchange {
                         if let string = json.rawString() {
                             socket.write(string: string)
                         }
+                        
+                        self?.fetchAPI()
                     })
                     
                 case .text(let text):
@@ -99,23 +121,7 @@ class BitstampExchange: Exchange {
             socket.connect()
             self.socket = socket
         } else {
-            _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
-                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
-                return requestAPI(apiRequestPath, for: currencyPair)
-            })).map { [weak self] results in
-                results.forEach({ result in
-                    switch result {
-                    case .fulfilled(let value):
-                        if let currencyPair = value.representedObject as? CurrencyPair {
-                            let price = value.json["last"].doubleValue
-                            self?.setPrice(price, for: currencyPair)
-                        }
-                    default: break
-                    }
-                })
-                
-                self?.onFetchComplete()
-            }
+            fetchAPI()
         }
     }
 
