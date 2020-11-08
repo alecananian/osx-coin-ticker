@@ -122,6 +122,12 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="P21-ms-0JY"/>
                                         </connections>
                                     </menuItem>
+                                    <menuItem title="KuCoin" tag="255" id="5Gg-7B-m4W">
+                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                        <connections>
+                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="Txf-UP-rzk"/>
+                                        </connections>
+                                    </menuItem>
                                     <menuItem title="LBank" tag="260" id="pY8-hS-t8h">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>

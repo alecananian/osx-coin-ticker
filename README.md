@@ -17,6 +17,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - [Huobi.pro](https://www.huobi.pro)
 - [Korbit](https://www.korbit.co.kr)
 - [Kraken](https://www.kraken.com)
+- [KuCoin](https://www.kucoin.com)
 - [LBank](https://www.lbank.info)
 - [OKEx](https://okex.com)
 - [Paribu](https://www.paribu.com)

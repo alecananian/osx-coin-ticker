@@ -39,6 +39,7 @@
 		70AE284B1F25214D0082BDD2 /* TrackingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AE284A1F2520FC0082BDD2 /* TrackingUtils.swift */; };
 		70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */; };
 		70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C19EA01EEA310700B668AB /* KrakenExchange.swift */; };
+		70F9B705255875D200CBD0B9 /* KuCoinExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9B704255875D200CBD0B9 /* KuCoinExchange.swift */; };
 		FD1000C820CA9DF30075F86E /* BTCTurkExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1000C720CA9DF30075F86E /* BTCTurkExchange.swift */; };
 		FDE0ABE8201E94E100075590 /* ParibuExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE0ABE7201E94E100075590 /* ParibuExchange.swift */; };
 /* End PBXBuildFile section */
@@ -124,6 +125,7 @@
 		70C19EA01EEA310700B668AB /* KrakenExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KrakenExchange.swift; sourceTree = "<group>"; };
 		70C7275C1F00CC490020AC66 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Main.strings; sourceTree = "<group>"; };
 		70C7275D1F00CC490020AC66 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Localizable.strings; sourceTree = "<group>"; };
+		70F9B704255875D200CBD0B9 /* KuCoinExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KuCoinExchange.swift; sourceTree = "<group>"; };
 		C4313FAA3E2256C8A5D25C1F /* Pods_CoinTicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CoinTicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4CC49C8D7CCCB6A0878C5BD /* Pods-CoinTicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinTicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker.release.xcconfig"; sourceTree = "<group>"; };
 		F947BA40CD0ED03B7C2327C8 /* Pods-CoinTicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoinTicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-CoinTicker/Pods-CoinTicker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				701CDD612007146B00A8D74C /* HuobiExchange.swift */,
 				700DF5E01EFF8E5100B53BDE /* KorbitExchange.swift */,
 				70C19EA01EEA310700B668AB /* KrakenExchange.swift */,
+				70F9B704255875D200CBD0B9 /* KuCoinExchange.swift */,
 				70621C552095313200A5A450 /* LBankExchange.swift */,
 				7096A533200D3B8700A5A758 /* OKExExchange.swift */,
 				FDE0ABE7201E94E100075590 /* ParibuExchange.swift */,
@@ -430,6 +433,7 @@
 				701CDD562001798900A8D74C /* LocalizedStringWithFallback.swift in Sources */,
 				7096A532200C531700A5A758 /* BithumbExchange.swift in Sources */,
 				70A6C09A2020261E0085F3B2 /* HitBTCExchange.swift in Sources */,
+				70F9B705255875D200CBD0B9 /* KuCoinExchange.swift in Sources */,
 				7096A534200D3B8700A5A758 /* OKExExchange.swift in Sources */,
 				FD1000C820CA9DF30075F86E /* BTCTurkExchange.swift in Sources */,
 			);
