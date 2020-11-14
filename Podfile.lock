@@ -1,12 +1,12 @@
 PODS:
   - Alamofire (5.4.0)
-  - AppCenter (3.3.4):
-    - AppCenter/Analytics (= 3.3.4)
-    - AppCenter/Crashes (= 3.3.4)
-  - AppCenter/Analytics (3.3.4):
+  - AppCenter (4.0.0):
+    - AppCenter/Analytics (= 4.0.0)
+    - AppCenter/Crashes (= 4.0.0)
+  - AppCenter/Analytics (4.0.0):
     - AppCenter/Core
-  - AppCenter/Core (3.3.4)
-  - AppCenter/Crashes (3.3.4):
+  - AppCenter/Core (4.0.0)
+  - AppCenter/Crashes (4.0.0):
     - AppCenter/Core
   - PromiseKit (6.13.1):
     - PromiseKit/CorePromise (= 6.13.1)
@@ -20,7 +20,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 5.3)
-  - AppCenter (~> 3.0)
+  - AppCenter (~> 4.0)
   - PromiseKit (~> 6.0)
   - Starscream (~> 4.0)
   - SwiftyJSON (~> 5.0)
@@ -35,11 +35,11 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Alamofire: 3b6a534a3df22db367e4dedeeca73d1ddfcf0e2f
-  AppCenter: 0487be185c038ed2ecc5ed38219af1dcd280af23
+  AppCenter: 51351e0121e40ba75e28ecb7de5c2e69d480df5e
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   Starscream: 5178aed56b316f13fa3bc55694e583d35dd414d9
   SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
 
-PODFILE CHECKSUM: 79554fba7acf8b4abc55f60419f8ce0536ef9ca8
+PODFILE CHECKSUM: 12eae4d24af7cef7dbfa66531c38f16929e5d677
 
 COCOAPODS: 1.10.0

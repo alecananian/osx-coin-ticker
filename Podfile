@@ -7,5 +7,5 @@ target 'CoinTicker' do
   pod 'Starscream', '~> 4.0'
   pod 'SwiftyJSON', '~> 5.0'
   pod 'PromiseKit', '~> 6.0'
-  pod 'AppCenter', '~> 3.0'
+  pod 'AppCenter', '~> 4.0'
 end

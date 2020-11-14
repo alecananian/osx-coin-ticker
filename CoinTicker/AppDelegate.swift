@@ -53,9 +53,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if let resourceURL = Bundle.main.url(forResource: "appcenter", withExtension: "secret") {
             do {
                 let appSecret = try String.init(contentsOf: resourceURL, encoding: .utf8)
-                MSAppCenter.start(appSecret.trimmingCharacters(in: .whitespacesAndNewlines), withServices:[
-                    MSAnalytics.self,
-                    MSCrashes.self
+                AppCenter.start(withAppSecret: appSecret.trimmingCharacters(in: .whitespacesAndNewlines), services: [
+                    Analytics.self,
+                    Crashes.self
                 ])
             } catch {
                 print("Error loading AppCenter app secret: \(error)")
