@@ -103,7 +103,7 @@ class Exchange {
     var updateInterval = TickerConfig.defaultUpdateInterval
     var availableCurrencyPairs = [CurrencyPair]()
     var selectedCurrencyPairs = [CurrencyPair]()
-    private var currencyPrices = [CurrencyPair: Double]()
+    private var currencyPrices = [String: Double]()
     
     private lazy var apiResponseQueue: DispatchQueue = { [unowned self] in
         return DispatchQueue(label: "cointicker.\(self.site.rawValue)-api", qos: .utility, attributes: [.concurrent])
@@ -165,11 +165,11 @@ class Exchange {
     }
     
     internal func setPrice(_ price: Double, for currencyPair: CurrencyPair) {
-        currencyPrices[currencyPair] = price
+        currencyPrices[currencyPair.customCode] = price
     }
     
     func price(for currencyPair: CurrencyPair) -> Double {
-        return currencyPrices[currencyPair] ?? 0
+        return currencyPrices[currencyPair.customCode] ?? 0
     }
     
     // MARK: Exchange Request Lifecycle
