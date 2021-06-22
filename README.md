@@ -13,7 +13,7 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - [Coincheck](https://coincheck.com)
 - [Coinone](https://coinone.co.kr)
 - [Gate.io](https://gate.io)
-- [Coinbase Pro (GDAX)](https://pro.coinbase.com)
+- [Coinbase Pro](https://pro.coinbase.com)
 - [Huobi.pro](https://www.huobi.pro)
 - [Korbit](https://www.korbit.co.kr)
 - [Kraken](https://www.kraken.com)
