@@ -56,7 +56,7 @@ class TickerConfig {
     private static var defaultExchangeSite: ExchangeSite {
         get {
             let index = UserDefaults.standard.integer(forKey: Keys.UserDefaultsExchangeSite)
-            return ExchangeSite(rawValue: index) ?? .binance
+            return ExchangeSite(rawValue: index) ?? .gdax
         }
         
         set {
