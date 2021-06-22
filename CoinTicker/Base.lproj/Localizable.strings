@@ -1536,9 +1536,7 @@
 "currency.gom.title" = "Gomics";
 "currency.gom2.title" = "AnimalGo";
 "currency.goss.title" = "Gossip Coin";
-"currency.got.title" = "GOT Token";
 "currency.got.title" = "GoNetwork";
-"currency.got.title" = "ParkinGo";
 "currency.gpkr.title" = "Gold Poker";
 "currency.gpo.title" = "Galaxy Pool Coin";
 "currency.gpt.title" = "GoPower";
@@ -1555,8 +1553,7 @@
 "currency.grn.title" = "GreenPower";
 "currency.gro.title" = "Growth DeFi";
 "currency.grs.title" = "Groestlcoin";
-"currency.grt.title" = "Global Rental Token";
-"currency.grt.title" = "Golden Ratio Token";
+"currency.grt.title" = "The Graph";
 "currency.gsc.title" = "Global Social Chain";
 "currency.gse.title" = "GSENetwork";
 "currency.gsmt.title" = "GrafSound";
@@ -1565,7 +1562,7 @@
 "currency.gst.title" = "Gstcoin";
 "currency.gswap.title" = "Gameswap";
 "currency.gt.title" = "GateToken";
-"currency.gtc.title" = "Game.com";
+"currency.gtc.title" = "Gitcoin";
 "currency.gtf.title" = "GLOBALTRUSTFUND TOKEN";
 "currency.gth.title" = "Gather";
 "currency.gtm.title" = "Gentarium";
@@ -3357,10 +3354,7 @@
 "currency.uncl.title" = "UNCL";
 "currency.uncx.title" = "UniCrypt";
 "currency.undb.title" = "UniDexBot";
-"currency.uni.title" = "UNI COIN";
-"currency.uni.title" = "UNICORN Token";
 "currency.uni.title" = "Uniswap";
-"currency.uni.title" = "Universe";
 "currency.unicore.title" = "Unicore";
 "currency.unidown.title" = "UNIDOWN";
 "currency.unifi.title" = "UNIFI DeFi";
