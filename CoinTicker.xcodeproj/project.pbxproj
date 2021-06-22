@@ -38,12 +38,12 @@
 		70AE284B1F25214D0082BDD2 /* TrackingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AE284A1F2520FC0082BDD2 /* TrackingUtils.swift */; };
 		70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */; };
 		70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C19EA01EEA310700B668AB /* KrakenExchange.swift */; };
-		70E6F2752581E967007548F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2742581E967007548F6 /* SwiftPackageProductDependency */; };
-		70E6F2792581E9CF007548F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2782581E9CF007548F6 /* SwiftPackageProductDependency */; };
-		70E6F27D2581EA54007548F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F27C2581EA54007548F6 /* SwiftPackageProductDependency */; };
-		70E6F27F2581EA54007548F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F27E2581EA54007548F6 /* SwiftPackageProductDependency */; };
-		70E6F2832581EA73007548F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2822581EA73007548F6 /* SwiftPackageProductDependency */; };
-		70E6F2872581EA88007548F6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2862581EA88007548F6 /* SwiftPackageProductDependency */; };
+		70E6F2752581E967007548F6 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2742581E967007548F6 /* Alamofire */; };
+		70E6F2792581E9CF007548F6 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2782581E9CF007548F6 /* PromiseKit */; };
+		70E6F27D2581EA54007548F6 /* AppCenterCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F27C2581EA54007548F6 /* AppCenterCrashes */; };
+		70E6F27F2581EA54007548F6 /* AppCenterAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F27E2581EA54007548F6 /* AppCenterAnalytics */; };
+		70E6F2832581EA73007548F6 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2822581EA73007548F6 /* Starscream */; };
+		70E6F2872581EA88007548F6 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2862581EA88007548F6 /* SwiftyJSON */; };
 		70F9B705255875D200CBD0B9 /* KuCoinExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9B704255875D200CBD0B9 /* KuCoinExchange.swift */; };
 		FD1000C820CA9DF30075F86E /* BTCTurkExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD1000C720CA9DF30075F86E /* BTCTurkExchange.swift */; };
 		FDE0ABE8201E94E100075590 /* ParibuExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDE0ABE7201E94E100075590 /* ParibuExchange.swift */; };
@@ -140,12 +140,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				70E6F2872581EA88007548F6 /* BuildFile in Frameworks */,
-				70E6F2792581E9CF007548F6 /* BuildFile in Frameworks */,
-				70E6F2752581E967007548F6 /* BuildFile in Frameworks */,
-				70E6F27F2581EA54007548F6 /* BuildFile in Frameworks */,
-				70E6F27D2581EA54007548F6 /* BuildFile in Frameworks */,
-				70E6F2832581EA73007548F6 /* BuildFile in Frameworks */,
+				70E6F2872581EA88007548F6 /* SwiftyJSON in Frameworks */,
+				70E6F2792581E9CF007548F6 /* PromiseKit in Frameworks */,
+				70E6F2752581E967007548F6 /* Alamofire in Frameworks */,
+				70E6F27F2581EA54007548F6 /* AppCenterAnalytics in Frameworks */,
+				70E6F27D2581EA54007548F6 /* AppCenterCrashes in Frameworks */,
+				70E6F2832581EA73007548F6 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,12 +260,12 @@
 			);
 			name = CoinTicker;
 			packageProductDependencies = (
-				70E6F2742581E967007548F6 /* SwiftPackageProductDependency */,
-				70E6F2782581E9CF007548F6 /* SwiftPackageProductDependency */,
-				70E6F27C2581EA54007548F6 /* SwiftPackageProductDependency */,
-				70E6F27E2581EA54007548F6 /* SwiftPackageProductDependency */,
-				70E6F2822581EA73007548F6 /* SwiftPackageProductDependency */,
-				70E6F2862581EA88007548F6 /* SwiftPackageProductDependency */,
+				70E6F2742581E967007548F6 /* Alamofire */,
+				70E6F2782581E9CF007548F6 /* PromiseKit */,
+				70E6F27C2581EA54007548F6 /* AppCenterCrashes */,
+				70E6F27E2581EA54007548F6 /* AppCenterAnalytics */,
+				70E6F2822581EA73007548F6 /* Starscream */,
+				70E6F2862581EA88007548F6 /* SwiftyJSON */,
 			);
 			productName = CoinTicker;
 			productReference = 705F48501EDE3A29009A629D /* CoinTicker.app */;
@@ -327,11 +327,11 @@
 			);
 			mainGroup = 705F48471EDE3A29009A629D;
 			packageReferences = (
-				70E6F2732581E967007548F6 /* RemoteSwiftPackageReference */,
-				70E6F2772581E9CF007548F6 /* RemoteSwiftPackageReference */,
-				70E6F27B2581EA54007548F6 /* RemoteSwiftPackageReference */,
-				70E6F2812581EA73007548F6 /* RemoteSwiftPackageReference */,
-				70E6F2852581EA88007548F6 /* RemoteSwiftPackageReference */,
+				70E6F2732581E967007548F6 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				70E6F2772581E9CF007548F6 /* XCRemoteSwiftPackageReference "PromiseKit" */,
+				70E6F27B2581EA54007548F6 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
+				70E6F2812581EA73007548F6 /* XCRemoteSwiftPackageReference "Starscream" */,
+				70E6F2852581EA88007548F6 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 			);
 			productRefGroup = 705F48511EDE3A29009A629D /* Products */;
 			projectDirPath = "";
@@ -585,7 +585,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = JQW3SW3342;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = CoinTicker/Info.plist;
@@ -593,7 +593,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.3.0;
+				MARKETING_VERSION = 3.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alecananian.cointicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -608,7 +608,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = JQW3SW3342;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = CoinTicker/Info.plist;
@@ -616,7 +616,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 3.3.0;
+				MARKETING_VERSION = 3.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.alecananian.cointicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -647,7 +647,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		70E6F2732581E967007548F6 /* RemoteSwiftPackageReference */ = {
+		70E6F2732581E967007548F6 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -655,7 +655,7 @@
 				minimumVersion = 5.4.0;
 			};
 		};
-		70E6F2772581E9CF007548F6 /* RemoteSwiftPackageReference */ = {
+		70E6F2772581E9CF007548F6 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mxcl/PromiseKit.git";
 			requirement = {
@@ -663,7 +663,7 @@
 				minimumVersion = 6.13.3;
 			};
 		};
-		70E6F27B2581EA54007548F6 /* RemoteSwiftPackageReference */ = {
+		70E6F27B2581EA54007548F6 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/microsoft/appcenter-sdk-apple.git";
 			requirement = {
@@ -671,7 +671,7 @@
 				minimumVersion = 4.0.0;
 			};
 		};
-		70E6F2812581EA73007548F6 /* RemoteSwiftPackageReference */ = {
+		70E6F2812581EA73007548F6 /* XCRemoteSwiftPackageReference "Starscream" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/daltoniam/Starscream.git";
 			requirement = {
@@ -679,7 +679,7 @@
 				minimumVersion = 4.0.4;
 			};
 		};
-		70E6F2852581EA88007548F6 /* RemoteSwiftPackageReference */ = {
+		70E6F2852581EA88007548F6 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
 			requirement = {
@@ -690,34 +690,34 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		70E6F2742581E967007548F6 /* SwiftPackageProductDependency */ = {
+		70E6F2742581E967007548F6 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 70E6F2732581E967007548F6 /* RemoteSwiftPackageReference */;
+			package = 70E6F2732581E967007548F6 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
-		70E6F2782581E9CF007548F6 /* SwiftPackageProductDependency */ = {
+		70E6F2782581E9CF007548F6 /* PromiseKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 70E6F2772581E9CF007548F6 /* RemoteSwiftPackageReference */;
+			package = 70E6F2772581E9CF007548F6 /* XCRemoteSwiftPackageReference "PromiseKit" */;
 			productName = PromiseKit;
 		};
-		70E6F27C2581EA54007548F6 /* SwiftPackageProductDependency */ = {
+		70E6F27C2581EA54007548F6 /* AppCenterCrashes */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 70E6F27B2581EA54007548F6 /* RemoteSwiftPackageReference */;
+			package = 70E6F27B2581EA54007548F6 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */;
 			productName = AppCenterCrashes;
 		};
-		70E6F27E2581EA54007548F6 /* SwiftPackageProductDependency */ = {
+		70E6F27E2581EA54007548F6 /* AppCenterAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 70E6F27B2581EA54007548F6 /* RemoteSwiftPackageReference */;
+			package = 70E6F27B2581EA54007548F6 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */;
 			productName = AppCenterAnalytics;
 		};
-		70E6F2822581EA73007548F6 /* SwiftPackageProductDependency */ = {
+		70E6F2822581EA73007548F6 /* Starscream */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 70E6F2812581EA73007548F6 /* RemoteSwiftPackageReference */;
+			package = 70E6F2812581EA73007548F6 /* XCRemoteSwiftPackageReference "Starscream" */;
 			productName = Starscream;
 		};
-		70E6F2862581EA88007548F6 /* SwiftPackageProductDependency */ = {
+		70E6F2862581EA88007548F6 /* SwiftyJSON */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 70E6F2852581EA88007548F6 /* RemoteSwiftPackageReference */;
+			package = 70E6F2852581EA88007548F6 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
 			productName = SwiftyJSON;
 		};
 /* End XCSwiftPackageProductDependency section */
