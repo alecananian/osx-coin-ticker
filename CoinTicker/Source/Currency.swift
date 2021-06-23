@@ -29,8 +29,10 @@ import Cocoa
 struct Currency: Codable {
     
     var code: String
+    var customDisplayName: String?
+    var customSymbol: String?
     
-    init?(code: String?) {
+    init?(code: String?, customDisplayName: String? = nil, customSymbol: String? = nil) {
         guard var normalizedCode = code?.uppercased(), normalizedCode != "123" else {
             return nil
         }
@@ -41,15 +43,21 @@ struct Currency: Codable {
         }
         
         self.code = normalizedCode
+        self.customDisplayName = customDisplayName
+        self.customSymbol = customSymbol
     }
     
     var displayName: String {
         let displayNameKey = "currency.\(internalCode.lowercased()).title"
-        let displayName = String.LocalizedStringWithFallback(displayNameKey, comment: "Currency Title")
+        let displayName = customDisplayName ?? String.LocalizedStringWithFallback(displayNameKey, comment: "Currency Title")
         return (displayName != displayNameKey && displayName != code ? "\(code) (\(displayName))" : code)
     }
     
     var symbol: String? {
+        if let customSymbol = customSymbol {
+            return customSymbol
+        }
+        
         switch internalCode {
         case "AUD": return "$"
         case "BRL": return "R$"

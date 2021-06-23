@@ -268,11 +268,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         self.currencyFormatter.numberStyle = .currency
         self.currencyFormatter.currencyCode = quoteCurrency.code
-        if let symbol = quoteCurrency.symbol {
-            self.currencyFormatter.currencySymbol = "\(symbol) "
-        } else {
-            self.currencyFormatter.currencySymbol = nil
-        }
+        self.currencyFormatter.currencySymbol = quoteCurrency.symbol
         
         let numFractionDigits: Int
         if price < 0.001 {

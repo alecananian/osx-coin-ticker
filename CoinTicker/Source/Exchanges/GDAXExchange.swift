@@ -34,6 +34,7 @@ class GDAXExchange: Exchange {
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://ws-feed.pro.coinbase.com")!
         static let ProductListAPIPath = "https://api.pro.coinbase.com/products"
+        static let CurrencyListAPIPath = "https://api.pro.coinbase.com/currencies"
         static let TickerAPIPathFormat = "https://api.pro.coinbase.com/products/%@/ticker"
     }
     
@@ -42,14 +43,36 @@ class GDAXExchange: Exchange {
     }
     
     override func load() {
-        super.load(from: Constants.ProductListAPIPath) {
-            $0.json.arrayValue.compactMap { result in
-                CurrencyPair(
-                    baseCurrency: result["base_currency"].string,
-                    quoteCurrency: result["quote_currency"].string,
-                    customCode: result["id"].string
+        _ = firstly {
+            when(fulfilled: requestAPI(Constants.ProductListAPIPath), requestAPI(Constants.CurrencyListAPIPath))
+        }.done { [weak self] (productsResponse, currenciesResponse) in
+            var availableCurrencies: [String: Currency] = [:]
+            for currency in currenciesResponse.json.arrayValue {
+                guard let code = currency["id"].string else {
+                    continue
+                }
+                
+                availableCurrencies[code] = Currency(code: code, customDisplayName: currency["name"].string, customSymbol: currency["details"].dictionary?["symbol"]?.string)
+            }
+            
+            let availableCurrencyPairs = productsResponse.json.arrayValue.compactMap { product -> CurrencyPair? in
+                guard let baseCurrencyCode = product["base_currency"].string, let quoteCurrencyCode = product["quote_currency"].string else {
+                    return nil
+                }
+                
+                let customCode = product["id"].string
+                guard let baseCurrency = availableCurrencies[baseCurrencyCode], let quoteCurrency = availableCurrencies[quoteCurrencyCode] else {
+                    return CurrencyPair(baseCurrency: baseCurrencyCode, quoteCurrency: quoteCurrencyCode, customCode: customCode)
+                }
+                
+                return CurrencyPair(
+                    baseCurrency: baseCurrency,
+                    quoteCurrency: quoteCurrency,
+                    customCode: customCode
                 )
             }
+            
+            self?.setAvailableCurrencyPairs(availableCurrencyPairs)
         }
     }
     
