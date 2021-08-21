@@ -27,41 +27,69 @@
 import Foundation
 import Starscream
 import SwiftyJSON
+import PromiseKit
 
 class BitfinexExchange: Exchange {
-    
+
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://api.bitfinex.com/ws/2")!
-        static let ProductListAPIPath = "https://api.bitfinex.com/v1/symbols"
+        static let ProductListAPIPath = "https://api-pub.bitfinex.com/v2/conf/pub:list:pair:exchange"
+        static let CurrencyListAPIPath = "https://api-pub.bitfinex.com/v2/conf/pub:map:currency:label"
         static let TickerAPIPathFormat = "https://api.bitfinex.com/v2/tickers?symbols=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .bitfinex, delegate: delegate)
     }
-    
+
     override func load() {
-        super.load(from: Constants.ProductListAPIPath) {
-            $0.json.arrayValue.compactMap { result in
-                let pairString = result.stringValue
-                guard pairString.count == 6 else {
+        _ = firstly {
+            when(fulfilled: requestAPI(Constants.ProductListAPIPath), requestAPI(Constants.CurrencyListAPIPath))
+        }.done { [weak self] (productsResponse, currenciesResponse) in
+            var availableCurrencies: [String: Currency] = [:]
+            for currency in currenciesResponse.json.arrayValue[0].arrayValue {
+                guard let code = currency.arrayValue.first?.stringValue, let displayName = currency.arrayValue.last?.stringValue else {
+                    continue
+                }
+
+                availableCurrencies[code] = Currency(code: code, customDisplayName: displayName, customSymbol: code)
+            }
+
+            let availableCurrencyPairs = productsResponse.json.arrayValue[0].arrayValue.compactMap { product -> CurrencyPair? in
+                let pairString = product.stringValue
+                var baseCurrencyCode: String?
+                var quoteCurrencyCode: String?
+                if pairString.contains(":") {
+                    let pairParts = pairString.split(separator: ":")
+                    if let baseCurrencySubstring = pairParts.first, let quoteCurrencySubstring = pairParts.last {
+                        baseCurrencyCode = String(baseCurrencySubstring)
+                        quoteCurrencyCode = String(quoteCurrencySubstring)
+                    }
+                } else if pairString.count == 6 {
+                    baseCurrencyCode = String(pairString.prefix(3))
+                    quoteCurrencyCode = String(pairString.suffix(3))
+                }
+
+                guard let baseCurrencyCode = baseCurrencyCode, let quoteCurrencyCode = quoteCurrencyCode, let baseCurrency = availableCurrencies[baseCurrencyCode], let quoteCurrency = availableCurrencies[quoteCurrencyCode] else {
                     return nil
                 }
-                
+
                 return CurrencyPair(
-                    baseCurrency: String(pairString.prefix(3)),
-                    quoteCurrency: String(pairString.suffix(3)),
+                    baseCurrency: baseCurrency,
+                    quoteCurrency: quoteCurrency,
                     customCode: "t\(pairString.uppercased())"
                 )
             }
+
+            self?.setAvailableCurrencyPairs(availableCurrencyPairs)
         }
     }
-    
+
     override internal func fetch() {
         if isUpdatingInRealTime {
             let socket = WebSocket(request: URLRequest(url: Constants.WebSocketURL))
             socket.callbackQueue = socketResponseQueue
-            
+
             var channelIds =  [String: Int]()
             selectedCurrencyPairs.forEach({ channelIds[$0.customCode] = 0 })
             socket.onEvent = { [weak self] event in
@@ -73,12 +101,12 @@ class BitfinexExchange: Exchange {
                             "channel": "ticker",
                             "symbol": productId
                         ])
-                        
+
                         if let string = json.rawString() {
                             socket.write(string: string)
                         }
                     })
-                    
+
                 case .text(let text):
                     if let strongSelf = self {
                         let json = JSON(parseJSON: text)
@@ -96,12 +124,12 @@ class BitfinexExchange: Exchange {
                             strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                         }
                     }
-                    
+
                 default:
                     break
                 }
             }
-            
+
             socket.connect()
             self.socket = socket
         } else {
@@ -115,13 +143,12 @@ class BitfinexExchange: Exchange {
                         self?.setPrice(price, for: currencyPair)
                     }
                 })
-                
+
                 self?.onFetchComplete()
             }.catch { error in
                 print("Error fetching Bitfinex ticker: \(error)")
             }
         }
     }
-    
-}
 
+}
