@@ -98,7 +98,7 @@ struct ExchangeAPIResponse {
 class Exchange {
 
     internal var site: ExchangeSite
-    internal weak var delegate: ExchangeDelegate?
+    internal var delegate: ExchangeDelegate?
     private var requestTimer: Timer?
     var updateInterval = TickerConfig.defaultUpdateInterval
     var availableCurrencyPairs = [CurrencyPair]()

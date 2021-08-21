@@ -57,6 +57,7 @@ class BitfinexExchange: Exchange {
 
             let availableCurrencyPairs = productsResponse.json.arrayValue[0].arrayValue.compactMap { product -> CurrencyPair? in
                 let pairString = product.stringValue
+                let customCode = "t\(pairString.uppercased())"
                 var baseCurrencyCode: String?
                 var quoteCurrencyCode: String?
                 if pairString.contains(":") {
@@ -71,13 +72,13 @@ class BitfinexExchange: Exchange {
                 }
 
                 guard let baseCurrencyCode = baseCurrencyCode, let quoteCurrencyCode = quoteCurrencyCode, let baseCurrency = availableCurrencies[baseCurrencyCode], let quoteCurrency = availableCurrencies[quoteCurrencyCode] else {
-                    return nil
+                    return CurrencyPair(baseCurrency: baseCurrencyCode, quoteCurrency: quoteCurrencyCode, customCode: customCode)
                 }
 
                 return CurrencyPair(
                     baseCurrency: baseCurrency,
                     quoteCurrency: quoteCurrency,
-                    customCode: "t\(pairString.uppercased())"
+                    customCode: customCode
                 )
             }
 

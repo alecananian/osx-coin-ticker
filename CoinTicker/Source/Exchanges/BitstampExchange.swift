@@ -45,16 +45,17 @@ class BitstampExchange: Exchange {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json.arrayValue.compactMap { result in
                 let currencyCodes = result["name"].stringValue.split(separator: "/")
-                guard currencyCodes.count == 2, let baseCurrency = currencyCodes.first, let quoteCurrency = currencyCodes.last else {
+                let displayNames = result["description"].stringValue.components(separatedBy: " / ")
+                guard currencyCodes.count == 2, let baseCurrencyCode = currencyCodes.first, let quoteCurrencyCode = currencyCodes.last else {
                     return nil
                 }
 
                 let customCode = result["url_symbol"].string
-                guard let currencyPair = CurrencyPair(baseCurrency: String(baseCurrency), quoteCurrency: String(quoteCurrency), customCode: customCode) else {
-                    return nil
+                guard let baseCurrency = Currency(code: String(baseCurrencyCode), customDisplayName: displayNames.first), let quoteCurrency = Currency(code: String(quoteCurrencyCode), customDisplayName: displayNames.last) else {
+                    return CurrencyPair(baseCurrency: String(baseCurrencyCode), quoteCurrency: String(quoteCurrencyCode), customCode: customCode)
                 }
 
-                return (currencyPair.baseCurrency.isPhysical ? nil : currencyPair)
+                return (baseCurrency.isPhysical ? nil : CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode))
             }
         }
     }

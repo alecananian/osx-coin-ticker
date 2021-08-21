@@ -56,12 +56,10 @@ class GDAXExchange: Exchange {
             }
 
             let availableCurrencyPairs = productsResponse.json.arrayValue.compactMap { product -> CurrencyPair? in
-                guard let baseCurrencyCode = product["base_currency"].string, let quoteCurrencyCode = product["quote_currency"].string else {
-                    return nil
-                }
-
+                let baseCurrencyCode = product["base_currency"].string
+                let quoteCurrencyCode = product["quote_currency"].string
                 let customCode = product["id"].string
-                guard let baseCurrency = availableCurrencies[baseCurrencyCode], let quoteCurrency = availableCurrencies[quoteCurrencyCode] else {
+                guard let baseCurrencyCode = baseCurrencyCode, let quoteCurrencyCode = quoteCurrencyCode, let baseCurrency = availableCurrencies[baseCurrencyCode], let quoteCurrency = availableCurrencies[quoteCurrencyCode] else {
                     return CurrencyPair(baseCurrency: baseCurrencyCode, quoteCurrency: quoteCurrencyCode, customCode: customCode)
                 }
 
