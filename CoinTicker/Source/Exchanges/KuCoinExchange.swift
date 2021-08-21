@@ -29,16 +29,16 @@ import SwiftyJSON
 import PromiseKit
 
 class KuCoinExchange: Exchange {
-    
+
     private struct Constants {
         static let ProductListAPIPath = "https://api.kucoin.com/api/v1/symbols"
         static let TickerAPIPathFormat = "https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .kucoin, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json["data"].arrayValue.compactMap { data in
@@ -50,7 +50,7 @@ class KuCoinExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
@@ -66,7 +66,7 @@ class KuCoinExchange: Exchange {
                 default: break
                 }
             })
-            
+
             self?.onFetchComplete()
         }
     }

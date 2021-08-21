@@ -29,15 +29,15 @@ import SwiftyJSON
 import PromiseKit
 
 class KorbitExchange: Exchange {
-    
+
     private struct Constants {
         static let TickerAPIPathFormat = "https://api.korbit.co.kr/v1/ticker?currency_pair=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .korbit, delegate: delegate)
     }
-    
+
     override func load() {
         setAvailableCurrencyPairs([
             CurrencyPair(baseCurrency: "BTC", quoteCurrency: "KRW", customCode: "btc_krw")!,
@@ -47,7 +47,7 @@ class KorbitExchange: Exchange {
             CurrencyPair(baseCurrency: "XRP", quoteCurrency: "KRW", customCode: "xrp_krw")!
         ])
     }
-    
+
     override internal func fetch() {
         _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
@@ -63,7 +63,7 @@ class KorbitExchange: Exchange {
                 default: break
                 }
             })
-            
+
             self?.onFetchComplete()
         }
     }

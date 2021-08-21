@@ -28,29 +28,29 @@ import Foundation
 import SwiftyJSON
 
 class LBankExchange: Exchange {
-    
+
     private struct Constants {
         static let ProductListAPIPath = "https://api.lbank.info/v1/currencyPairs.do"
         static let FullTickerAPIPath = "https://api.lbank.info/v1/ticker.do?symbol=all"
         static let SingleTickerAPIPathFormat = "https://api.lbank.info/v1/ticker.do?symbol=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .lbank, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json.arrayValue.compactMap { data in
                 guard let customCode = data.string else {
                     return nil
                 }
-                
+
                 let customCodeParts = customCode.split(separator: "_")
                 guard let baseCurrency = customCodeParts.first, let quoteCurrency = customCodeParts.last else {
                     return nil
                 }
-                
+
                 return CurrencyPair(
                     baseCurrency: String(baseCurrency),
                     quoteCurrency: String(quoteCurrency),
@@ -59,7 +59,7 @@ class LBankExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         let apiPath: String
         let isSingleTicker = (selectedCurrencyPairs.count == 1)
@@ -68,7 +68,7 @@ class LBankExchange: Exchange {
         } else {
             apiPath = Constants.FullTickerAPIPath
         }
-        
+
         requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
                 let results = result.json.array ?? [result.json]
@@ -77,7 +77,7 @@ class LBankExchange: Exchange {
                         strongSelf.setPrice(result["ticker"]["latest"].doubleValue, for: currencyPair)
                     }
                 })
-                
+
                 strongSelf.onFetchComplete()
             }
         }.catch { error in

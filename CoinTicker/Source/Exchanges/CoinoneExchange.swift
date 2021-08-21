@@ -29,15 +29,15 @@ import SwiftyJSON
 import PromiseKit
 
 class CoinoneExchange: Exchange {
-    
+
     private struct Constants {
         static let TickerAPIPathFormat = "https://api.coinone.co.kr/ticker/?currency=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .coinone, delegate: delegate)
     }
-    
+
     override func load() {
         setAvailableCurrencyPairs([
             CurrencyPair(baseCurrency: "BTC", quoteCurrency: "KRW", customCode: "btc")!,
@@ -51,7 +51,7 @@ class CoinoneExchange: Exchange {
             CurrencyPair(baseCurrency: "XRP", quoteCurrency: "KRW", customCode: "xrp")!
         ])
     }
-    
+
     override internal func fetch() {
         _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
@@ -67,9 +67,9 @@ class CoinoneExchange: Exchange {
                 default: break
                 }
             })
-            
+
             self?.onFetchComplete()
         }
     }
-    
+
 }

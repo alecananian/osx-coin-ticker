@@ -28,15 +28,15 @@ import Foundation
 import SwiftyJSON
 
 class BTCTurkExchange: Exchange {
-    
+
     private struct Constants {
         static let FullTickerAPIPath = "https://api.btcturk.com/api/v2/ticker"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .btcturk, delegate: delegate)
     }
-    
+
     override func load() {
         setAvailableCurrencyPairs([
             CurrencyPair(baseCurrency: "BTC", quoteCurrency: "TRY", customCode: "BTCTRY")!,
@@ -45,21 +45,21 @@ class BTCTurkExchange: Exchange {
             CurrencyPair(baseCurrency: "XRP", quoteCurrency: "TRY", customCode: "XRPTRY")!
         ])
     }
-    
+
     override internal func fetch() {
         requestAPI(Constants.FullTickerAPIPath).map { [weak self] result in
             result.json["data"].arrayValue.forEach({ data in
                 let (productId, price) = (data["pair"].stringValue, data["last"].doubleValue)
-                
+
                 if let currencyPair = self?.selectedCurrencyPair(withCustomCode: productId) {
                     self?.setPrice(price, for: currencyPair)
                 }
             })
-            
+
             self?.onFetchComplete()
         }.catch { error in
             print("Error fetching BTCTurk ticker: \(error)")
         }
     }
-    
+
 }

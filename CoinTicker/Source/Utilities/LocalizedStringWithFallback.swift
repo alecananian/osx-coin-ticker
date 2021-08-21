@@ -27,7 +27,7 @@
 import Foundation
 
 extension String {
-    
+
     static func LocalizedStringWithFallback(_ key: String, comment: String) -> String {
         var localizedString = NSLocalizedString(key, comment: comment)
         if localizedString == key {
@@ -35,8 +35,8 @@ extension String {
                 localizedString = bundle.localizedString(forKey: key, value: nil, table: nil)
             }
         }
-        
+
         return localizedString
     }
-    
+
 }

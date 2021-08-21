@@ -30,18 +30,18 @@ import SwiftyJSON
 import PromiseKit
 
 class GDAXExchange: Exchange {
-    
+
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://ws-feed.pro.coinbase.com")!
         static let ProductListAPIPath = "https://api.pro.coinbase.com/products"
         static let CurrencyListAPIPath = "https://api.pro.coinbase.com/currencies"
         static let TickerAPIPathFormat = "https://api.pro.coinbase.com/products/%@/ticker"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .gdax, delegate: delegate)
     }
-    
+
     override func load() {
         _ = firstly {
             when(fulfilled: requestAPI(Constants.ProductListAPIPath), requestAPI(Constants.CurrencyListAPIPath))
@@ -51,36 +51,36 @@ class GDAXExchange: Exchange {
                 guard let code = currency["id"].string else {
                     continue
                 }
-                
+
                 availableCurrencies[code] = Currency(code: code, customDisplayName: currency["name"].string, customSymbol: currency["details"].dictionary?["symbol"]?.string)
             }
-            
+
             let availableCurrencyPairs = productsResponse.json.arrayValue.compactMap { product -> CurrencyPair? in
                 guard let baseCurrencyCode = product["base_currency"].string, let quoteCurrencyCode = product["quote_currency"].string else {
                     return nil
                 }
-                
+
                 let customCode = product["id"].string
                 guard let baseCurrency = availableCurrencies[baseCurrencyCode], let quoteCurrency = availableCurrencies[quoteCurrencyCode] else {
                     return CurrencyPair(baseCurrency: baseCurrencyCode, quoteCurrency: quoteCurrencyCode, customCode: customCode)
                 }
-                
+
                 return CurrencyPair(
                     baseCurrency: baseCurrency,
                     quoteCurrency: quoteCurrency,
                     customCode: customCode
                 )
             }
-            
+
             self?.setAvailableCurrencyPairs(availableCurrencyPairs)
         }
     }
-    
+
     override internal func fetch() {
         if isUpdatingInRealTime {
             let socket = WebSocket(request: URLRequest(url: Constants.WebSocketURL))
             socket.callbackQueue = socketResponseQueue
-            
+
             let productIds: [String] = selectedCurrencyPairs.map({ $0.customCode })
             socket.onEvent = { [weak self] event in
                 switch event {
@@ -94,7 +94,7 @@ class GDAXExchange: Exchange {
                     if let string = json.rawString() {
                         socket.write(string: string)
                     }
-                    
+
                 case .text(let text):
                     if let strongSelf = self {
                         let json = JSON(parseJSON: text)
@@ -103,12 +103,12 @@ class GDAXExchange: Exchange {
                             strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                         }
                     }
-                    
+
                 default:
                     break
                 }
             }
-            
+
             socket.connect()
             self.socket = socket
         } else {
@@ -126,7 +126,7 @@ class GDAXExchange: Exchange {
                     default: break
                     }
                 })
-                
+
                 self?.onFetchComplete()
             }
         }

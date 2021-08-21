@@ -28,17 +28,17 @@ import Foundation
 import SwiftyJSON
 
 class ZBExchange: Exchange {
-    
+
     private struct Constants {
         static let ProductListAPIPath = "http://api.zb.com/data/v1/markets"
         static let FullTickerAPIPath = "http://api.zb.com/data/v1/allTicker"
         static let SingleTickerAPIPathFormat = "http://api.zb.com/data/v1/ticker?market=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .zb, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json.dictionaryValue.keys.compactMap { customCode in
@@ -46,7 +46,7 @@ class ZBExchange: Exchange {
                 guard let baseCurrency = customCodeParts.first, let quoteCurrency = customCodeParts.last else {
                     return nil
                 }
-                
+
                 return CurrencyPair(
                     baseCurrency: String(baseCurrency),
                     quoteCurrency: String(quoteCurrency),
@@ -55,7 +55,7 @@ class ZBExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         let apiPath: String
         if selectedCurrencyPairs.count == 1, let currencyPair = selectedCurrencyPairs.first {
@@ -63,7 +63,7 @@ class ZBExchange: Exchange {
         } else {
             apiPath = Constants.FullTickerAPIPath
         }
-        
+
         requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
                 let data = result.json
@@ -76,13 +76,12 @@ class ZBExchange: Exchange {
                         }
                     })
                 }
-                
+
                 strongSelf.onFetchComplete()
             }
         }.catch { error in
             print("Error fetching ZB.COM ticker: \(error)")
         }
     }
-    
-}
 
+}

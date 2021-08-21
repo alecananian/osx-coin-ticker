@@ -27,37 +27,37 @@
 import Cocoa
 
 struct Currency: Codable {
-    
+
     var code: String
     var customDisplayName: String?
     var customSymbol: String?
-    
+
     init?(code: String?, customDisplayName: String? = nil, customSymbol: String? = nil) {
         guard var normalizedCode = code?.uppercased(), normalizedCode != "123" else {
             return nil
         }
-        
+
         // Further normalization for Kraken API which prefixes X for crypto currencies and Z for physical
         if normalizedCode.count >= 4 && (normalizedCode.first == "X" || normalizedCode.first == "Z") {
             normalizedCode = String(normalizedCode.suffix(normalizedCode.count - 1))
         }
-        
+
         self.code = normalizedCode
         self.customDisplayName = customDisplayName
         self.customSymbol = customSymbol
     }
-    
+
     var displayName: String {
         let displayNameKey = "currency.\(internalCode.lowercased()).title"
         let displayName = customDisplayName ?? String.LocalizedStringWithFallback(displayNameKey, comment: "Currency Title")
         return (displayName != displayNameKey && displayName != code ? "\(code) (\(displayName))" : code)
     }
-    
+
     var symbol: String? {
         if let customSymbol = customSymbol {
             return customSymbol
         }
-        
+
         switch internalCode {
         case "AUD": return "$"
         case "BRL": return "R$"
@@ -81,7 +81,7 @@ struct Currency: Codable {
         default: return (isPhysical ? nil : code)
         }
     }
-    
+
     // Normalize varying codes from different exchanges internally so we can equate currencies
     private var internalCode: String {
         switch code {
@@ -98,15 +98,15 @@ struct Currency: Codable {
         default: return code
         }
     }
-    
+
     var iconImage: NSImage? {
         return (NSImage(named: internalCode) ?? smallIconImage)
     }
-    
+
     var smallIconImage: NSImage? {
         return NSImage(named: "\(internalCode)_small")
     }
-    
+
     var isPhysical: Bool {
         return [
             "AUD",
@@ -122,40 +122,40 @@ struct Currency: Codable {
             "TRY",
             "UAH",
             "USD",
-            "ZAR",
+            "ZAR"
         ].contains(internalCode)
     }
-    
+
     var isBitcoin: Bool {
         return (internalCode == "BTC")
     }
-    
+
 }
 
 extension Currency: Hashable {
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(code)
     }
-    
+
 }
 
 extension Currency: Equatable {
-    
+
     static func <(lhs: Currency, rhs: Currency) -> Bool {
         if lhs.isBitcoin && !rhs.isBitcoin {
             return true
         }
-        
+
         if !lhs.isBitcoin && rhs.isBitcoin {
             return false
         }
-        
+
         return lhs.code < rhs.code
     }
-    
+
     static func ==(lhs: Currency, rhs: Currency) -> Bool {
         return lhs.internalCode == rhs.internalCode
     }
-    
+
 }

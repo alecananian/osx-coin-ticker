@@ -29,16 +29,16 @@ import SwiftyJSON
 import PromiseKit
 
 class BiboxExchange: Exchange {
-    
+
     private struct Constants {
         static let ProductListAPIPath = "https://api.bibox.com/v1/mdata?cmd=pairList"
         static let TickerAPIPathFormat = "https://api.bibox.com/v1/mdata?cmd=ticker&pair=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .bibox, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json["result"].arrayValue.compactMap { result in
@@ -47,7 +47,7 @@ class BiboxExchange: Exchange {
                 guard currencyCodes.count == 2, let baseCurrency = currencyCodes.first, let quoteCurrency = currencyCodes.last else {
                     return nil
                 }
-                
+
                 return CurrencyPair(
                     baseCurrency: String(baseCurrency),
                     quoteCurrency: String(quoteCurrency),
@@ -56,7 +56,7 @@ class BiboxExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
@@ -72,9 +72,9 @@ class BiboxExchange: Exchange {
                 default: break
                 }
             })
-            
+
             self?.onFetchComplete()
         }
     }
-    
+
 }

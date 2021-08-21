@@ -28,15 +28,15 @@ import Foundation
 import SwiftyJSON
 
 class BithumbExchange: Exchange {
-    
+
     private struct Constants {
         static let FullTickerAPIPath = "https://api.bithumb.com/public/ticker/ALL"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .bithumb, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.FullTickerAPIPath) {
             $0.json["data"].compactMap { data in
@@ -48,7 +48,7 @@ class BithumbExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         requestAPI(Constants.FullTickerAPIPath).map { [weak self] result in
             result.json["data"].forEach({ data in
@@ -57,11 +57,11 @@ class BithumbExchange: Exchange {
                     self?.setPrice(info["closing_price"].doubleValue, for: currencyPair)
                 }
             })
-            
+
             self?.onFetchComplete()
         }.catch { error in
             print("Error fetching Bithumb ticker: \(error)")
         }
     }
-    
+
 }

@@ -29,16 +29,16 @@ import SwiftyJSON
 import PromiseKit
 
 class OKExExchange: Exchange {
-    
+
     private struct Constants {
         static let ProductListAPIPath = "https://www.okex.com/api/spot/v3/instruments"
         static let TickerAPIPathFormat = "https://www.okex.com/api/spot/v3/instruments/%@/ticker"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .okex, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json.arrayValue.compactMap { result in
@@ -50,7 +50,7 @@ class OKExExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
@@ -66,10 +66,9 @@ class OKExExchange: Exchange {
                 default: break
                 }
             })
-            
+
             self?.onFetchComplete()
         }
     }
-    
-}
 
+}

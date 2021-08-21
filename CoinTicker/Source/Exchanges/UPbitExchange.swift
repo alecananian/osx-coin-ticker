@@ -28,16 +28,16 @@ import Foundation
 import SwiftyJSON
 
 class UPbitExchange: Exchange {
-    
+
     private struct Constants {
         static let ProductListAPIPath = "https://api.upbit.com/v1/market/all"
         static let TickerAPIPathFormat = "https://api.upbit.com/v1/ticker?markets=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .upbit, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json.arrayValue.compactMap { data in
@@ -46,7 +46,7 @@ class UPbitExchange: Exchange {
                 guard let quoteCurrency = customCodeParts.first, let baseCurrency = customCodeParts.last else {
                     return nil
                 }
-                
+
                 return CurrencyPair(
                     baseCurrency: String(baseCurrency),
                     quoteCurrency: String(quoteCurrency),
@@ -55,7 +55,7 @@ class UPbitExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         let productIds: [String] = selectedCurrencyPairs.map({ $0.customCode })
         let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
@@ -65,7 +65,7 @@ class UPbitExchange: Exchange {
                     self?.setPrice(data["trade_price"].doubleValue, for: currencyPair)
                 }
             })
-            
+
             self?.onFetchComplete()
         }.catch { error in
             print("Error fetching UPbit ticker: \(error)")

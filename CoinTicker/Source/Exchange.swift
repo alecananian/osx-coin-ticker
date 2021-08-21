@@ -55,7 +55,7 @@ enum ExchangeSite: Int, Codable {
     case poloniex = 300
     case upbit = 350
     case zb = 400
-    
+
     func exchange(delegate: ExchangeDelegate? = nil) -> Exchange {
         switch self {
         case .bibox: return BiboxExchange(delegate: delegate)
@@ -96,48 +96,48 @@ struct ExchangeAPIResponse {
 }
 
 class Exchange {
-    
+
     internal var site: ExchangeSite
-    internal var delegate: ExchangeDelegate?
+    internal weak var delegate: ExchangeDelegate?
     private var requestTimer: Timer?
     var updateInterval = TickerConfig.defaultUpdateInterval
     var availableCurrencyPairs = [CurrencyPair]()
     var selectedCurrencyPairs = [CurrencyPair]()
     private var currencyPrices = [String: Double]()
-    
+
     private lazy var apiResponseQueue: DispatchQueue = { [unowned self] in
         return DispatchQueue(label: "cointicker.\(self.site.rawValue)-api", qos: .utility, attributes: [.concurrent])
     }()
-    
+
     internal var socket: WebSocket?
     internal lazy var socketResponseQueue: DispatchQueue = { [unowned self] in
         return DispatchQueue(label: "cointicker.\(self.site.rawValue)-socket")
     }()
-    
+
     internal var isUpdatingInRealTime: Bool {
         return updateInterval == TickerConfig.Constants.RealTimeUpdateInterval
     }
-    
+
     var isSingleBaseCurrencySelected: Bool {
         return (Set(selectedCurrencyPairs.map({ $0.baseCurrency })).count == 1)
     }
-    
+
     // MARK: Initialization
     deinit {
         stop()
     }
-    
+
     init(site: ExchangeSite, delegate: ExchangeDelegate? = nil) {
         self.site = site
         self.delegate = delegate
     }
-    
+
     // MARK: Currency Helpers
     func toggleCurrencyPair(baseCurrency: Currency, quoteCurrency: Currency) {
         guard let currencyPair = availableCurrencyPairs.first(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency }) else {
             return
         }
-        
+
         if let index = selectedCurrencyPairs.firstIndex(of: currencyPair) {
             if selectedCurrencyPairs.count > 0 {
                 selectedCurrencyPairs.remove(at: index)
@@ -151,32 +151,32 @@ class Exchange {
             TrackingUtils.didSelectCurrencyPair(currencyPair)
         }
     }
-    
+
     func isCurrencyPairSelected(baseCurrency: Currency, quoteCurrency: Currency? = nil) -> Bool {
         if let quoteCurrency = quoteCurrency {
             return selectedCurrencyPairs.contains(where: { $0.baseCurrency == baseCurrency && $0.quoteCurrency == quoteCurrency })
         }
-        
+
         return selectedCurrencyPairs.contains(where: { $0.baseCurrency == baseCurrency })
     }
-    
+
     func selectedCurrencyPair(withCustomCode customCode: String) -> CurrencyPair? {
         return selectedCurrencyPairs.first(where: { $0.customCode == customCode })
     }
-    
+
     internal func setPrice(_ price: Double, for currencyPair: CurrencyPair) {
         currencyPrices[currencyPair.customCode] = price
     }
-    
+
     func price(for currencyPair: CurrencyPair) -> Double {
         return currencyPrices[currencyPair.customCode] ?? 0
     }
-    
+
     // MARK: Exchange Request Lifecycle
     func load() {
         // Override
     }
-    
+
     internal func load(from apiPath: String, getAvailableCurrencyPairs: @escaping (ExchangeAPIResponse) -> [CurrencyPair]) {
         requestAPI(apiPath).map { [weak self] result in
             self?.setAvailableCurrencyPairs(getAvailableCurrencyPairs(result))
@@ -184,22 +184,22 @@ class Exchange {
             print("Error loading exchange: \(error)")
         }
     }
-    
+
     internal func setAvailableCurrencyPairs(_ availableCurrencyPairs: [CurrencyPair]) {
         self.availableCurrencyPairs = availableCurrencyPairs.sorted()
         selectedCurrencyPairs = selectedCurrencyPairs.compactMap { currencyPair in
             if let newCurrencyPair = self.availableCurrencyPairs.first(where: { $0 == currencyPair }) {
                 return newCurrencyPair
             }
-            
+
             // Keep pair selected if new exchange has USDT instead of USD or vice versa
             if currencyPair.quoteCurrency.code == "USDT" || currencyPair.quoteCurrency.code == "USD", let newCurrencyPair = self.availableCurrencyPairs.first(where: { $0.baseCurrency == currencyPair.baseCurrency && ($0.quoteCurrency.code == "USD" || $0.quoteCurrency.code == "USDT") }) {
                 return newCurrencyPair
             }
-            
+
             return nil
         }
-        
+
         if selectedCurrencyPairs.count == 0 {
             let localCurrency = Currency(code: Locale.current.currencyCode)
             if let currencyPair = self.availableCurrencyPairs.first(where: { $0.quoteCurrency == localCurrency }) ??
@@ -209,20 +209,20 @@ class Exchange {
                 selectedCurrencyPairs.append(currencyPair)
             }
         }
-        
+
         delegate?.exchange(self, didUpdateAvailableCurrencyPairs: self.availableCurrencyPairs)
         fetch()
     }
-    
+
     internal func fetch() {
         // Override
     }
-    
+
     internal func onFetchComplete() {
         delegate?.exchangeDidUpdatePrices(self)
         startRequestTimer()
     }
-    
+
     internal func stop() {
         socket?.disconnect()
         requestTimer?.invalidate()
@@ -231,7 +231,7 @@ class Exchange {
             dataTasks.forEach({ $0.cancel() })
         })
     }
-    
+
     private func startRequestTimer() {
         DispatchQueue.main.async {
             self.requestTimer = Timer.scheduledTimer(timeInterval: Double(self.updateInterval),
@@ -241,18 +241,18 @@ class Exchange {
                                                      repeats: false)
         }
     }
-    
+
     @objc private func onRequestTimerFired(_ timer: Timer) {
         requestTimer?.invalidate()
         requestTimer = nil
         fetch()
     }
-    
+
     func reset() {
         stop()
         fetch()
     }
-    
+
     // MARK: API Helpers
     internal func requestAPI(_ apiPath: String, for representedObject: Any? = nil) -> Promise<ExchangeAPIResponse> {
         return Promise { seal in

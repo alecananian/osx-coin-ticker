@@ -28,21 +28,21 @@ import Foundation
 import SwiftyJSON
 
 class ParibuExchange: Exchange {
-    
+
     private struct Constants {
         static let TickerAPIPath = "https://www.paribu.com/ticker"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .paribu, delegate: delegate)
     }
-    
+
     override func load() {
         setAvailableCurrencyPairs([
             CurrencyPair(baseCurrency: "BTC", quoteCurrency: "TRY", customCode: "BTC_TL")!
         ])
     }
-    
+
     override internal func fetch() {
         let currencyPair = availableCurrencyPairs.first!
         requestAPI(Constants.TickerAPIPath).map { [weak self] result in
@@ -52,5 +52,5 @@ class ParibuExchange: Exchange {
             print("Error fetching Paribu ticker: \(error)")
         }
     }
-    
+
 }

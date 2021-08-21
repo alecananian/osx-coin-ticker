@@ -30,17 +30,17 @@ import SwiftyJSON
 import PromiseKit
 
 class BitstampExchange: Exchange {
-    
+
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://ws.bitstamp.net")!
         static let ProductListAPIPath = "https://www.bitstamp.net/api/v2/trading-pairs-info/"
         static let TickerAPIPathFormat = "https://www.bitstamp.net/api/v2/ticker/%@/"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .bitstamp, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json.arrayValue.compactMap { result in
@@ -48,17 +48,17 @@ class BitstampExchange: Exchange {
                 guard currencyCodes.count == 2, let baseCurrency = currencyCodes.first, let quoteCurrency = currencyCodes.last else {
                     return nil
                 }
-                
+
                 let customCode = result["url_symbol"].string
                 guard let currencyPair = CurrencyPair(baseCurrency: String(baseCurrency), quoteCurrency: String(quoteCurrency), customCode: customCode) else {
                     return nil
                 }
-                
+
                 return (currencyPair.baseCurrency.isPhysical ? nil : currencyPair)
             }
         }
     }
-    
+
     private func fetchAPI() {
         _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
@@ -74,11 +74,11 @@ class BitstampExchange: Exchange {
                 default: break
                 }
             })
-            
+
             self?.onFetchComplete()
         }
     }
-    
+
     override internal func fetch() {
         if isUpdatingInRealTime {
             let socket = WebSocket(request: URLRequest(url: Constants.WebSocketURL))
@@ -93,14 +93,14 @@ class BitstampExchange: Exchange {
                                 "channel": "live_trades_\(currencyPair.customCode)"
                             ]
                         ])
-                        
+
                         if let string = json.rawString() {
                             socket.write(string: string)
                         }
-                        
+
                         self?.fetchAPI()
                     })
-                    
+
                 case .text(let text):
                     if let strongSelf = self {
                         let result = JSON(parseJSON: text)
@@ -112,12 +112,12 @@ class BitstampExchange: Exchange {
                             }
                         }
                     }
-                    
+
                 default:
                     break
                 }
             }
-            
+
             socket.connect()
             self.socket = socket
         } else {

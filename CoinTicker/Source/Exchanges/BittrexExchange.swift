@@ -29,16 +29,16 @@ import SwiftyJSON
 import PromiseKit
 
 class BittrexExchange: Exchange {
-    
+
     private struct Constants {
         static let ProductListAPIPath = "https://bittrex.com/api/v1.1/public/getmarkets"
         static let TickerAPIPathFormat = "https://bittrex.com/api/v1.1/public/getticker?market=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .bittrex, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json["result"].arrayValue.compactMap { result in
@@ -50,7 +50,7 @@ class BittrexExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
@@ -66,10 +66,9 @@ class BittrexExchange: Exchange {
                 default: break
                 }
             })
-            
+
             self?.onFetchComplete()
         }
     }
-    
-}
 
+}

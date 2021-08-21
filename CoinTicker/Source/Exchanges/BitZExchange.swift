@@ -29,16 +29,16 @@ import SwiftyJSON
 import PromiseKit
 
 class BitZExchange: Exchange {
-    
+
     private struct Constants {
         static let ProductListAPIPath = "https://apiv2.bitz.com/Market/symbolList"
         static let TickerAPIPathFormat = "https://apiv2.bitz.com/Market/ticker?symbol=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .bitz, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json["data"].dictionaryValue.keys.compactMap { customCode in
@@ -46,16 +46,16 @@ class BitZExchange: Exchange {
                 guard let baseCurrency = customCodeParts.first, let quoteCurrency = customCodeParts.last else {
                     return nil
                 }
-                
+
                 guard let currencyPair = CurrencyPair(baseCurrency: String(baseCurrency), quoteCurrency: String(quoteCurrency), customCode: customCode) else {
                     return nil
                 }
-                
+
                 return (currencyPair.baseCurrency.isPhysical ? nil : currencyPair)
             }
         }
     }
-    
+
     override internal func fetch() {
         _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
@@ -71,10 +71,9 @@ class BitZExchange: Exchange {
                 default: break
                 }
             })
-            
+
             self?.onFetchComplete()
         }
     }
-    
-}
 
+}

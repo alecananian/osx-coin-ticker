@@ -28,29 +28,29 @@ import Foundation
 import SwiftyJSON
 
 class GateIOExchange: Exchange {
-    
+
     private struct Constants {
         static let ProductListAPIPath = "https://data.gate.io/api2/1/pairs"
         static let FullTickerAPIPath = "https://data.gate.io/api2/1/tickers"
         static let SingleTickerAPIPathFormat = "https://data.gate.io/api2/1/ticker/%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .gateio, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json.arrayValue.compactMap { data in
                 guard let customCode = data.string else {
                     return nil
                 }
-                
+
                 let customCodeParts = customCode.split(separator: "_")
                 guard let baseCurrency = customCodeParts.first, let quoteCurrency = customCodeParts.last else {
                     return nil
                 }
-                
+
                 return CurrencyPair(
                     baseCurrency: String(baseCurrency),
                     quoteCurrency: String(quoteCurrency),
@@ -59,7 +59,7 @@ class GateIOExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         let apiPath: String
         let isSingleTicker = (selectedCurrencyPairs.count == 1)
@@ -68,7 +68,7 @@ class GateIOExchange: Exchange {
         } else {
             apiPath = Constants.FullTickerAPIPath
         }
-        
+
         requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
                 let result = result.json
@@ -81,7 +81,7 @@ class GateIOExchange: Exchange {
                         }
                     })
                 }
-                
+
                 strongSelf.onFetchComplete()
             }
         }.catch { error in

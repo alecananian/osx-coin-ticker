@@ -29,16 +29,16 @@ import SwiftyJSON
 import PromiseKit
 
 class HuobiExchange: Exchange {
-    
+
     private struct Constants {
         static let ProductListAPIPath = "https://api.huobi.pro/v1/common/symbols"
         static let TickerAPIPathFormat = "https://api.huobi.pro/market/detail/merged?symbol=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .huobi, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json["data"].arrayValue.compactMap { result in
@@ -52,7 +52,7 @@ class HuobiExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
             let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
@@ -68,9 +68,9 @@ class HuobiExchange: Exchange {
                 default: break
                 }
             })
-            
+
             self?.onFetchComplete()
         }
     }
-    
+
 }

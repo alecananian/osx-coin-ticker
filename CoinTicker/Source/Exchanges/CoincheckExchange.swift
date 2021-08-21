@@ -28,21 +28,21 @@ import Foundation
 import SwiftyJSON
 
 class CoincheckExchange: Exchange {
-    
+
     private struct Constants {
         static let TickerAPIPath = "https://coincheck.com/api/ticker"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .coincheck, delegate: delegate)
     }
-    
+
     override func load() {
         setAvailableCurrencyPairs([
             CurrencyPair(baseCurrency: "BTC", quoteCurrency: "JPY")!
         ])
     }
-    
+
     override internal func fetch() {
         let currencyPair = availableCurrencyPairs.first!
         requestAPI(Constants.TickerAPIPath).map { [weak self] result in

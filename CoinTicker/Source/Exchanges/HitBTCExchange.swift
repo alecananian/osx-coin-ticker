@@ -30,18 +30,18 @@ import SwiftyJSON
 import PromiseKit
 
 class HitBTCExchange: Exchange {
-    
+
     private struct Constants {
         static let WebSocketURL = URL(string: "wss://api.hitbtc.com/api/2/ws")!
         static let ProductListAPIPath = "https://api.hitbtc.com/api/2/public/symbol"
         static let FullTickerAPIPath = "https://api.hitbtc.com/api/2/public/ticker"
         static let SingleTickerAPIPathFormat = "https://api.hitbtc.com/api/2/public/ticker/%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .hitbtc, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json.arrayValue.compactMap { result in
@@ -53,7 +53,7 @@ class HitBTCExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         let apiPath: String
         if selectedCurrencyPairs.count == 1, let currencyPair = selectedCurrencyPairs.first {
@@ -61,7 +61,7 @@ class HitBTCExchange: Exchange {
         } else {
             apiPath = Constants.FullTickerAPIPath
         }
-        
+
         requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
                 let results = result.json.array ?? [result.json]
@@ -70,7 +70,7 @@ class HitBTCExchange: Exchange {
                         strongSelf.setPrice(result["last"].doubleValue, for: currencyPair)
                     }
                 })
-                
+
                 if strongSelf.isUpdatingInRealTime {
                     strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                 } else {
@@ -80,7 +80,7 @@ class HitBTCExchange: Exchange {
         }.catch { error in
             print("Error fetching HitBTC ticker: \(error)")
         }
-        
+
         if isUpdatingInRealTime {
             let socket = WebSocket(request: URLRequest(url: Constants.WebSocketURL))
             socket.callbackQueue = socketResponseQueue
@@ -94,12 +94,12 @@ class HitBTCExchange: Exchange {
                                 "symbol": currencyPair.customCode
                             ]
                         ])
-                        
+
                         if let string = json.rawString() {
                             socket.write(string: string)
                         }
                     })
-                    
+
                 case .text(let text):
                     if let strongSelf = self {
                         let result = JSON(parseJSON: text)
@@ -112,16 +112,15 @@ class HitBTCExchange: Exchange {
                             }
                         }
                     }
-                    
+
                 default:
                     break
                 }
             }
-            
+
             socket.connect()
             self.socket = socket
         }
     }
-    
-}
 
+}

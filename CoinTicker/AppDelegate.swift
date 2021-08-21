@@ -41,12 +41,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @IBOutlet private weak var quitMenuItem: NSMenuItem!
     private var currencyMenuItems = [NSMenuItem]()
     private var currencyFormatter = NumberFormatter()
-    
+
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     private let reachabilityManager = Alamofire.NetworkReachabilityManager()!
-    
+
     private var currentExchange: Exchange!
-    
+
     // MARK: NSApplicationDelegate
     func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Start AppCenter
@@ -61,21 +61,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 print("Error loading AppCenter app secret: \(error)")
             }
         }
-        
+
         // Listen to workspace status notifications
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(onWorkspaceWillSleep(notification:)), name: NSWorkspace.willSleepNotification, object: nil)
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(onWorkspaceDidWake(notification:)), name: NSWorkspace.didWakeNotification, object: nil)
-        
+
         // Set the main menu
         statusItem.menu = mainMenu
-        
+
         // Load defaults
         currentExchange = TickerConfig.defaultExchange
         currentExchange.delegate = self
         exchangeMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == currentExchange.site.rawValue ? .on : .off) })
         updateIntervalMenuItem.submenu?.items.forEach({ $0.state = ($0.tag == currentExchange.updateInterval ? .on : .off )})
         showIconMenuItem.state = (TickerConfig.showsIcon ? .on : .off)
-        
+
         // Listen for network status
         let reachabilityQueue = DispatchQueue(label: "cointicker.reachability", qos: .utility, attributes: [.concurrent])
         reachabilityManager.startListening(onQueue: reachabilityQueue) { [weak self] status in
@@ -86,7 +86,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 self?.updateMenuWithOfflineText()
             }
         }
-        
+
         if !reachabilityManager.isReachable {
             updateMenuWithOfflineText()
         }
@@ -96,16 +96,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSWorkspace.shared.notificationCenter.removeObserver(self)
         currentExchange?.stop()
     }
-    
+
     // MARK: Notifications
     @objc private func onWorkspaceWillSleep(notification: Notification) {
         currentExchange?.stop()
     }
-    
+
     @objc private func onWorkspaceDidWake(notification: Notification) {
         currentExchange?.fetch()
     }
-    
+
     // MARK: UI Helpers
     private func updateMenuWithOfflineText() {
         DispatchQueue.main.async {
@@ -115,84 +115,84 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             self.statusItem.image = image
         }
     }
-    
+
     // MARK: UI Actions
     @IBAction private func onSelectExchangeSite(sender: AnyObject) {
         if let menuItem = sender as? NSMenuItem, let exchangeSite = ExchangeSite(rawValue: menuItem.tag) {
             if exchangeSite != currentExchange.site {
                 // End current exchange
                 currentExchange.stop()
-                
+
                 // Deselect all exchange menu items and select this one
                 exchangeMenuItem.submenu?.items.forEach({ $0.state = .off })
                 menuItem.state = .on
-                
+
                 // Remove all currency selections
                 currencyMenuItems.forEach({ mainMenu.removeItem($0) })
                 currencyMenuItems.removeAll()
-                
+
                 // Start new exchange
                 let selectedCurrencyPairs = currentExchange.selectedCurrencyPairs
                 currentExchange = exchangeSite.exchange(delegate: self)
                 currentExchange.selectedCurrencyPairs = selectedCurrencyPairs
                 currentExchange.load()
-                
+
                 // Save new data
                 TickerConfig.save(currentExchange)
-                
+
                 // Track analytics
                 TrackingUtils.didSelectExchange(menuItem.title)
             }
         }
     }
-    
+
     @IBAction private func onSelectUpdateInterval(sender: AnyObject) {
         if let menuItem = sender as? NSMenuItem {
             // Reset exchange fetching
             currentExchange.updateInterval = menuItem.tag
             currentExchange.reset()
-            
+
             // Deselect all update interval menu items and select this one
             updateIntervalMenuItem.submenu?.items.forEach({ $0.state = .off })
             menuItem.state = .on
-            
+
             // Save new data
             TickerConfig.save(currentExchange)
         }
     }
-    
+
     @objc private func onSelectQuoteCurrency(sender: AnyObject) {
         guard let menuItem = sender as? NSMenuItem else {
             return
         }
-        
+
         if let baseCurrency = menuItem.parent?.representedObject as? Currency, let quoteCurrency = menuItem.representedObject as? Currency, currentExchange.selectedCurrencyPairs.count > 1 || currentExchange.selectedCurrencyPairs.first != CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency) {
             // Reset exchange fetching
             currentExchange.toggleCurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency)
-            
+
             // Update menus
             updateMenuItems()
-            
+
             // Save new data
             TickerConfig.save(currentExchange)
         }
     }
-    
+
     @IBAction private func onToggleShowIcon(sender: AnyObject) {
         let shouldShowMenuIcon = !TickerConfig.showsIcon
         showIconMenuItem.state = (shouldShowMenuIcon ? .on : .off)
         TickerConfig.showsIcon = shouldShowMenuIcon
-        
+
         updateMenuIcon()
         updatePrices()
-        
+
         TrackingUtils.didShowIcon(shouldShowMenuIcon)
     }
-    
+
     @IBAction private func onQuit(sender: AnyObject) {
         NSApplication.shared.terminate(self)
     }
-    
+
     private func menuItem(forQuoteCurrency quoteCurrency: Currency) -> NSMenuItem {
         let item = NSMenuItem(title: quoteCurrency.displayName, action: #selector(self.onSelectQuoteCurrency(sender:)), keyEquivalent: "")
         item.representedObject = quoteCurrency
@@ -201,7 +201,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         item.image = image
         return item
     }
-    
+
     private func menuItem(forBaseCurrency baseCurrency: Currency) -> NSMenuItem {
         let item = NSMenuItem(title: baseCurrency.displayName, action: nil, keyEquivalent: "")
         item.representedObject = baseCurrency
@@ -210,12 +210,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         item.image = image
         return item
     }
-    
+
     fileprivate func updateMenuItems() {
         DispatchQueue.main.async {
             self.currencyMenuItems.forEach({ self.mainMenu.removeItem($0) })
             self.currencyMenuItems.removeAll()
-            
+
             let indexOffset = self.mainMenu.index(of: self.currencyStartSeparator)
             var menuMapping = [String: NSMenuItem]()
             self.currentExchange.availableCurrencyPairs.forEach { currencyPair in
@@ -233,18 +233,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                         self.currencyMenuItems.append(menuItem)
                         self.mainMenu.insertItem(menuItem, at: menuMapping.count + indexOffset)
                     }
-                    
+
                     let submenuItem = self.menuItem(forQuoteCurrency: quoteCurrency)
                     submenuItem.state = (self.currentExchange.isCurrencyPairSelected(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency) ? .on : .off)
                     menuItem.submenu!.addItem(submenuItem)
                 }
             }
-            
+
             self.updateMenuIcon()
             self.updatePrices()
         }
     }
-    
+
     private func updateMenuIcon() {
         if TickerConfig.showsIcon {
             let iconImage: NSImage
@@ -253,23 +253,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             } else {
                 iconImage = TickerConfig.LogoImage
             }
-            
+
             iconImage.isTemplate = true
             self.statusItem.image = iconImage
         } else {
             self.statusItem.image = nil
         }
     }
-    
+
     private func stringForPrice(_ price: Double, in quoteCurrency: Currency) -> String {
         guard price > 0 else {
             return NSLocalizedString("menu.label.loading", comment: "Label displayed when network requests are loading")
         }
-        
+
         self.currencyFormatter.numberStyle = .currency
         self.currencyFormatter.currencyCode = quoteCurrency.code
         self.currencyFormatter.currencySymbol = quoteCurrency.symbol
-        
+
         let numFractionDigits: Int
         if price < 0.001 {
             // Convert to satoshi if dealing with a small Bitcoin value
@@ -300,12 +300,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             // ex: 14,560.00
             numFractionDigits = 2
         }
-        
+
         self.currencyFormatter.minimumFractionDigits = numFractionDigits
         self.currencyFormatter.maximumFractionDigits = numFractionDigits
         return self.currencyFormatter.string(for: price)!
     }
-    
+
     fileprivate func updatePrices() {
         DispatchQueue.main.async {
             let priceStrings = self.currentExchange.selectedCurrencyPairs.map { currencyPair -> String in
@@ -314,10 +314,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 if self.currentExchange.isSingleBaseCurrencySelected && TickerConfig.showsIcon {
                     return priceString
                 }
-                
+
                 return "\(currencyPair.baseCurrency.code): \(priceString)"
             }
-            
+
             self.statusItem.title = priceStrings.joined(separator: " • ")
         }
     }
@@ -325,13 +325,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 }
 
 extension AppDelegate: ExchangeDelegate {
-    
+
     func exchange(_ exchange: Exchange, didUpdateAvailableCurrencyPairs availableCurrencyPairs: [CurrencyPair]) {
         updateMenuItems()
     }
-    
+
     func exchangeDidUpdatePrices(_ exchange: Exchange) {
         updatePrices()
     }
-    
+
 }

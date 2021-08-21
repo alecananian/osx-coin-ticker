@@ -45,27 +45,27 @@ enum TrackedEventAttributes: String {
 }
 
 struct TrackingUtils {
-    
+
     static func log(_ event: TrackedEvent, withAttributes attributes: [String: String]? = nil) {
         Analytics.trackEvent(event.rawValue, withProperties: attributes)
     }
-    
+
     static func didSelectExchange(_ exchangeName: String) {
         log(.selectExchange, withAttributes: [TrackedEventAttributes.exchange.rawValue: exchangeName])
     }
-    
+
     static func didSelectUpdateInterval(_ updateInterval: Int) {
         log(.selectUpdateInterval, withAttributes: [TrackedEventAttributes.updateInterval.rawValue: String(updateInterval)])
     }
-    
+
     static func didSelectCurrencyPair(_ currencyPair: CurrencyPair) {
         log(.selectCurrencyPair, withAttributes: [TrackedEventAttributes.currencyPair.rawValue: String(describing: currencyPair)])
     }
-    
+
     static func didDeselectCurrencyPair(_ currencyPair: CurrencyPair) {
         log(.deselectCurrencyPair, withAttributes: [TrackedEventAttributes.currencyPair.rawValue: String(describing: currencyPair)])
     }
-    
+
     static func didShowIcon(_ showing: Bool) {
         if showing {
             log(.showIcon)
@@ -73,5 +73,5 @@ struct TrackingUtils {
             log(.hideIcon)
         }
     }
-    
+
 }

@@ -28,16 +28,16 @@ import Foundation
 import SwiftyJSON
 
 class KrakenExchange: Exchange {
-    
+
     private struct Constants {
         static let ProductListAPIPath = "https://api.kraken.com/0/public/AssetPairs"
         static let TickerAPIPathFormat = "https://api.kraken.com/0/public/Ticker?pair=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .kraken, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json["result"].compactMap { data in
@@ -45,7 +45,7 @@ class KrakenExchange: Exchange {
                 guard !productId.contains(".d") else {
                     return nil
                 }
-                
+
                 return CurrencyPair(
                     baseCurrency: result["base"].string,
                     quoteCurrency: result["quote"].string,
@@ -54,7 +54,7 @@ class KrakenExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         let productIds: [String] = selectedCurrencyPairs.map({ $0.customCode })
         let apiPath = String(format: Constants.TickerAPIPathFormat, productIds.joined(separator: ","))
@@ -64,7 +64,7 @@ class KrakenExchange: Exchange {
                     self?.setPrice(price, for: currencyPair)
                 }
             }
-            
+
             self?.onFetchComplete()
         }.catch { error in
             print("Error fetching Kraken ticker: \(error)")

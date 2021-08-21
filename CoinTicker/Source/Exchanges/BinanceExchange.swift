@@ -29,18 +29,18 @@ import Starscream
 import SwiftyJSON
 
 class BinanceExchange: Exchange {
-    
+
     private struct Constants {
         static let WebSocketPathFormat = "wss://stream.binance.com:9443/stream?streams=%@"
         static let ProductListAPIPath = "https://www.binance.com/api/v3/exchangeInfo"
         static let FullTickerAPIPath = "https://www.binance.com/api/v3/ticker/price"
         static let SingleTickerAPIPathFormat = "https://www.binance.com/api/v3/ticker/price?symbol=%@"
     }
-    
+
     init(delegate: ExchangeDelegate? = nil) {
         super.init(site: .binance, delegate: delegate)
     }
-    
+
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json["symbols"].arrayValue.compactMap { result in
@@ -52,7 +52,7 @@ class BinanceExchange: Exchange {
             }
         }
     }
-    
+
     override internal func fetch() {
         let apiPath: String
         if selectedCurrencyPairs.count == 1, let currencyPair = selectedCurrencyPairs.first {
@@ -60,7 +60,7 @@ class BinanceExchange: Exchange {
         } else {
             apiPath = Constants.FullTickerAPIPath
         }
-        
+
         requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
                 let results = result.json.array ?? [result.json]
@@ -69,7 +69,7 @@ class BinanceExchange: Exchange {
                         strongSelf.setPrice(result["price"].doubleValue, for: currencyPair)
                     }
                 })
-                
+
                 if strongSelf.isUpdatingInRealTime {
                     strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                 } else {
@@ -79,11 +79,11 @@ class BinanceExchange: Exchange {
         }.catch { error in
             print("Error fetching Binance ticker: \(error)")
         }
-        
+
         if isUpdatingInRealTime {
             let currencyPairCodes: [String] = selectedCurrencyPairs.map({ "\($0.customCode.lowercased())@ticker" })
             let socket = WebSocket(request: URLRequest(url: URL(string: String(format: Constants.WebSocketPathFormat, currencyPairCodes.joined(separator: "/")))!))
-            
+
             socket.onEvent = { [weak self] event in
                 switch event {
                 case .text(let text):
@@ -94,15 +94,15 @@ class BinanceExchange: Exchange {
                             strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                         }
                     }
-                    
+
                 default:
                     break
                 }
             }
-            
+
             socket.connect()
             self.socket = socket
         }
     }
-    
+
 }

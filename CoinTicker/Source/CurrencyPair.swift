@@ -27,60 +27,60 @@
 import Foundation
 
 struct CurrencyPair: Comparable, Codable {
-    
+
     var baseCurrency: Currency
     var quoteCurrency: Currency
     var customCode: String
-    
+
     init(baseCurrency: Currency, quoteCurrency: Currency, customCode: String? = nil) {
         self.baseCurrency = baseCurrency
         self.quoteCurrency = quoteCurrency
-        
+
         if let customCode = customCode {
             self.customCode = customCode
         } else {
             self.customCode = "\(baseCurrency.code)\(quoteCurrency.code)"
         }
     }
-    
+
     init?(baseCurrency: String?, quoteCurrency: String?, customCode: String? = nil) {
         guard let baseCurrency = Currency(code: baseCurrency), let quoteCurrency = Currency(code: quoteCurrency) else {
             return nil
         }
-        
+
         self = CurrencyPair(baseCurrency: baseCurrency, quoteCurrency: quoteCurrency, customCode: customCode)
     }
-    
+
 }
 
 extension CurrencyPair: CustomStringConvertible {
-    
+
     var description: String {
         return "\(baseCurrency.code)\(quoteCurrency.code)"
     }
-    
+
 }
 
 extension CurrencyPair: Hashable {
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(String(describing: self))
     }
-    
+
 }
 
 extension CurrencyPair: Equatable {
-    
+
     static func <(lhs: CurrencyPair, rhs: CurrencyPair) -> Bool {
         if lhs.baseCurrency == rhs.baseCurrency {
             return lhs.quoteCurrency < rhs.quoteCurrency
         }
-        
+
         return lhs.baseCurrency < rhs.baseCurrency
     }
-    
+
     static func == (lhs: CurrencyPair, rhs: CurrencyPair) -> Bool {
         return (lhs.baseCurrency == rhs.baseCurrency && lhs.quoteCurrency == rhs.quoteCurrency)
     }
-    
+
 }
