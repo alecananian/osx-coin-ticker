@@ -262,7 +262,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func stringForPrice(_ price: Double, in quoteCurrency: Currency) -> String {
-        guard price > 0 else {
+        guard price >= 0 else {
             return NSLocalizedString("menu.label.loading", comment: "Label displayed when network requests are loading")
         }
 
@@ -270,7 +270,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.currencyFormatter.currencyCode = quoteCurrency.code
         self.currencyFormatter.currencySymbol = quoteCurrency.symbol
 
-        let numFractionDigits: Int
+        var numFractionDigits = 0
         if price < 0.001 {
             // Convert to satoshi if dealing with a small Bitcoin value
             if quoteCurrency.isBitcoin {
@@ -280,7 +280,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 self.currencyFormatter.minimumFractionDigits = 0
                 self.currencyFormatter.maximumFractionDigits = 0
                 return "\(self.currencyFormatter.string(for: price * 1e8)!) sat"
-            } else {
+            } else if price > 0 {
                 // ex: 0.0007330
                 numFractionDigits = 7
             }

@@ -169,7 +169,7 @@ class Exchange {
     }
 
     func price(for currencyPair: CurrencyPair) -> Double {
-        return currencyPrices[currencyPair.customCode] ?? 0
+        return currencyPrices[currencyPair.customCode] ?? -1
     }
 
     // MARK: Exchange Request Lifecycle
