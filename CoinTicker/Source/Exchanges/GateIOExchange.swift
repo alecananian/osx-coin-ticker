@@ -30,9 +30,9 @@ import SwiftyJSON
 class GateIOExchange: Exchange {
 
     private struct Constants {
-        static let ProductListAPIPath = "https://data.gate.io/api2/1/pairs"
-        static let FullTickerAPIPath = "https://data.gate.io/api2/1/tickers"
-        static let SingleTickerAPIPathFormat = "https://data.gate.io/api2/1/ticker/%@"
+        static let ProductListAPIPath = "https://api.gateio.ws/api/v4/spot/currency_pairs"
+        static let FullTickerAPIPath = "https://api.gateio.ws/api/v4/spot/tickers"
+        static let SingleTickerAPIPathFormat = "https://api.gateio.ws/api/v4/spot/tickers?currency_pair=%@"
     }
 
     init(delegate: ExchangeDelegate? = nil) {
@@ -42,19 +42,10 @@ class GateIOExchange: Exchange {
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
             $0.json.arrayValue.compactMap { data in
-                guard let customCode = data.string else {
-                    return nil
-                }
-
-                let customCodeParts = customCode.split(separator: "_")
-                guard let baseCurrency = customCodeParts.first, let quoteCurrency = customCodeParts.last else {
-                    return nil
-                }
-
-                return CurrencyPair(
-                    baseCurrency: String(baseCurrency),
-                    quoteCurrency: String(quoteCurrency),
-                    customCode: customCode
+                CurrencyPair(
+                    baseCurrency: data["base"].stringValue,
+                    quoteCurrency: data["quote"].stringValue,
+                    customCode: data["id"].stringValue
                 )
             }
         }
@@ -72,14 +63,14 @@ class GateIOExchange: Exchange {
         requestAPI(apiPath).map { [weak self] result in
             if let strongSelf = self {
                 let result = result.json
-                if isSingleTicker, let currencyPair = strongSelf.selectedCurrencyPairs.first {
-                    strongSelf.setPrice(result["last"].doubleValue, for: currencyPair)
+                if isSingleTicker, let currencyPair = strongSelf.selectedCurrencyPairs.first, let data = result.arrayValue.first {
+                    strongSelf.setPrice(data["last"].doubleValue, for: currencyPair)
                 } else {
-                    result.dictionaryValue.forEach({ (productId, data) in
-                        if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: productId) {
+                    result.arrayValue.forEach { data in
+                        if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: data["currency_pair"].stringValue) {
                             strongSelf.setPrice(data["last"].doubleValue, for: currencyPair)
                         }
-                    })
+                    }
                 }
 
                 strongSelf.onFetchComplete()
