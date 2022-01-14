@@ -71,6 +71,7 @@ struct Currency: Codable {
         case "PPC": return "Ᵽ"
         case "REP": return "Ɍ"
         case "RUB": return "₽"
+        case "SGD": return "S$"
         case "TRY": return "₺"
         case "UAH": return "₴"
         case "USDS": return "USDⓈ"
@@ -119,6 +120,7 @@ struct Currency: Codable {
             "KRW",
             "NGN",
             "RUB",
+            "SGD",
             "TRY",
             "UAH",
             "USD",
