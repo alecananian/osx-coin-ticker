@@ -32,10 +32,10 @@ import PromiseKit
 class GDAXExchange: Exchange {
 
     private struct Constants {
-        static let WebSocketURL = URL(string: "wss://ws-feed.pro.coinbase.com")!
-        static let ProductListAPIPath = "https://api.pro.coinbase.com/products"
-        static let CurrencyListAPIPath = "https://api.pro.coinbase.com/currencies"
-        static let TickerAPIPathFormat = "https://api.pro.coinbase.com/products/%@/ticker"
+        static let WebSocketURL = URL(string: "wss://ws-feed.exchange.coinbase.com")!
+        static let ProductListAPIPath = "https://api.exchange.coinbase.com/products"
+        static let CurrencyListAPIPath = "https://api.exchange.coinbase.com/currencies"
+        static let TickerAPIPathFormat = "https://api.exchange.coinbase.com/products/%@/ticker"
     }
 
     init(delegate: ExchangeDelegate? = nil) {
