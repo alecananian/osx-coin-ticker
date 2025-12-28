@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -33,15 +33,12 @@
 		709A81BE20E1D243003FEF81 /* BiboxExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709A81BD20E1D243003FEF81 /* BiboxExchange.swift */; };
 		709A81C020E1F7CB003FEF81 /* ZBExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709A81BF20E1F7CB003FEF81 /* ZBExchange.swift */; };
 		709A81C220E1FEFE003FEF81 /* UPbitExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 709A81C120E1FEFD003FEF81 /* UPbitExchange.swift */; };
-		70A6C098201D5EEC0085F3B2 /* appcenter.secret in Resources */ = {isa = PBXBuildFile; fileRef = 70A6C097201D5EEC0085F3B2 /* appcenter.secret */; };
 		70A6C09A2020261E0085F3B2 /* HitBTCExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70A6C0992020261E0085F3B2 /* HitBTCExchange.swift */; };
 		70AE284B1F25214D0082BDD2 /* TrackingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AE284A1F2520FC0082BDD2 /* TrackingUtils.swift */; };
 		70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */; };
 		70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C19EA01EEA310700B668AB /* KrakenExchange.swift */; };
 		70E6F2752581E967007548F6 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2742581E967007548F6 /* Alamofire */; };
 		70E6F2792581E9CF007548F6 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2782581E9CF007548F6 /* PromiseKit */; };
-		70E6F27D2581EA54007548F6 /* AppCenterCrashes in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F27C2581EA54007548F6 /* AppCenterCrashes */; };
-		70E6F27F2581EA54007548F6 /* AppCenterAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F27E2581EA54007548F6 /* AppCenterAnalytics */; };
 		70E6F2832581EA73007548F6 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2822581EA73007548F6 /* Starscream */; };
 		70E6F2872581EA88007548F6 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2862581EA88007548F6 /* SwiftyJSON */; };
 		70F9B705255875D200CBD0B9 /* KuCoinExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70F9B704255875D200CBD0B9 /* KuCoinExchange.swift */; };
@@ -117,7 +114,6 @@
 		709A81BD20E1D243003FEF81 /* BiboxExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BiboxExchange.swift; sourceTree = "<group>"; };
 		709A81BF20E1F7CB003FEF81 /* ZBExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZBExchange.swift; sourceTree = "<group>"; };
 		709A81C120E1FEFD003FEF81 /* UPbitExchange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UPbitExchange.swift; sourceTree = "<group>"; };
-		70A6C097201D5EEC0085F3B2 /* appcenter.secret */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = appcenter.secret; sourceTree = "<group>"; };
 		70A6C0992020261E0085F3B2 /* HitBTCExchange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HitBTCExchange.swift; sourceTree = "<group>"; };
 		70A6C09B202046130085F3B2 /* af */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = af; path = af.lproj/Main.strings; sourceTree = "<group>"; };
 		70A6C09C202046130085F3B2 /* af */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = af; path = af.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -143,8 +139,6 @@
 				70E6F2872581EA88007548F6 /* SwiftyJSON in Frameworks */,
 				70E6F2792581E9CF007548F6 /* PromiseKit in Frameworks */,
 				70E6F2752581E967007548F6 /* Alamofire in Frameworks */,
-				70E6F27F2581EA54007548F6 /* AppCenterAnalytics in Frameworks */,
-				70E6F27D2581EA54007548F6 /* AppCenterCrashes in Frameworks */,
 				70E6F2832581EA73007548F6 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -204,7 +198,6 @@
 				70155C371EEDDD150037A819 /* CoinTicker.entitlements */,
 				705F48531EDE3A29009A629D /* AppDelegate.swift */,
 				705F48621EDE3EC2009A629D /* Source */,
-				70AE284C1F2524C00082BDD2 /* Resources */,
 				705F48571EDE3A29009A629D /* Assets.xcassets */,
 				705F48591EDE3A29009A629D /* Main.storyboard */,
 				705F485C1EDE3A29009A629D /* Info.plist */,
@@ -235,14 +228,6 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		70AE284C1F2524C00082BDD2 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				70A6C097201D5EEC0085F3B2 /* appcenter.secret */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -262,8 +247,6 @@
 			packageProductDependencies = (
 				70E6F2742581E967007548F6 /* Alamofire */,
 				70E6F2782581E9CF007548F6 /* PromiseKit */,
-				70E6F27C2581EA54007548F6 /* AppCenterCrashes */,
-				70E6F27E2581EA54007548F6 /* AppCenterAnalytics */,
 				70E6F2822581EA73007548F6 /* Starscream */,
 				70E6F2862581EA88007548F6 /* SwiftyJSON */,
 			);
@@ -329,7 +312,6 @@
 			packageReferences = (
 				70E6F2732581E967007548F6 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				70E6F2772581E9CF007548F6 /* XCRemoteSwiftPackageReference "PromiseKit" */,
-				70E6F27B2581EA54007548F6 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */,
 				70E6F2812581EA73007548F6 /* XCRemoteSwiftPackageReference "Starscream" */,
 				70E6F2852581EA88007548F6 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 			);
@@ -349,7 +331,6 @@
 			files = (
 				705F48581EDE3A29009A629D /* Assets.xcassets in Resources */,
 				703581E01EDFDBD7003FDF3E /* Localizable.strings in Resources */,
-				70A6C098201D5EEC0085F3B2 /* appcenter.secret in Resources */,
 				705F485B1EDE3A29009A629D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,7 +494,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -568,7 +548,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -663,14 +642,6 @@
 				minimumVersion = 6.13.3;
 			};
 		};
-		70E6F27B2581EA54007548F6 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/microsoft/appcenter-sdk-apple.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.4.1;
-			};
-		};
 		70E6F2812581EA73007548F6 /* XCRemoteSwiftPackageReference "Starscream" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/daltoniam/Starscream.git";
@@ -699,16 +670,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 70E6F2772581E9CF007548F6 /* XCRemoteSwiftPackageReference "PromiseKit" */;
 			productName = PromiseKit;
-		};
-		70E6F27C2581EA54007548F6 /* AppCenterCrashes */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 70E6F27B2581EA54007548F6 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */;
-			productName = AppCenterCrashes;
-		};
-		70E6F27E2581EA54007548F6 /* AppCenterAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 70E6F27B2581EA54007548F6 /* XCRemoteSwiftPackageReference "appcenter-sdk-apple" */;
-			productName = AppCenterAnalytics;
 		};
 		70E6F2822581EA73007548F6 /* Starscream */ = {
 			isa = XCSwiftPackageProductDependency;

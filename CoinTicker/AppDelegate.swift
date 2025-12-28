@@ -26,9 +26,6 @@
 
 import Cocoa
 import Alamofire
-import AppCenter
-import AppCenterAnalytics
-import AppCenterCrashes
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -49,19 +46,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: NSApplicationDelegate
     func applicationDidFinishLaunching(_ aNotification: Notification) {
-        // Start AppCenter
-        if let resourceURL = Bundle.main.url(forResource: "appcenter", withExtension: "secret") {
-            do {
-                let appSecret = try String.init(contentsOf: resourceURL, encoding: .utf8)
-                AppCenter.start(withAppSecret: appSecret.trimmingCharacters(in: .whitespacesAndNewlines), services: [
-                    Analytics.self,
-                    Crashes.self
-                ])
-            } catch {
-                print("Error loading AppCenter app secret: \(error)")
-            }
-        }
-
         // Listen to workspace status notifications
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(onWorkspaceWillSleep(notification:)), name: NSWorkspace.willSleepNotification, object: nil)
         NSWorkspace.shared.notificationCenter.addObserver(self, selector: #selector(onWorkspaceDidWake(notification:)), name: NSWorkspace.didWakeNotification, object: nil)
