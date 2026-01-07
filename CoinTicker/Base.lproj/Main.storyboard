@@ -55,18 +55,6 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="dUd-AL-J0Z"/>
                                         </connections>
                                     </menuItem>
-                                    <menuItem title="Bittrex" tag="225" id="Pde-7u-X42">
-                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                        <connections>
-                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="NPA-sP-cEF"/>
-                                        </connections>
-                                    </menuItem>
-                                    <menuItem title="Bit-Z" tag="230" id="Sdd-vl-X4d">
-                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                        <connections>
-                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="iVi-Dd-Ne5"/>
-                                        </connections>
-                                    </menuItem>
                                     <menuItem title="BTCTurk" tag="233" id="VUp-hv-IJn" userLabel="BTCTurk">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
@@ -155,12 +143,6 @@
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="gXd-Qg-YcQ"/>
-                                        </connections>
-                                    </menuItem>
-                                    <menuItem title="ZB.COM" tag="400" id="Swn-Mm-s5C">
-                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                        <connections>
-                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="P4o-qa-vc2"/>
                                         </connections>
                                     </menuItem>
                                 </items>

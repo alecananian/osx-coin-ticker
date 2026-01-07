@@ -37,8 +37,6 @@ enum ExchangeSite: Int, Codable {
     case bitfinex = 205
     case bithumb = 207
     case bitstamp = 210
-    case bittrex = 225
-    case bitz = 230
     case btcturk = 233
     case coincheck = 235
     case coinone = 237
@@ -54,7 +52,6 @@ enum ExchangeSite: Int, Codable {
     case paribu = 290
     case poloniex = 300
     case upbit = 350
-    case zb = 400
 
     func exchange(delegate: ExchangeDelegate? = nil) -> Exchange {
         switch self {
@@ -63,8 +60,6 @@ enum ExchangeSite: Int, Codable {
         case .bitfinex: return BitfinexExchange(delegate: delegate)
         case .bithumb: return BithumbExchange(delegate: delegate)
         case .bitstamp: return BitstampExchange(delegate: delegate)
-        case .bittrex: return BittrexExchange(delegate: delegate)
-        case .bitz: return BitZExchange(delegate: delegate)
         case .btcturk: return BTCTurkExchange(delegate: delegate)
         case .coincheck: return CoincheckExchange(delegate: delegate)
         case .coinone: return CoinoneExchange(delegate: delegate)
@@ -80,7 +75,6 @@ enum ExchangeSite: Int, Codable {
         case .paribu: return ParibuExchange(delegate: delegate)
         case .poloniex: return PoloniexExchange(delegate: delegate)
         case .upbit: return UPbitExchange(delegate: delegate)
-        case .zb: return ZBExchange(delegate: delegate)
         }
     }
 }

@@ -7,13 +7,11 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - [Bitfinex](https://www.bitfinex.com)
 - [Bithumb](https://bithumb.com)
 - [Bitstamp](https://www.bitstamp.net)
-- [Bittrex](https://bittrex.com)
-- [Bit-Z](https://bit-z.com)
 - [BTCTurk](https://btcturk.com)
 - [Coincheck](https://coincheck.com)
 - [Coinone](https://coinone.co.kr)
 - [Gate.io](https://gate.io)
-- [Coinbase Pro](https://pro.coinbase.com)
+- [Coinbase](https://coinbase.com)
 - [Huobi.pro](https://www.huobi.pro)
 - [Korbit](https://www.korbit.co.kr)
 - [Kraken](https://www.kraken.com)
@@ -23,7 +21,6 @@ CoinTicker is a Mac status bar app that provides the latest prices for Bitcoin, 
 - [Paribu](https://www.paribu.com)
 - [Poloniex](https://poloniex.com)
 - [UPbit](https://www.upbit.com)
-- [ZB.COM](https://www.zb.com)
 
 ## Development
 After downloading or forking the repository, open `CoinTicker.xcodeproj`, let Swift Package Manager fetch all dependencies, then run the application with Product > Run.
