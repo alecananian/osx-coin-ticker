@@ -34,7 +34,6 @@
 		70AE284B1F25214D0082BDD2 /* TrackingUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70AE284A1F2520FC0082BDD2 /* TrackingUtils.swift */; };
 		70BE1FB41EFEFCD90053BC0C /* CoincheckExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70BE1FB31EFEFCCC0053BC0C /* CoincheckExchange.swift */; };
 		70C19EA11EEA328F00B668AB /* KrakenExchange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70C19EA01EEA310700B668AB /* KrakenExchange.swift */; };
-		70E6F2752581E967007548F6 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2742581E967007548F6 /* Alamofire */; };
 		70E6F2792581E9CF007548F6 /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2782581E9CF007548F6 /* PromiseKit */; };
 		70E6F2832581EA73007548F6 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2822581EA73007548F6 /* Starscream */; };
 		70E6F2872581EA88007548F6 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 70E6F2862581EA88007548F6 /* SwiftyJSON */; };
@@ -132,7 +131,6 @@
 			files = (
 				70E6F2872581EA88007548F6 /* SwiftyJSON in Frameworks */,
 				70E6F2792581E9CF007548F6 /* PromiseKit in Frameworks */,
-				70E6F2752581E967007548F6 /* Alamofire in Frameworks */,
 				70E6F2832581EA73007548F6 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -236,7 +234,6 @@
 			);
 			name = CoinTicker;
 			packageProductDependencies = (
-				70E6F2742581E967007548F6 /* Alamofire */,
 				70E6F2782581E9CF007548F6 /* PromiseKit */,
 				70E6F2822581EA73007548F6 /* Starscream */,
 				70E6F2862581EA88007548F6 /* SwiftyJSON */,
@@ -301,7 +298,6 @@
 			);
 			mainGroup = 705F48471EDE3A29009A629D;
 			packageReferences = (
-				70E6F2732581E967007548F6 /* XCRemoteSwiftPackageReference "Alamofire" */,
 				70E6F2772581E9CF007548F6 /* XCRemoteSwiftPackageReference "PromiseKit" */,
 				70E6F2812581EA73007548F6 /* XCRemoteSwiftPackageReference "Starscream" */,
 				70E6F2852581EA88007548F6 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
@@ -614,20 +610,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		70E6F2732581E967007548F6 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.4.0;
-			};
-		};
 		70E6F2772581E9CF007548F6 /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mxcl/PromiseKit.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 6.13.3;
+				minimumVersion = 8.2.0;
 			};
 		};
 		70E6F2812581EA73007548F6 /* XCRemoteSwiftPackageReference "Starscream" */ = {
@@ -649,11 +637,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		70E6F2742581E967007548F6 /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 70E6F2732581E967007548F6 /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
 		70E6F2782581E9CF007548F6 /* PromiseKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 70E6F2772581E9CF007548F6 /* XCRemoteSwiftPackageReference "PromiseKit" */;

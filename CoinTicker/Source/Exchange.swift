@@ -27,7 +27,6 @@
 import Foundation
 import Cocoa
 import Starscream
-import Alamofire
 import SwiftyJSON
 import PromiseKit
 
@@ -195,7 +194,7 @@ class Exchange {
         }
 
         if selectedCurrencyPairs.count == 0 {
-            let localCurrency = Currency(code: Locale.current.currencyCode)
+            let localCurrency = Currency(code: Locale.current.currency?.identifier)
             if let currencyPair = self.availableCurrencyPairs.first(where: { $0.quoteCurrency == localCurrency }) ??
                 self.availableCurrencyPairs.first(where: { $0.quoteCurrency.code == "USD" }) ??
                 self.availableCurrencyPairs.first(where: { $0.quoteCurrency.code == "USDT" }) ??
@@ -221,9 +220,12 @@ class Exchange {
         socket?.disconnect()
         requestTimer?.invalidate()
         requestTimer = nil
-        Session.default.session.getTasksWithCompletionHandler({ dataTasks, _, _ in
-            dataTasks.forEach({ $0.cancel() })
-        })
+        URLSession.shared.getAllTasks { tasks in
+          tasks
+            .filter { $0.state == .running }
+            .first?
+            .cancel()
+        }
     }
 
     private func startRequestTimer() {
@@ -250,15 +252,24 @@ class Exchange {
     // MARK: API Helpers
     internal func requestAPI(_ apiPath: String, for representedObject: Any? = nil) -> Promise<ExchangeAPIResponse> {
         return Promise { seal in
-            AF.request(apiPath).responseJSON(queue: apiResponseQueue) { response in
-                switch response.result {
-                case .success(let value):
-                    seal.fulfill(ExchangeAPIResponse(representedObject: representedObject, json: JSON(value)))
-                case .failure(let error):
-                    print("Error in API request: \(apiPath) \(error)")
-                    seal.reject(error)
-                }
+            guard let url = URL(string: apiPath) else {
+                seal.reject(NSError(domain: "InvalidURL", code: 0, userInfo: nil))
+                return
             }
+
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                if let error = error {
+                    seal.reject(error)
+                    return
+                }
+
+                guard let data = data else {
+                    seal.reject(NSError(domain: "NoData", code: 0, userInfo: nil))
+                    return
+                }
+                
+                seal.fulfill(ExchangeAPIResponse(representedObject: representedObject, json: JSON(data)))
+            }.resume()
         }
     }
 

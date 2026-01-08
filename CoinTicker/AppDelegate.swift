@@ -25,7 +25,7 @@
 //
 
 import Cocoa
-import Alamofire
+import Network
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -40,7 +40,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     private var currencyFormatter = NumberFormatter()
 
     private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-    private let reachabilityManager = Alamofire.NetworkReachabilityManager()!
+    private let monitor = NWPathMonitor()
 
     private var currentExchange: Exchange!
 
@@ -61,19 +61,16 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         showIconMenuItem.state = (TickerConfig.showsIcon ? .on : .off)
 
         // Listen for network status
-        let reachabilityQueue = DispatchQueue(label: "cointicker.reachability", qos: .utility, attributes: [.concurrent])
-        reachabilityManager.startListening(onQueue: reachabilityQueue) { [weak self] status in
-            if status == .reachable(.ethernetOrWiFi) || status == .reachable(.cellular) {
+        monitor.pathUpdateHandler = { [weak self] path in
+            if path.status == .satisfied {
                 self?.currentExchange?.load()
             } else {
                 self?.currentExchange?.stop()
                 self?.updateMenuWithOfflineText()
             }
         }
-
-        if !reachabilityManager.isReachable {
-            updateMenuWithOfflineText()
-        }
+        
+        monitor.start(queue: DispatchQueue(label: "cointicker.monitor"))
     }
 
     func applicationWillTerminate(_ aNotification: Notification) {
@@ -93,10 +90,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // MARK: UI Helpers
     private func updateMenuWithOfflineText() {
         DispatchQueue.main.async {
-            self.statusItem.title = NSLocalizedString("menu.label.offline", comment: "Label to display when network connection fails")
+            self.statusItem.button?.title = NSLocalizedString("menu.label.offline", comment: "Label to display when network connection fails")
             let image = TickerConfig.LogoImage
             image.isTemplate = true
-            self.statusItem.image = image
+            self.statusItem.button?.image = image
         }
     }
 
@@ -239,9 +236,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             }
 
             iconImage.isTemplate = true
-            self.statusItem.image = iconImage
+            self.statusItem.button?.image = iconImage
         } else {
-            self.statusItem.image = nil
+            self.statusItem.button?.image = nil
         }
     }
 
@@ -302,7 +299,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 return "\(currencyPair.baseCurrency.code): \(priceString)"
             }
 
-            self.statusItem.title = priceStrings.joined(separator: " • ")
+            self.statusItem.button?.title = priceStrings.joined(separator: " • ")
         }
     }
 
