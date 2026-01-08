@@ -27,13 +27,14 @@
 import Foundation
 import Starscream
 import SwiftyJSON
+import PromiseKit
 
 class PoloniexExchange: Exchange {
 
     private struct Constants {
-        static let WebSocketURL = URL(string: "wss://api2.poloniex.com:443")!
-        static let TickerAPIPath = "https://poloniex.com/public?command=returnTicker"
-        static let TickerChannel = 1002
+        static let WebSocketURL = URL(string: "wss://ws.poloniex.com/ws/public")!
+        static let ProductListAPIPath = "https://api.poloniex.com/markets"
+        static let TickerAPIPathFormat = "https://api.poloniex.com/markets/%@/price"
     }
 
     init(delegate: ExchangeDelegate? = nil) {
@@ -41,57 +42,41 @@ class PoloniexExchange: Exchange {
     }
 
     override func load() {
-        super.load(from: Constants.TickerAPIPath) {
-            $0.json.compactMap { currencyJSON in
-                let currencyCodes = currencyJSON.0.split(separator: "_")
-                guard currencyCodes.count == 2, let baseCurrency = currencyCodes.last, let quoteCurrency = currencyCodes.first else {
-                    return nil
-                }
-
-                return CurrencyPair(
-                    baseCurrency: String(baseCurrency),
-                    quoteCurrency: String(quoteCurrency),
-                    customCode: currencyJSON.1["id"].stringValue
+        super.load(from: Constants.ProductListAPIPath) {
+            $0.json.arrayValue.compactMap { data in
+                CurrencyPair(
+                    baseCurrency: data["baseCurrencyName"].string,
+                    quoteCurrency: data["quoteCurrencyName"].string,
+                    customCode: "\(data["baseCurrencyName"])_\(data["quoteCurrencyName"])"
                 )
             }
         }
     }
 
     override internal func fetch() {
-        requestAPI(Constants.TickerAPIPath).map { [weak self] result in
-            if let strongSelf = self {
-                for (_, result) in result.json {
-                    if let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: result["id"].stringValue) {
-                        strongSelf.setPrice(result["last"].doubleValue, for: currencyPair)
-                    }
-                }
-
-                if strongSelf.isUpdatingInRealTime {
-                    strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
-                } else {
-                    strongSelf.onFetchComplete()
-                }
-            }
-        }.catch { error in
-            print("Error fetching Poloniex ticker: \(error)")
-        }
-
         if isUpdatingInRealTime {
             let socket = WebSocket(request: URLRequest(url: Constants.WebSocketURL))
             socket.callbackQueue = socketResponseQueue
+            
+            let symbols: [String] = selectedCurrencyPairs.map({ $0.customCode })
             socket.onEvent = { [weak self] event in
                 switch event {
                 case .connected(_):
-                    let jsonString = JSON([
-                        "command": "subscribe",
-                        "channel": Constants.TickerChannel
-                    ]).rawString()!
-                    socket.write(string: jsonString)
+                    let json = JSON([
+                        "event": "subscribe",
+                        "channel": ["ticker"],
+                        "symbols": symbols
+                    ])
+                    
+                    if let string = json.rawString() {
+                        socket.write(string: string)
+                    }
 
                 case .text(let text):
-                    if let strongSelf = self, let result = JSON(parseJSON: text).array, result.first?.int == Constants.TickerChannel, let data = result.last?.array, data.count >= 2 {
-                        if let productId = data.first?.stringValue, let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: productId) {
-                            strongSelf.setPrice(data[1].doubleValue, for: currencyPair)
+                    if let strongSelf = self {
+                        let json = JSON(parseJSON: text)
+                        if json["channel"].string == "ticker", let data = json["data"].array?.last, let currencyPair = strongSelf.selectedCurrencyPair(withCustomCode: data["symbol"].stringValue) {
+                            strongSelf.setPrice(data["markPrice"].doubleValue, for: currencyPair)
                             strongSelf.delegate?.exchangeDidUpdatePrices(strongSelf)
                         }
                     }
@@ -103,6 +88,24 @@ class PoloniexExchange: Exchange {
 
             socket.connect()
             self.socket = socket
+        } else {
+            _ = when(resolved: selectedCurrencyPairs.map({ currencyPair -> Promise<ExchangeAPIResponse> in
+                let apiRequestPath = String(format: Constants.TickerAPIPathFormat, currencyPair.customCode)
+                return requestAPI(apiRequestPath, for: currencyPair)
+            })).map { [weak self] results in
+                results.forEach({ result in
+                    switch result {
+                    case .fulfilled(let value):
+                        if let currencyPair = value.representedObject as? CurrencyPair {
+                            let price = value.json["price"].doubleValue
+                            self?.setPrice(price, for: currencyPair)
+                        }
+                    default: break
+                    }
+                })
+
+                self?.onFetchComplete()
+            }
         }
     }
 
