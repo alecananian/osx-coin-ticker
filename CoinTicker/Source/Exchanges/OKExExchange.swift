@@ -31,8 +31,8 @@ import PromiseKit
 class OKExExchange: Exchange {
 
     private struct Constants {
-        static let ProductListAPIPath = "https://www.okex.com/api/spot/v3/instruments"
-        static let TickerAPIPathFormat = "https://www.okex.com/api/spot/v3/instruments/%@/ticker"
+        static let ProductListAPIPath = "https://www.okx.com/api/v5/market/tickers?instType=SPOT"
+        static let TickerAPIPathFormat = "https://www.okx.com/api/v5/market/ticker?instId=%@"
     }
 
     init(delegate: ExchangeDelegate? = nil) {
@@ -41,11 +41,20 @@ class OKExExchange: Exchange {
 
     override func load() {
         super.load(from: Constants.ProductListAPIPath) {
-            $0.json.arrayValue.compactMap { result in
+            $0.json["data"].arrayValue.compactMap { data in
+                guard let customCode = data["instId"].string else {
+                    return nil
+                }
+
+                let customCodeParts = customCode.split(separator: "-")
+                guard let baseCurrency = customCodeParts.first, let quoteCurrency = customCodeParts.last else {
+                    return nil
+                }
+
                 return CurrencyPair(
-                    baseCurrency: result["base_currency"].stringValue,
-                    quoteCurrency: result["quote_currency"].stringValue,
-                    customCode: result["instrument_id"].stringValue
+                    baseCurrency: String(baseCurrency),
+                    quoteCurrency: String(quoteCurrency),
+                    customCode: customCode
                 )
             }
         }
@@ -59,8 +68,8 @@ class OKExExchange: Exchange {
             results.forEach({ result in
                 switch result {
                 case .fulfilled(let value):
-                    if let currencyPair = value.representedObject as? CurrencyPair {
-                        let price = value.json["last"].doubleValue
+                    if let currencyPair = value.representedObject as? CurrencyPair, let data = value.json["data"].array?.last {
+                        let price = data["last"].doubleValue
                         self?.setPrice(price, for: currencyPair)
                     }
                 default: break

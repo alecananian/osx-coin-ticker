@@ -115,7 +115,7 @@
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="Z0E-34-hQt"/>
                                         </connections>
                                     </menuItem>
-                                    <menuItem title="OKEx" tag="275" id="7LC-YN-Ox5">
+                                    <menuItem title="OKX" tag="275" keyEquivalent="K" id="7LC-YN-Ox5">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
                                             <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="imW-3c-KFh"/>
