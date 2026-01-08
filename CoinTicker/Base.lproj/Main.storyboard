@@ -25,12 +25,6 @@
                             <modifierMask key="keyEquivalentModifierMask"/>
                             <menu key="submenu" title="Exchange" id="fga-XW-why" userLabel="Exchange Sub Menu">
                                 <items>
-                                    <menuItem title="Bibox" tag="100" id="mPv-Wq-TNr">
-                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                        <connections>
-                                            <action selector="onSelectExchangeSiteWithSender:" target="Voe-Tx-rLC" id="jed-em-rnP"/>
-                                        </connections>
-                                    </menuItem>
                                     <menuItem title="Binance" state="on" tag="200" id="QjD-IZ-7n9">
                                         <modifierMask key="keyEquivalentModifierMask"/>
                                         <connections>
@@ -259,7 +253,7 @@
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="513" y="173"/>
+            <point key="canvasLocation" x="706" y="135"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="SA0-tb-2c7">
@@ -272,7 +266,7 @@
                 </viewController>
                 <customObject id="OOe-wP-mif" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="653"/>
+            <point key="canvasLocation" x="706" y="625"/>
         </scene>
     </scenes>
 </document>

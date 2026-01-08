@@ -31,7 +31,6 @@ import SwiftyJSON
 import PromiseKit
 
 enum ExchangeSite: Int, Codable {
-    case bibox = 100
     case binance = 200
     case bitfinex = 205
     case bithumb = 207
@@ -54,7 +53,6 @@ enum ExchangeSite: Int, Codable {
 
     func exchange(delegate: ExchangeDelegate? = nil) -> Exchange {
         switch self {
-        case .bibox: return BiboxExchange(delegate: delegate)
         case .binance: return BinanceExchange(delegate: delegate)
         case .bitfinex: return BitfinexExchange(delegate: delegate)
         case .bithumb: return BithumbExchange(delegate: delegate)
