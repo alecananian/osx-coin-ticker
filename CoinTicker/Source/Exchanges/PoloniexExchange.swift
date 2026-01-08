@@ -57,17 +57,17 @@ class PoloniexExchange: Exchange {
         if isUpdatingInRealTime {
             let socket = WebSocket(request: URLRequest(url: Constants.WebSocketURL))
             socket.callbackQueue = socketResponseQueue
-            
+
             let symbols: [String] = selectedCurrencyPairs.map({ $0.customCode })
             socket.onEvent = { [weak self] event in
                 switch event {
-                case .connected(_):
+                case .connected:
                     let json = JSON([
                         "event": "subscribe",
                         "channel": ["ticker"],
                         "symbols": symbols
                     ])
-                    
+
                     if let string = json.rawString() {
                         socket.write(string: string)
                     }

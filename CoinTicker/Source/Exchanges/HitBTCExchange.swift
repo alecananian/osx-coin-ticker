@@ -86,7 +86,7 @@ class HitBTCExchange: Exchange {
             socket.callbackQueue = socketResponseQueue
             socket.onEvent = { [weak self] event in
                 switch event {
-                case .connected(_):
+                case .connected:
                     self?.selectedCurrencyPairs.forEach({ currencyPair in
                         let json = JSON([
                             "method": "subscribeTicker",

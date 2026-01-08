@@ -145,7 +145,7 @@ extension Currency: Hashable {
 
 extension Currency: Equatable {
 
-    static func <(lhs: Currency, rhs: Currency) -> Bool {
+    static func < (lhs: Currency, rhs: Currency) -> Bool {
         if lhs.isBitcoin && !rhs.isBitcoin {
             return true
         }
@@ -157,7 +157,7 @@ extension Currency: Equatable {
         return lhs.code < rhs.code
     }
 
-    static func ==(lhs: Currency, rhs: Currency) -> Bool {
+    static func == (lhs: Currency, rhs: Currency) -> Bool {
         return lhs.internalCode == rhs.internalCode
     }
 

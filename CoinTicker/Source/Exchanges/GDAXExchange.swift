@@ -82,7 +82,7 @@ class GDAXExchange: Exchange {
             let productIds: [String] = selectedCurrencyPairs.map({ $0.customCode })
             socket.onEvent = { [weak self] event in
                 switch event {
-                case .connected(_):
+                case .connected:
                     let json = JSON([
                         "type": "subscribe",
                         "product_ids": productIds,

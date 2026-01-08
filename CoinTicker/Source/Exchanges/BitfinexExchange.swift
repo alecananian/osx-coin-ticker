@@ -95,7 +95,7 @@ class BitfinexExchange: Exchange {
             selectedCurrencyPairs.forEach({ channelIds[$0.customCode] = 0 })
             socket.onEvent = { [weak self] event in
                 switch event {
-                case .connected(_):
+                case .connected:
                     channelIds.keys.forEach({ productId in
                         let json = JSON([
                             "event": "subscribe",

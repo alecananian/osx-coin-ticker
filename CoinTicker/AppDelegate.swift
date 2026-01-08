@@ -69,7 +69,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 self?.updateMenuWithOfflineText()
             }
         }
-        
+
         monitor.start(queue: DispatchQueue(label: "cointicker.monitor"))
     }
 

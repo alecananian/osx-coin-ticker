@@ -255,7 +255,7 @@ class Exchange {
                 return
             }
 
-            URLSession.shared.dataTask(with: url) { data, response, error in
+            URLSession.shared.dataTask(with: url) { data, _, error in
                 if let error = error {
                     seal.reject(error)
                     return
@@ -265,7 +265,7 @@ class Exchange {
                     seal.reject(NSError(domain: "NoData", code: 0, userInfo: nil))
                     return
                 }
-                
+
                 seal.fulfill(ExchangeAPIResponse(representedObject: representedObject, json: JSON(data)))
             }.resume()
         }

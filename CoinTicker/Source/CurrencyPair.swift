@@ -71,7 +71,7 @@ extension CurrencyPair: Hashable {
 
 extension CurrencyPair: Equatable {
 
-    static func <(lhs: CurrencyPair, rhs: CurrencyPair) -> Bool {
+    static func < (lhs: CurrencyPair, rhs: CurrencyPair) -> Bool {
         if lhs.baseCurrency == rhs.baseCurrency {
             return lhs.quoteCurrency < rhs.quoteCurrency
         }
