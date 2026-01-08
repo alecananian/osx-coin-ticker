@@ -192,7 +192,7 @@ class Exchange {
         }
 
         if selectedCurrencyPairs.count == 0 {
-            let localCurrency = Currency(code: Locale.current.currency?.identifier)
+            let localCurrency = Currency(code: Locale.current.currencyCode)
             if let currencyPair = self.availableCurrencyPairs.first(where: { $0.quoteCurrency == localCurrency }) ??
                 self.availableCurrencyPairs.first(where: { $0.quoteCurrency.code == "USD" }) ??
                 self.availableCurrencyPairs.first(where: { $0.quoteCurrency.code == "USDT" }) ??
