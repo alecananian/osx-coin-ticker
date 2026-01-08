@@ -90,6 +90,7 @@ struct Currency: Codable {
         case "BCC": return "BCH"
         case "DSH": return "DASH"
         case "IOT": return "IOTA"
+        case "PAC": return "$PAC"
         case "QSH": return "QASH"
         case "QTM": return "QTUM"
         case "XBT": return "BTC"
